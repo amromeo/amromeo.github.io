@@ -6,7 +6,7 @@
   <title>Help and definitions · anchoredRI</title>
   <meta name="description" content="Plain-language definitions of the patient groups, screening rules, statistical models and reference-limit errors used in the anchoredRI simulator.">
   <meta name="theme-color" content="#f7f8f3">
-  <link rel="stylesheet" href="assets/site.css?v=help1">
+  <link rel="stylesheet" href="assets/site.css?v=sample-size1">
   <link rel="stylesheet" href="assets/help.css">
 </head>
 <body>
@@ -32,6 +32,7 @@
     <div class="help-layout">
       <nav class="help-contents" aria-label="Help topics">
         <a href="#patient-groups">Patients and screening</a>
+        <a href="#sample-size">Sample size and precision</a>
         <a href="#case-mix">The four case mixes</a>
         <a href="#results">Reading the results</a>
         <a href="#limit-error">Worked error example</a>
@@ -64,6 +65,26 @@
             <dt id="independent">Independent patients / nested screened groups</dt>
             <dd>The demo uses one result from each independent individual. For a fixed dataset and screening rule, the 20 screened patients are included among the 40, and those 40 are included among the 80. Every method compared at that setting receives the same routine results and, where applicable, the same screened results.</dd>
           </dl>
+        </section>
+
+        <section class="help-section" id="sample-size" aria-labelledby="sample-size-title">
+          <h2 id="sample-size-title">Sample size and precision</h2>
+          <p><strong>Reaching 120 reference individuals can still leave considerable uncertainty in the reference limits.</strong> In his 2025 presentation, Brody Foy explains why the conventional minimum of 120 permits a statistical calculation without guaranteeing precise limits. His platelet example illustrates substantial sampling variation even with ideal reference patients. <a href="https://s3.us-east-1.amazonaws.com/pathologyinformatics.com/2025/Summit2025/PDFs/Tuesday/4+Foy_Comp_Frontiers_RIs_API_2025_Foy.pdf#page=8">Foy’s slides 8–10</a>.</p>
+          <p>The original refineR study evaluated direct reference intervals from both 120 and 400 reference individuals and cites a recommendation for at least 400. Approximately 400 is therefore a useful benchmark when considering a larger screened reference cohort. The appropriate number depends on the analyte’s distribution, the estimation method and the precision required. <a href="https://pubmed.ncbi.nlm.nih.gov/34362961/">Ammer and colleagues, 2021</a>.</p>
+          <p>For an empirical central 95% interval, each tail contains 2.5% of the reference population. That gives the following expected counts in a random reference sample.</p>
+          <div class="help-table-wrap" role="region" aria-label="Expected observations in the tails of a reference sample" tabindex="0">
+            <table class="help-table">
+              <thead><tr><th scope="col">Reference individuals</th><th scope="col">Expected below the true lower limit</th><th scope="col">Expected above the true upper limit</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">120</th><td>3</td><td>3</td></tr>
+                <tr><th scope="row">400</th><td>10</td><td>10</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>These small tail counts help explain the sampling uncertainty when estimating percentiles directly. The demo’s “Screened alone” row fits a Gaussian reference distribution using the sample mean and standard deviation, so its precision also depends on that distributional assumption.</p>
+          <h3>What the 40 screened patients contribute here</h3>
+          <p>They identify the reference group in a joint model. Both the screened results and the larger routine dataset contribute to estimating that distribution. The benefit depends on the model adequately representing the reference and disease-associated results.</p>
+          <p>Forty is an experimental setting. The screened sample size needed for clinical use still requires validation, including comparison with larger independent reference cohorts and assessment of uncertainty in both limits. For pediatric intervals, sample-size planning must also account for the age groups being estimated.</p>
         </section>
 
         <section class="help-section" id="case-mix" aria-labelledby="mix-title">
@@ -135,7 +156,7 @@
             <dt>anchoredRI</dt>
             <dd>All routine results plus the clinically screened results. The reference distribution is identified using the screened patients. The model considers one, two and three components and selects one using BIC.</dd>
             <dt>Screened alone</dt>
-            <dd>Uses just the screened results. The limits are the screened sample mean plus or minus approximately 1.96 times its standard deviation, assuming a Gaussian reference distribution.</dd>
+            <dd>Uses just the screened results. The limits are the screened sample mean plus or minus approximately 1.96 times its standard deviation, assuming a Gaussian reference distribution. <a href="#sample-size">Read why the size of the screened sample matters</a>.</dd>
             <dt>Settings alone</dt>
             <dd>Uses all routine results and the clinic/ward labels, with a two-component mixture. It estimates a separate proportion in each component for each setting. It designates the component more prevalent in clinic as the candidate reference group.</dd>
             <dt>Pooled mixture</dt>
