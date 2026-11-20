@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>anchoredRI · Pediatric reference interval simulator</title>
+  <meta name="description" content="Compare a screened-sample mixture model with refineR on shared synthetic pediatric cohorts. An open-source, fully AI-developed R research package.">
+  <meta name="theme-color" content="#f7f8f3">
+  <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/site.js" type="module"></script>
+</head>
+<body>
+  <a class="skip" href="#experiment">Skip to the experiment</a>
+  <header class="top"><div class="top-inner">
+    <a class="brand" href="#top" aria-label="anchoredRI, back to top"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
+    <nav aria-label="Main navigation"><a href="#experiment">Experiment</a><a href="#method">Method</a><a href="#install">Install</a><a class="source" href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </div></header>
+  <main id="top">
+    <div class="hero">
+      <div class="hero-copy"><p class="kicker">Pediatric reference intervals <span> / </span> R package 0.1.0</p>
+      <h1>What can 40 screened<br class="wide"> samples add?</h1>
+      <p class="lede">Use the same synthetic clinic and ward results to compare a model guided by chart review with <strong>refineR</strong> on all patients or outpatients alone.</p></div>
+      <div class="truth-card"><span class="card-label">Known healthy interval</span><p>24.12 <span>–</span> 35.88 <small>s</small></p>
+        <div class="truth-ruler" aria-hidden="true"><i></i></div>
+        <span>Central 95% of the simulated population</span></div>
+    </div>
+    <section id="experiment" aria-labelledby="experiment-title">
+      <div class="section-head"><div><p class="kicker">Experiment</p><h2 id="experiment-title">Compare the estimates</h2></div><a class="dataset-link" href="assets/fits.csv" download>Download fitted results <span aria-hidden="true">↓</span></a></div>
+      <noscript><p>Enable JavaScript to use the controls. The full results and R code are available to download.</p></noscript>
+      <div class="workspace">
+        <form id="design" class="controls" aria-label="Simulation settings">
+          <h3>Simulation settings</h3>
+          <label for="scenario">Case mix</label>
+          <select id="scenario">
+            <option value="1">Few affected results</option><option value="2">Mostly prolonged on the ward</option><option value="3" selected>Short and prolonged on the ward</option><option value="4">Equal affected fractions</option>
+          </select><p id="scenario-note" class="hint">20% affected in clinic and 75% on the ward. Ward disease can shorten or prolong the result.</p>
+          <fieldset><legend>Routine results</legend><div class="segments">
+            <label><input type="radio" name="routine" value="1000" checked><span>1,000</span></label><label><input type="radio" name="routine" value="4000"><span>4,000</span></label>
+          </div><p id="sizes" class="hint">250 outpatients · 750 ward patients</p></fieldset>
+          <fieldset><legend>Additional screened patients</legend><div class="segments">
+            <label><input type="radio" name="anchors" value="0"><span>0</span></label><label><input type="radio" name="anchors" value="20"><span>20</span></label><label><input type="radio" name="anchors" value="40" checked><span>40</span></label><label><input type="radio" name="anchors" value="80"><span>80</span></label>
+          </div></fieldset>
+          <label for="selection">Screening rule</label>
+          <select id="selection"><option value="clinical">Clinical history alone</option><option value="in_range">History + result within 26–34 s</option></select>
+          <p class="hint" id="selection-note">Reviewers are blinded to the target result.</p>
+          <label for="replicate">Simulation draw</label>
+          <select id="replicate"><option value="0">Average across 12 draws</option></select>
+        </form>
+        <div class="results">
+          <div class="result-title"><h3 id="result-title">Estimated reference limits</h3><div class="view-options" role="group" aria-label="Plot display">
+            <button id="view-limits" type="button" aria-pressed="true">Limits</button><button id="view-error" type="button" aria-pressed="false">Error</button>
+          </div></div>
+          <p id="plot-note" class="plot-note">Limits are averaged across 12 draws. The shaded band marks the known healthy interval.</p>
+          <div id="plot" aria-label="Comparison results"><p class="loading">Loading fitted results…</p></div>
+          <p class="plot-foot" id="metric-note">Worst-limit error uses the larger absolute error of the two endpoints in each draw.</p>
+          <label class="advanced"><input type="checkbox" id="extra"> Show component-model comparisons</label>
+          <p class="diagnostics" id="diagnostics"></p>
+          <p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+      <p class="study-note">Each control selects R fits calculated in advance. All methods share the same routine results within a draw. Screened patients are additional individuals. The two routine sample sizes both use a 1:3 clinic-to-ward ratio.</p>
+    </section>
+    <section id="method" class="story" aria-labelledby="method-title">
+      <div class="section-head"><div><p class="kicker">Method &amp; development</p><h2 id="method-title">How the model works</h2></div></div>
+      <div class="story-grid">
+        <article><h3>What the screened sample tells us</h3>
+          <p>A chart reviewer identifies children eligible for the reference population using clinical history. Each screened result helps estimate the center and spread of that population. Routine results can come from any of the fitted groups. Each setting gets its own estimated proportion in each group.</p>
+          <p>The package fits one, two and three Gaussian components and uses the Bayesian information criterion (BIC) to select a model. It reports the 2.5th and 97.5th percentiles of the screened group’s fitted distribution.</p>
+        </article>
+        <article><h3>Why include outpatients alone?</h3>
+          <p>Outpatients may contain a higher proportion of reference individuals. Filtering to clinic results can help, but it also reduces the number of observations. The demo fits the released <strong>refineR 2.0.0</strong> to both cohorts with its default model and zero bootstrap replicates for the point estimates.</p>
+          <p>“Screened alone” fits a Gaussian to the chart-reviewed sample. The additional model comparisons isolate the role of setting labels and let you compare fits with and without screened labels while holding the number of components at two.</p>
+        </article>
+        <article><h3>How this project was developed</h3>
+          <p><strong>This project was fully AI-developed.</strong> A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and implemented the statistical prototype, simulations, R package, tests, documentation and website. The code uses conventional statistics and runs locally in R.</p>
+          <p>The first prototype identified a reference group from differences between settings. In simulations, that assumption struggled when the fractions were equal or disease affected both tails. The next version added independent screened observations and allowed an additional component.</p>
+        </article>
+        <article><h3>What the simulation can establish</h3>
+          <p>The generator uses one age group, one assay and a common healthy distribution. Its Gaussian components favor the model’s assumptions. All data are synthetic. No CHOP patient data were used, and clinical performance has yet to be established.</p>
+          <p>Forty is a study setting. Performance can change with the analyte, age, size of the reference sample, disease mixture and eligibility criteria. Clinical evaluation would require independent reference individuals, comparison of both tails and a separate assessment of uncertainty.</p>
+        </article>
+      </div>
+      <details><summary>Simulation parameters and reproducibility</summary><div class="details-body">
+        <p>Healthy aPTT-like values follow a normal distribution with mean 30 s and SD 3 s. Values are rounded to 0.1 s, and truth is calculated before rounding. In the first scenario, affected values have mean 42 s and SD 4 s. In the other three scenarios the upper component has mean 36 s and SD 4.5 s. In the two-sided scenario, 55% of affected ward patients have a result from a lower component with mean 24 s and SD 2.5 s.</p>
+        <p>The biased screening option keeps only healthy measurements from 26 through 34 s. Both rules begin with truly healthy people. Smaller screened groups are nested within the larger group for the same rule and draw. Zero screened patients removes the methods that require them.</p>
+        <p>The 1,000-result design includes 250 clinic results. The refineR package flags input sizes below 1,000 for cautious interpretation. The additional two-component comparison fits the reference label with screened data at the same model size as the routine-only setting model.</p>
+        <p><a href="tools/build-demo.R">R script for every plotted result</a> · <a href="assets/versions.txt">Software versions</a></p>
+      </div></details>
+    </section>
+    <section id="install" class="installation" aria-labelledby="install-title">
+      <div><p class="kicker">R package</p><h2 id="install-title">Install anchoredRI</h2><p>The model uses base R and its standard packages. Install <code>refineR</code> to reproduce the comparisons.</p><a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Browse the package source ↗</a> · <a href="downloads/anchoredRI_0.1.0.tar.gz" download>Download 0.1.0</a></div>
+      <div class="code-box"><div><span>R console</span><button id="copy" type="button">Copy code</button></div><pre><code id="install-code">install.packages(c("remotes", "refineR"))
+remotes::install_github(
+  "amromeo/amromeo.github.io", subdir = "anchoredRI"
+)
+
+library(anchoredRI)
+d &lt;- simulate_ri_study(n_anchor = 40)
+fit_anchored_ri(d$routine$value, d$routine$setting,
+                d$anchor)$limits</code></pre><span class="sr-only" role="status" id="copy-status"></span></div>
+    </section>
+    <section class="credits" aria-labelledby="credit-title"><h3 id="credit-title">Credit and license</h3><p>The published refineR method by Tatjana Ammer and colleagues inspired this investigation. Its independently released R package by Matthias Beck, Tatjana Ammer, Christopher M. Rank and André Schützenmeister supplies both refineR comparisons. This project has no affiliation with the refineR authors.</p><p><a href="https://doi.org/10.1038/s41598-021-95301-2">Original paper</a> · <a href="https://cran.r-project.org/package=refineR">refineR on CRAN</a> · <a href="LICENSE">GNU GPL v3.0</a></p></section>
+  </main><footer><span>anchoredRI 0.1.0</span><span>Fully AI-developed · Research software</span></footer>
+</body></html>
