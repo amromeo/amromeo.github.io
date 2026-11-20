@@ -5,8 +5,8 @@
   <title>anchoredRI · Pediatric reference interval simulator</title>
   <meta name="description" content="Compare a screened-sample mixture model with refineR on shared synthetic pediatric cohorts. An open-source, fully AI-developed R research package.">
   <meta name="theme-color" content="#f7f8f3">
-  <link rel="stylesheet" href="assets/site.css?v=sample-size1">
-  <script src="assets/site.js?v=help1" type="module"></script>
+  <link rel="stylesheet" href="assets/site.css?v=screened120400">
+  <script src="assets/site.js?v=screened120400" type="module"></script>
 </head>
 <body>
   <a class="skip" href="#experiment">Skip to the experiment</a>
@@ -37,9 +37,10 @@
           <fieldset><legend>Routine results</legend><div class="segments">
             <label><input type="radio" name="routine" value="1000" checked><span>1,000</span></label><label><input type="radio" name="routine" value="4000"><span>4,000</span></label>
           </div><p id="sizes" class="hint">250 outpatients · 750 ward patients</p></fieldset>
-          <fieldset><legend>Additional screened patients</legend><div class="segments">
+          <fieldset><legend>Screened patients for anchoredRI</legend><div class="segments anchor-counts">
             <label><input type="radio" name="anchors" value="0"><span>0</span></label><label><input type="radio" name="anchors" value="20"><span>20</span></label><label><input type="radio" name="anchors" value="40" checked><span>40</span></label><label><input type="radio" name="anchors" value="80"><span>80</span></label>
-          </div></fieldset>
+            <label><input type="radio" name="anchors" value="120"><span>120</span></label><label><input type="radio" name="anchors" value="400"><span>400</span></label>
+          </div><p class="hint"><a href="help.html#sample-size">Comparing screened sample sizes</a></p></fieldset>
           <label for="selection">Screening rule</label>
           <select id="selection"><option value="clinical">Clinical history alone</option><option value="in_range">History + result within 26–34 s</option></select>
           <p class="hint" id="selection-note">Reviewers are blinded to the target result.</p>
@@ -58,12 +59,7 @@
           <p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
         </div>
       </div>
-      <p class="study-note">Each control selects results fitted in R in advance. Every method uses the same routine dataset for each comparison. Screened patients are additional individuals. The two routine sample sizes both use a 1:3 clinic-to-ward ratio.</p>
-      <aside class="sample-size-note" aria-labelledby="sample-size-note-title">
-        <h3 id="sample-size-note-title">Why 120 screened patients can still be too few</h3>
-        <p>Brody Foy’s 2025 presentation highlights how 120 reference individuals can leave substantial uncertainty in the estimated limits, even under ideal conditions. The original refineR paper uses 120 and 400 reference individuals as direct-method benchmarks and cites a recommendation for at least 400.</p>
-        <p>The 40 screened patients here help identify the reference distribution within a model that also uses the routine results. Establishing the screened sample size needed for this approach requires evaluation of both reference limits’ accuracy and precision in the intended population. <a href="help.html#sample-size">Read the sample-size context and sources</a>.</p>
-      </aside>
+      <p class="study-note">The screened-only rows use 120 and 400 patients for comparison with the selected anchoredRI sample size. All screened cohorts follow the same screening rule, with smaller cohorts included in larger ones. Methods using routine results share the same dataset. Each control selects results fitted in R in advance.</p>
     </section>
     <section id="method" class="story" aria-labelledby="method-title">
       <div class="section-head"><div><p class="kicker">Method &amp; development</p><h2 id="method-title">How the model works</h2></div></div>
@@ -87,7 +83,7 @@
       </div>
       <details><summary>Simulation parameters and reproducibility</summary><div class="details-body">
         <p>Reference-group aPTT-like results follow a normal distribution with mean 30 s and SD 3 s. Values are rounded to 0.1 s. The known reference limits are calculated before rounding. In the first scenario, the disease-associated distribution has mean 42 s and SD 4 s. In the other three scenarios, the distribution shifted upward has mean 36 s and SD 4.5 s. In the scenario with shifts in both directions, 55% of ward patients assigned to the disease group have a result from a distribution with mean 24 s and SD 2.5 s.</p>
-        <p>The screening option that also requires a result within 26–34 s starts with reference-group patients, then excludes those whose results fall outside that narrower range. This can bias the screened sample. For the same rule and dataset, the 20 screened patients are included in the group of 40, and those 40 are included in the group of 80. With zero screened patients, methods that need them are unavailable.</p>
+        <p>The screening option that also requires a result within 26–34 s starts with reference-group patients, then excludes those whose results fall outside that narrower range. This can bias the screened sample. For the same rule and dataset, each smaller screened cohort is included in the larger cohorts, up to 400 patients. Selecting zero screened patients leaves the routine-only methods and the fixed 120- and 400-patient screened-only comparisons available.</p>
         <p>The 1,000-result design includes 250 clinic results. The refineR package flags input sizes below 1,000 for cautious interpretation. The additional two-component comparison fits the reference label with screened data at the same model size as the routine-only setting model.</p>
         <p><a href="tools/build-demo.R">R script for every plotted result</a> · <a href="assets/versions.txt">Software versions</a></p>
       </div></details>

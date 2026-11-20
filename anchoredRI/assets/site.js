@@ -14,10 +14,13 @@ const methods = {
   refineR_clinic: ["refineR · outpatients", "#995022"],
   anchored: ["anchoredRI", "#006b60"],
   anchor_only: ["Screened alone", "#697774"],
+  screened_120: ["Screened alone · 120", "#8c682f"],
+  screened_400: ["Screened alone · 400", "#785280"],
   joint: ["Settings alone", "#41605e"],
   pooled_mixture: ["Pooled mixture", "#655777"],
   anchored_two: ["Anchored · two components", "#367a75"]
 };
+const referenceMethods = ["screened_120", "screened_400"];
 let rows = [];
 let display = "limits";
 
@@ -37,7 +40,7 @@ function parseFits(csv) {
     if (key === "at_bound") return [key, v === "TRUE"];
     return [key, v === "" ? null : Number(v)];
   })));
-  if (data.length !== 2112 || data.some(r => !methods[r.method] || !Number.isFinite(r.lower)
+  if (data.length !== 3648 || data.some(r => !methods[r.method] || !Number.isFinite(r.lower)
       || !Number.isFinite(r.upper) || r.lower >= r.upper)) {
     throw new Error("The fitted-results file is incomplete.");
   }
@@ -118,9 +121,9 @@ function render() {
   const draw = Number(byId("replicate").value);
   byId("scenario-note").textContent = settings[scenario];
   byId("sizes").textContent = (n / 4).toLocaleString("en-US") + " outpatients · " + (n * .75).toLocaleString("en-US") + " ward patients";
-  byId("selection").disabled = !anchors;
-  byId("selection-note").textContent = !anchors ? "No patients are screened in this design." : rule === "clinical"
-    ? "Reviewers are blinded to the target result." : "Only values from 26 through 34 seconds are retained.";
+  byId("selection-note").textContent = rule === "clinical"
+    ? "Reviewers are blinded to the target result for all screened cohorts."
+    : "All screened cohorts retain only values from 26 through 34 seconds.";
   byId("result-title").textContent = display === "limits" ? "Estimated reference limits" : "Error in the reference limits";
   byId("plot-note").textContent = display === "limits"
     ? (draw ? "One simulated dataset. " : "Average limits across 12 datasets. ") + "The shaded band marks the known reference interval."
@@ -130,8 +133,11 @@ function render() {
     : "For each of the 12 datasets, take the larger error from the lower and upper limits. The error column shows the average of those 12 numbers.";
   if (!rows.length) return;
   const selected = rows.filter(r => r.scenario === scenario && r.n_routine === n && (!draw || draw === r.replicate)
-    && (r.selection === "any" || (r.n_anchor === anchors && r.selection === rule)));
-  const active = ["refineR_all", "refineR_clinic", "anchored", "anchor_only"];
+    && (r.selection === "any" || (r.selection === rule
+      && (r.n_anchor === anchors || referenceMethods.includes(r.method)))));
+  const active = ["refineR_all", "refineR_clinic", "anchored"];
+  if (anchors > 0 && anchors !== 120 && anchors !== 400) active.push("anchor_only");
+  active.push(...referenceMethods);
   if (byId("extra").checked) active.push("joint", "pooled_mixture", "anchored_two");
   const stats = active.map(id => summarize(selected.filter(r => r.method === id)));
   const scale = axisRange(stats, display === "error");
@@ -150,7 +156,11 @@ function render() {
   titleRow.append(node("span", "", "Method / limits (s)"), axis, errorHeading);
   const items = [titleRow];
   if (display === "limits") items.push(makeRow("Known reference interval", "#32795e", {lower:tru[0], upper:tru[1]}, scale, true));
-  active.forEach((id, i) => items.push(makeRow(...methods[id], stats[i], scale)));
+  active.forEach((id, i) => {
+    const [label, color] = methods[id];
+    const name = id === "anchor_only" ? label + " · " + anchors : label;
+    items.push(makeRow(name, color, stats[i], scale));
+  });
   plot.replaceChildren(...items);
   const warnings = active.flatMap((id, i) => stats[i]?.atBound ? [methods[id][0] + " (" + stats[i].atBound + "/" + stats[i].count + ")"] : []);
   byId("diagnostics").textContent = warnings.length ? "A numerical fitting limit was reached for " + warnings.join(", ") + ". See Help for the meaning of this warning." : "";
@@ -159,7 +169,7 @@ function render() {
 
 async function loadFits() {
   try {
-    const response = await fetch("assets/fits.csv");
+    const response = await fetch("assets/fits.csv?v=screened120400");
     if (!response.ok) throw new Error("Results are unavailable.");
     rows = parseFits(await response.text());
     render();

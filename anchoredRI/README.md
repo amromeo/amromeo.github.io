@@ -51,12 +51,13 @@ The initial prototype labeled the component enriched in the outpatient cohort. I
 | refineR, all results | Released refineR on the entire routine sample |
 | refineR, outpatients | The same release restricted to outpatient results |
 | anchoredRI | All routine results plus independent screened results, selecting one to three components |
-| Screened alone | Screened sample mean ± 1.96 sample SD |
+| Screened alone, selected size | Screened sample mean ± 1.96 sample SD |
+| Screened alone, 120 / 400 | The same Gaussian calculation on fixed 120- and 400-patient screened cohorts |
 | Settings alone | Two-component Gaussian mixture with setting-specific fractions and a clinic enrichment assumption |
 | Pooled mixture | Same two-component family with pooled fractions, using setting labels afterward to name the putative reference component |
 | Anchored, two components | Joint screened/routine likelihood with the component count fixed at two |
 
-The page displays R fits calculated in advance on 96 synthetic datasets. Choose one of four case mixes, 1,000 or 4,000 routine results, 0/20/40/80 screened individuals, clinical screening or an intentionally restrictive 26–34 s cutoff, and an individual draw or the average of 12. The page uses the real `refineR::findRI(..., NBootstrap = 0L)` and `refineR::getRI()` point estimates. The average worst-limit error is the mean of each draw's larger absolute endpoint error. Averaging signed errors first would hide errors in opposite directions.
+The page displays R fits calculated in advance on 96 synthetic datasets. The table includes screened-only estimates from 120 and 400 patients alongside the selected-size anchored model, using the same screening rule. Smaller screened cohorts are nested within the generated 400-patient cohort. Choose one of four case mixes, 1,000 or 4,000 routine results, 0/20/40/80/120/400 screened individuals, clinical screening or an intentionally restrictive 26–34 s cutoff, and an individual draw or the average of 12. The page uses the real `refineR::findRI(..., NBootstrap = 0L)` and `refineR::getRI()` point estimates. The average worst-limit error is the mean of each draw's larger absolute endpoint error. Averaging signed errors first would hide errors in opposite directions.
 
 ```r
 # Reproduce a benchmark for 40 screened and 1,000 routine patients.
