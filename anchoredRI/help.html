@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Help and definitions · anchoredRI</title>
+  <meta name="description" content="Plain-language definitions of the patient groups, screening rules, statistical models and reference-limit errors used in the anchoredRI simulator.">
+  <meta name="theme-color" content="#f7f8f3">
+  <link rel="stylesheet" href="assets/site.css?v=help1">
+  <link rel="stylesheet" href="assets/help.css">
+</head>
+<body>
+  <a class="skip" href="#help">Skip to the help content</a>
+  <header class="top">
+    <div class="top-inner">
+      <a class="brand" href="./" aria-label="anchoredRI, back to the experiment"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
+      <nav aria-label="Main navigation">
+        <a href="./#experiment">Experiment</a>
+        <a href="./#method">Method</a>
+        <a href="./#install">Install</a>
+        <a href="help.html" aria-current="page">Help</a>
+        <a class="source" href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+  <main id="help" class="help-page">
+    <div class="help-intro">
+      <h1>Help and definitions</h1>
+      <p class="lede">What the patient groups, model labels and error summaries mean in this simulator.</p>
+      <p>The examples use synthetic aPTT-like results in seconds. The two main terminology changes are <a href="#disease">“affected” → analyte-altering disease</a> and <a href="#limit-error">“mean worst error” → average larger limit error</a>.</p>
+    </div>
+    <div class="help-layout">
+      <nav class="help-contents" aria-label="Help topics">
+        <a href="#patient-groups">Patients and screening</a>
+        <a href="#case-mix">The four case mixes</a>
+        <a href="#results">Reading the results</a>
+        <a href="#limit-error">Worked error example</a>
+        <a href="#methods">Comparison methods</a>
+        <a href="#fitting">Statistical terms</a>
+        <a href="#fitting-limits">Fitting warnings</a>
+      </nav>
+      <div class="help-content">
+        <section class="help-section" id="patient-groups" aria-labelledby="patients-title">
+          <h2 id="patients-title">Patients and screening</h2>
+          <dl class="glossary">
+            <dt id="disease">Analyte-altering disease <span class="former-label">Previously “affected”</span></dt>
+            <dd><p>A disease or condition that changes the distribution of the target test. In the simulation, a patient assigned to this group has a result generated from a disease-associated distribution. Those results can overlap the reference distribution, so an individual result can still fall within the reference interval.</p><p>The disease percentages describe how patients are generated. They are separate from the percentage of measurements outside the reference limits.</p></dd>
+            <dt id="target-test">Target analyte or test</dt>
+            <dd>The measurement whose reference interval is being estimated. Here it is a synthetic aPTT-like clotting time, expressed in seconds.</dd>
+            <dt id="reference-population">Reference population / reference-eligible patients</dt>
+            <dd>The population the reference interval is intended to describe. Here its results are generated from a distribution with mean 30 s and standard deviation 3 s. Clinical use would require eligibility criteria relevant to the test, patient population, age and assay. The earlier “healthy” label referred to this simulated reference group.</dd>
+            <dt id="case-mix-definition">Case mix / disease prevalence</dt>
+            <dd>The proportions and types of patients in a dataset. “20% disease prevalence” gives each simulated patient a 20% chance of assignment to the analyte-altering disease group. The realized fraction varies between datasets.</dd>
+            <dt id="setting">Setting / clinic / outpatients / ward</dt>
+            <dd>Setting identifies where a patient receives care. The demo uses “clinic” for outpatients and “ward” for inpatients. Both settings contain reference-group patients and patients assigned to the disease group.</dd>
+            <dt id="routine">Routine results / unscreened results</dt>
+            <dd>Results from the full simulated clinical workload. They include both patient groups. For these results, the fitting method receives the measured value and setting. Group membership is unknown to the fitting method.</dd>
+            <dt id="screened">Screened patients / reference sample / anchors</dt>
+            <dd><p>Additional individuals designated as eligible for the reference population after clinical review. Their results tell the model which distribution represents that population. “Anchor” is the code’s name for a screened reference result.</p><p>In the demo, 1,000 routine results plus 40 screened patients means 1,040 different individuals. Each contributes one result. A clinical dataset assembled by reviewing routine patients would need to count each person’s result once.</p></dd>
+            <dt id="clinical-screening">Clinical-history screening / blinding</dt>
+            <dd>Eligibility is determined from clinical information while the reviewer is blinded to the target result. The simulation implements ideal screening by drawing all screened patients directly from the known reference population.</dd>
+            <dt id="selection-bias">Screening by result / selection bias</dt>
+            <dd>The “History + result within 26–34 s” option begins with reference-group patients, then keeps those whose measurements fall within that narrower interval. This favors central values and can distort the estimated spread of the reference population. It demonstrates how using the target result to decide eligibility can affect an interval.</dd>
+            <dt id="independent">Independent patients / nested screened groups</dt>
+            <dd>The demo uses one result from each independent individual. For a fixed dataset and screening rule, the 20 screened patients are included among the 40, and those 40 are included among the 80. Every method compared at that setting receives the same routine results and, where applicable, the same screened results.</dd>
+          </dl>
+        </section>
+
+        <section class="help-section" id="case-mix" aria-labelledby="mix-title">
+          <h2 id="mix-title">The four case mixes</h2>
+          <p>The percentages below are the expected prevalence of analyte-altering disease. The reference-group distribution is the same in all four scenarios.</p>
+          <div class="help-table-wrap" role="region" aria-label="Case mix definitions" tabindex="0">
+            <table class="help-table">
+              <thead><tr><th scope="col">Scenario</th><th scope="col">Clinic</th><th scope="col">Ward</th><th scope="col">Disease-associated results</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Low disease prevalence</th><td>5%</td><td>10%</td><td>Shifted upward and relatively well separated from the reference group.</td></tr>
+                <tr><th scope="row">Mostly prolonged on the ward</th><td>20%</td><td>75%</td><td>Shifted upward, with considerable overlap with reference-group results.</td></tr>
+                <tr><th scope="row">Short and prolonged on the ward</th><td>20%</td><td>75%</td><td>Shifted upward in clinic. On the ward, 55% of disease-group patients have results from a distribution shifted downward, and 45% from one shifted upward.</td></tr>
+                <tr><th scope="row">Equal disease prevalence</th><td>40%</td><td>40%</td><td>Shifted upward in both settings. The setting offers no systematic difference in the reference-group fraction.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>The routine sample always has one clinic patient for every three ward patients. The 1,000-result option contains 250 clinic and 750 ward results. The 4,000-result option contains 1,000 clinic and 3,000 ward results.</p>
+        </section>
+
+        <section class="help-section" id="results" aria-labelledby="results-title">
+          <h2 id="results-title">Reading the results</h2>
+          <dl class="glossary">
+            <dt id="ri">Reference interval / central 95%</dt>
+            <dd>The interval between the 2.5th and 97.5th percentiles of the reference population. About 2.5% of that population’s results fall below the lower limit and 2.5% above the upper limit.</dd>
+            <dt id="limits">Reference limits / endpoints / lower and upper limits</dt>
+            <dd>The two numbers that define the reference interval. Each method supplies an estimated lower limit and upper limit, shown in seconds.</dd>
+            <dt id="truth">Known reference interval / truth / ground truth</dt>
+            <dd>The interval calculated directly from the distribution used to generate reference patients. Here it is approximately 24.12–35.88 s. This known value lets us measure estimation error in a simulation.</dd>
+            <dt id="replicate">Simulated dataset / replicate / draw</dt>
+            <dd>A newly generated set of patients under the same scenario and sample-size settings. There are 12 datasets for each scenario and routine sample size. Selecting “Dataset 1” shows one realization. Selecting “Average of 12 datasets” summarizes all 12.</dd>
+            <dt id="mean">Mean / average / average displayed limits</dt>
+            <dd>The sum of a set of numbers divided by how many numbers it contains. The lower limits and upper limits are averaged separately across the 12 datasets. The error summary is calculated within each dataset first, then averaged. It can therefore differ from the error you calculate using the two average displayed limits.</dd>
+            <dt id="absolute-error">Absolute error in a reference limit</dt>
+            <dd>The distance between an estimated limit and its known value, expressed as a positive number or zero. An estimated upper limit 3 s above its known value has the same absolute error as one 3 s below it.</dd>
+            <dt id="plot-reading">Shaded band / interval line / error bar</dt>
+            <dd>In the Limits view, the shaded band marks the known reference interval and each colored line spans a method’s estimated limits. In the Error view, the colored bar represents the larger limit error, averaged across datasets when that option is selected. Smaller errors indicate more accurate estimated limits.</dd>
+            <dt id="point-estimate">Point estimate / confidence interval / bootstrap</dt>
+            <dd>A point estimate is the single reported estimate of a limit. A confidence interval would describe uncertainty in that estimate. Bootstrap calculations repeatedly resample observations to assess variation. The demo displays point estimates and runs refineR with zero bootstrap replicates.</dd>
+            <dt id="accuracy">Accuracy / bias / precision</dt>
+            <dd>Accuracy describes how close estimates are to the known limits. Bias is a systematic tendency to estimate a limit too high or too low across repeated datasets. Precision describes how closely repeated estimates cluster together. The larger-limit error summary reflects both systematic error and variation between datasets.</dd>
+          </dl>
+        </section>
+
+        <section class="help-section error-example" id="limit-error" aria-labelledby="error-title">
+          <h2 id="error-title">How the error summary is calculated</h2>
+          <p class="former-label">Previously “worst error” and “mean worst error”</p>
+          <p><strong>Larger limit error</strong> means the larger of the absolute errors in the lower and upper limits for one dataset. <strong>Average larger limit error</strong> is the average of those numbers across the 12 datasets.</p>
+          <p>Using the rounded reference interval 24.12–35.88 s, consider two illustrative datasets.</p>
+          <div class="help-table-wrap" role="region" aria-label="Worked calculation of reference limit error" tabindex="0">
+            <table class="help-table example-table">
+              <thead><tr><th scope="col">Dataset</th><th scope="col">Estimated interval</th><th scope="col">Lower-limit error</th><th scope="col">Upper-limit error</th><th scope="col">Larger error</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">A</th><td>25.12–38.88 s</td><td>1.00 s</td><td>3.00 s</td><td><strong>3.00 s</strong></td></tr>
+                <tr><th scope="row">B</th><td>22.12–36.88 s</td><td>2.00 s</td><td>1.00 s</td><td><strong>2.00 s</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="example-answer">Average larger limit error = (3.00 + 2.00) / 2 = <strong>2.50 s</strong>.</p>
+          <p>The simulator applies the same calculation to 12 datasets. A displayed score of 0.47 s means that the less accurately estimated limit was 0.47 s from its known value on average across those datasets. This score summarizes errors in the reference limits. Individual patient results are the inputs to the interval estimation.</p>
+        </section>
+
+        <section class="help-section" id="methods" aria-labelledby="methods-title">
+          <h2 id="methods-title">What each method uses</h2>
+          <dl class="glossary">
+            <dt>refineR · all results</dt>
+            <dd>The published refineR 2.0.0 algorithm fitted to every routine result from clinic and ward.</dd>
+            <dt>refineR · outpatients</dt>
+            <dd>The same published algorithm fitted to clinic results alone. This uses 250 results in the 1,000-result design and 1,000 results in the 4,000-result design.</dd>
+            <dt>anchoredRI</dt>
+            <dd>All routine results plus the clinically screened results. The reference distribution is identified using the screened patients. The model considers one, two and three components and selects one using BIC.</dd>
+            <dt>Screened alone</dt>
+            <dd>Uses just the screened results. The limits are the screened sample mean plus or minus approximately 1.96 times its standard deviation, assuming a Gaussian reference distribution.</dd>
+            <dt>Settings alone</dt>
+            <dd>Uses all routine results and the clinic/ward labels, with a two-component mixture. It estimates a separate proportion in each component for each setting. It designates the component more prevalent in clinic as the candidate reference group.</dd>
+            <dt>Pooled mixture</dt>
+            <dd>Combines clinic and ward routine results when fitting a two-component mixture with one set of proportions. Afterwards, setting labels are used to identify the component enriched in clinic as the candidate reference group.</dd>
+            <dt>Anchored · two components</dt>
+            <dd>Uses all routine results and screened results, with the number of components fixed at two. Comparing this row with “Settings alone” helps assess the contribution of screened labels while keeping the same number of components. Comparing it with anchoredRI helps assess the effect of selecting the number of components.</dd>
+          </dl>
+        </section>
+
+        <section class="help-section" id="fitting" aria-labelledby="fitting-title">
+          <h2 id="fitting-title">Statistical terms</h2>
+          <dl class="glossary">
+            <dt id="distribution">Distribution / Gaussian / normal / standard deviation</dt>
+            <dd>A distribution describes how results are spread across possible values. Gaussian and normal name the bell-shaped distribution used here. Its mean sets the center and its standard deviation (SD) describes the spread.</dd>
+            <dt id="components">Component / mixture model</dt>
+            <dd>A component is one assumed distribution within the model. A mixture combines components in different proportions. The model can represent a reference distribution and additional distributions for disease-associated results. A fitted component’s clinical interpretation depends on the screening and model assumptions.</dd>
+            <dt id="weights">Mixture proportion / weight / fraction</dt>
+            <dd>The estimated proportion of routine patients assigned to each component in a setting. The components’ shapes are shared between clinic and ward. Their proportions can differ. The weights within each setting sum to one.</dd>
+            <dt id="enrichment">Enrichment / enrichment gap</dt>
+            <dd>A group is enriched in clinic when its estimated proportion is higher in clinic than on the ward. The enrichment gap is the absolute difference between those estimated proportions. The routine-only “Settings alone” and “Pooled mixture” methods use this assumption to name a candidate reference component.</dd>
+            <dt id="likelihood">Likelihood / fitting / maximum likelihood</dt>
+            <dd>Likelihood measures how well a proposed set of distributions accounts for the observed values under the model. Fitting adjusts the component centers, spreads and proportions to find values with high likelihood. Each screened result contributes to the designated reference component.</dd>
+            <dt id="bic">Bayesian information criterion (BIC)</dt>
+            <dd>A score used to choose among models with different numbers of components. It balances fit to the observed data against the number of fitted parameters. anchoredRI selects the lowest BIC among its one-, two- and three-component models.</dd>
+            <dt id="tails">Tails / one-sided and two-sided disease effects</dt>
+            <dd>The tails are the lower and upper ends of a distribution. An upward disease shift generates higher results on average. A downward shift generates lower results on average. The scenario with shifts in both directions uses two disease-associated distributions on the ward.</dd>
+            <dt id="transform">Identity scale / log transformation</dt>
+            <dd>The identity scale fits the measured values directly and is used for every website comparison. The R package also supports fitting Gaussian components after taking the logarithm of positive results. It converts the reference limits back to the original units.</dd>
+            <dt id="seed">Random seed / reproducibility</dt>
+            <dd>A seed fixes the sequence of random numbers used to generate a dataset. The same scenario, dataset number and sample-size settings reproduce the same simulated observations. Website controls select fits that were calculated in R in advance.</dd>
+          </dl>
+        </section>
+
+        <section class="help-section" id="fitting-limits" aria-labelledby="warnings-title">
+          <h2 id="warnings-title">Fitting warnings and interpretation</h2>
+          <dl class="glossary">
+            <dt>Parameter bounds / numerical fitting limits</dt>
+            <dd>The optimizer is given allowable ranges for component means, spreads and proportions to regularize the fit. The warning appears when a fitted parameter reaches one of those bounds. “anchoredRI (6/12)” means this occurred in six of the twelve displayed fits. The fitted result warrants inspection because an imposed constraint may influence it.</dd>
+            <dt>Optimizer / convergence / starting points</dt>
+            <dd>The optimizer is the numerical procedure that adjusts the model parameters. Convergence means it met its numerical stopping rule. The fitter tries several starting points and chooses a converged fit with the highest likelihood. Clinical interpretation still depends on whether the model describes the intended population.</dd>
+            <dt>Simulation evidence / clinical validation</dt>
+            <dd>The comparisons show how the methods behave when data are generated under the stated assumptions. The reference labels are perfect, and the simulated Gaussian components match the fitted model family. Clinical validation would require independent reference individuals and assessment of both estimated limits in the intended patient population.</dd>
+          </dl>
+          <p class="help-sources"><a href="R/simulate.R">Simulation code</a> · <a href="R/compare.R">Error calculation</a> · <a href="R/fit_anchored_ri.R">Model fitting code</a></p>
+        </section>
+        <p class="help-return"><a href="./#experiment">Return to the experiment <span aria-hidden="true">↗</span></a></p>
+      </div>
+    </div>
+  </main>
+  <footer><span>anchoredRI 0.1.0</span><span>Fully AI-developed · Research software</span></footer>
+</body>
+</html>

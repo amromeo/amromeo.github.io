@@ -4,10 +4,10 @@ const form = byId("design");
 const plot = byId("plot");
 const tru = [24.120108046, 35.879891954];
 const settings = {
-  1: "5% affected in clinic and 10% on the ward. Affected results are well separated and prolonged.",
-  2: "20% affected in clinic and 75% on the ward. Affected results overlap the upper end of the healthy distribution.",
-  3: "20% affected in clinic and 75% on the ward. Ward disease can shorten or prolong the result.",
-  4: "40% affected in each setting. Care setting offers no systematic difference in the healthy fraction."
+  1: "Analyte-altering disease prevalence is set to 5% in clinic and 10% on the ward. Disease shifts results upward.",
+  2: "Analyte-altering disease prevalence is set to 20% in clinic and 75% on the ward. Disease-related results overlap the upper end of the reference distribution.",
+  3: "Analyte-altering disease prevalence is set to 20% in clinic and 75% on the ward. Ward disease can shorten or prolong the result.",
+  4: "Analyte-altering disease prevalence is set to 40% in both settings. Setting provides no systematic difference in the proportion of reference-eligible patients."
 };
 const methods = {
   refineR_all: ["refineR · all results", "#586e9b"],
@@ -121,10 +121,13 @@ function render() {
   byId("selection").disabled = !anchors;
   byId("selection-note").textContent = !anchors ? "No patients are screened in this design." : rule === "clinical"
     ? "Reviewers are blinded to the target result." : "Only values from 26 through 34 seconds are retained.";
-  byId("result-title").textContent = display === "limits" ? "Estimated reference limits" : "Error in the worse endpoint";
+  byId("result-title").textContent = display === "limits" ? "Estimated reference limits" : "Error in the reference limits";
   byId("plot-note").textContent = display === "limits"
-    ? (draw ? "One simulated draw. " : "Mean limits across 12 draws. ") + "The shaded band marks the known healthy interval."
-    : (draw ? "One simulated draw. " : "Each bar averages 12 draw-specific errors. ") + "Shorter bars indicate smaller errors.";
+    ? (draw ? "One simulated dataset. " : "Average limits across 12 datasets. ") + "The shaded band marks the known reference interval."
+    : (draw ? "The bar shows the larger error from the lower and upper limits. " : "Each bar averages the larger limit error from each of 12 datasets. ") + "Smaller values mean more accurate limits.";
+  byId("error-definition").textContent = draw
+    ? "Compare each estimated limit with its known value. The error shown is the larger of the two absolute differences."
+    : "For each of the 12 datasets, take the larger error from the lower and upper limits. The error column shows the average of those 12 numbers.";
   if (!rows.length) return;
   const selected = rows.filter(r => r.scenario === scenario && r.n_routine === n && (!draw || draw === r.replicate)
     && (r.selection === "any" || (r.n_anchor === anchors && r.selection === rule)));
@@ -141,14 +144,17 @@ function render() {
     tick.style.left = ((v - min) / (max - min) * 100) + "%";
     axis.append(tick);
   }
-  titleRow.append(node("span", "", "Method / limits (s)"), axis, node("span", "axis-last", draw ? "Worst error" : "Mean worst error"));
+  const errorHeading = node("a", "axis-last", draw ? "Larger limit error" : "Average larger limit error");
+  errorHeading.href = "help.html#limit-error";
+  errorHeading.title = "How the limit error is calculated";
+  titleRow.append(node("span", "", "Method / limits (s)"), axis, errorHeading);
   const items = [titleRow];
-  if (display === "limits") items.push(makeRow("Healthy interval", "#32795e", {lower:tru[0], upper:tru[1]}, scale, true));
+  if (display === "limits") items.push(makeRow("Known reference interval", "#32795e", {lower:tru[0], upper:tru[1]}, scale, true));
   active.forEach((id, i) => items.push(makeRow(...methods[id], stats[i], scale)));
   plot.replaceChildren(...items);
   const warnings = active.flatMap((id, i) => stats[i]?.atBound ? [methods[id][0] + " (" + stats[i].atBound + "/" + stats[i].count + ")"] : []);
-  byId("diagnostics").textContent = warnings.length ? "Parameter bounds reached in displayed fits: " + warnings.join(", ") + "." : "";
-  byId("announcement").textContent = "Updated " + (draw ? "draw " + draw : "12-draw mean") + " for " + n + " routine and " + anchors + " screened patients.";
+  byId("diagnostics").textContent = warnings.length ? "A numerical fitting limit was reached for " + warnings.join(", ") + ". See Help for the meaning of this warning." : "";
+  byId("announcement").textContent = "Updated " + (draw ? "dataset " + draw : "12-dataset average") + " for " + n + " routine and " + anchors + " screened patients.";
 }
 
 async function loadFits() {
@@ -166,7 +172,7 @@ async function loadFits() {
     plot.replaceChildren(warning);
   }
 }
-for (let i = 1; i <= 12; i++) byId("replicate").add(new Option("Draw " + i, String(i)));
+for (let i = 1; i <= 12; i++) byId("replicate").add(new Option("Dataset " + i, String(i)));
 form.addEventListener("change", render);
 byId("extra").addEventListener("change", render);
 for (const mode of ["limits", "error"]) {
