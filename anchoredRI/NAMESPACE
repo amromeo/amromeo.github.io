@@ -1,4 +1,5 @@
 export(fit_anchored_ri)
+export(bootstrap_anchored_ri)
 export(fit_setting_ri)
 export(simulate_ri_case)
 export(simulate_ri_study)

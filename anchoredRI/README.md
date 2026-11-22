@@ -4,7 +4,17 @@ An R research package for asking whether a small group of independently screened
 
 **Fully AI-developed.** A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and wrote the method implementation, simulation experiments, tests, package documentation and website. The estimator uses conventional maximum likelihood in R. Clinical performance has yet to be established.
 
-[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Current results (CSV)](https://amromeo.github.io/anchoredRI/assets/guided/fits.csv) · [R source archive](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.1.0.tar.gz)
+[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Current results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [R source archive](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.2.0.tar.gz)
+
+## Version 0.2: estimate the offset
+
+`transform = "auto"` compares normal, lognormal and shifted-lognormal mixtures, each with one to three components. The shifted model estimates its offset jointly with the component shapes and service proportions. BIC includes the transformation Jacobian and the extra offset parameter, so scores are comparable on the measurement scale. The default point-fit transform remains `"identity"` for compatibility.
+
+`bootstrap_anchored_ri()` now resamples both routine services and screened observations, repeating the complete model selection and offset estimation. It records failed fits, boundary flags, offsets and selected models for every draw. Its default transform is `"auto"`.
+
+On the original shifted example, the new model estimates an offset of 10.30 and limits of 15.70–49.51, against known limits of 15.63–49.97. Mean percentage endpoint error falls from 5.62% to 0.69%; the previously published refineR estimate has 2.35% error. The other three worked point estimates are unchanged. This is one example per distribution. The separate [fresh-data evaluation](assets/offset/validation-summary.csv) compares the two anchoredRI versions across 220 datasets, without rerunning refineR or estimating bootstrap-CI coverage in those datasets.
+
+Across the 20 fresh datasets matching that shifted scenario, mean endpoint percentage error decreased from 7.12% to 1.04%, with improvement in all 20 pairs. The three unshifted scenarios were unchanged in all 60 pairs. The seven shifted scenarios without strong disease overlap improved in all 140 pairs. The shifted overlap scenario worsened on average, from 8.51% to 11.83%, although 9 of its 20 pairs improved. All 440 fits returned estimates without selected numerical-boundary flags. The new transformation fixes a distributional limitation; it does not resolve ambiguous separation of reference and disease components.
 
 ## Install from GitHub
 
@@ -19,13 +29,16 @@ Model fitting uses R's standard packages. To run the published comparator, insta
 
 ## Primary comparison: refineR as intended
 
-The main page now uses the authors' practical workflow: the same 5,000 eligible routine patients for both methods, a single physiological partition, one result per person, 200 bootstrap resamples and `medianBS` refineR estimates with 95% CIs. anchoredRI adds 40 independent screened patients and service labels. Direct benchmarks use empirical percentiles from 120 and 400 screened patients. Normal, lognormal and shifted lognormal examples test more than the Gaussian case. The shifted profile uses `modBoxCox` for refineR and the existing log transform for anchoredRI.
+The main page uses the authors' practical workflow: the same 5,000 eligible routine patients for both methods, a single physiological partition, one result per person, 200 bootstrap resamples and `medianBS` refineR estimates with 95% CIs. anchoredRI adds 40 independent screened patients and service labels. Direct benchmarks use empirical percentiles from 120 and 400 screened patients. The shifted profile uses `modBoxCox` for refineR. Both the original identity/log anchoredRI estimates and the new automatic estimates are shown.
 
-The first published run contains one worked dataset per profile. It shows the estimates, confidence intervals and original refineR diagnostic plots. It does not establish comparative accuracy, bias or CI coverage across repeated datasets. The script supports larger repeated evaluations.
+The four worked examples show estimates, confidence intervals and original refineR diagnostic plots. The updated runner reuses the published comparator rows without changing their estimates or resampling. It adds 200 bootstrap draws for each new anchoredRI fit.
 
 ```sh
 Rscript tools/build-guided-benchmark.R 8 1 200
-# For a replicated evaluation, increase the second argument, for example to 100.
+# Add the updated model to those exact datasets and comparator results:
+Rscript tools/build-offset-benchmark.R 6 200
+# Paired old/new anchoredRI point fits on 20 fresh datasets per scenario:
+Rscript tools/validate-offset.R 2 20
 ```
 
 Read [BENCHMARK.md](BENCHMARK.md) for the prespecified distributions, metrics and sources. The [2023 practical guide](https://doi.org/10.1093/jalm/jfac101) and [package vignette](https://cloud.r-project.org/web/packages/refineR/vignettes/refineR_package.html) define the workflow. The original clinic/ward experiment below remains a stress test: its default pooled disease fraction is 61.25%, and the outpatient subset has only 250 observations.
@@ -40,12 +53,17 @@ ref <- refineR::findRI(eligible$value, model = "BoxCox",
 refineR::getRI(ref, pointEst = "medianBS", CIprop = 0.95)
 plot(ref, pointEst = "medianBS")
 
-anch <- anchoredRI::fit_anchored_ri(
-  eligible$value, eligible$service, screened$value, transform = "identity")
+anch <- anchoredRI::bootstrap_anchored_ri(
+  eligible$value, eligible$service, screened$value, transform = "auto",
+  n_boot = 200, seed = 123, workers = 2)
 anch$limits
+anch$ci
+anch$fit$transform
+anch$fit$shift
+table(anch$bootstrap$transform)
 ```
 
-Inspect the distribution and fitted curve before accepting the result. Consider `modBoxCox` for a skewed distribution shifted from zero; choose anchoredRI's identity or log model on defensible distributional grounds. The comparison script supplies a bootstrap for anchoredRI because its core fitting function returns only a point estimate. `compare_ri_methods()` retains the older stress-test workflow.
+Inspect the distribution and fitted curve before accepting the result. Consider refineR's `modBoxCox` for a skewed distribution shifted from zero. For anchoredRI, inspect the selected family, boundary flags and bootstrap model choices. The shifted-lognormal model estimates an offset but no Box-Cox power. `compare_ri_methods()` retains the older stress-test workflow.
 
 ## Earlier stress example: 40 screened and 1,000 routine patients
 
@@ -71,7 +89,9 @@ A screened patient contributes once. If you review charts from the same set of r
 
 1. Both settings share the component means and standard deviations. Each setting gets its own component proportions.
 2. A routine observation contributes the probability density of the mixture for its setting. A screened observation contributes the probability density of the reference component. Each observation contributes once, with unit weight.
-3. The fitter compares one, two and three Gaussian components using BIC. It reports the central 95% of the selected reference component. A log-scale fit is available for positive results. The reference limits always use the original units.
+3. The fitter compares one, two and three components using BIC. Automatic selection also compares identity, log and shifted-log families. It reports the central 95% of the selected reference component in the original units.
+
+The offset is shared across components and constrained below every observation. Default bounds run from the minimum observation minus five routine MADs to that minimum minus 0.001 MAD; SD substitutes when MAD is zero. These numerical constraints avoid a fit collapsing onto the smallest result, but they can influence estimates. Optional `shift_bounds` must use measurement units. Selected boundary fits are retained and flagged. Mixture BIC and percentile bootstrap intervals are practical choices with limitations, especially when models fit poorly or screened samples are small. They do not guarantee correct model selection or confidence-interval coverage.
 
 The initial prototype labeled the component enriched in the outpatient cohort. It struggled in simulations where both settings had the same fraction of affected patients or disease shifted values in both directions. The next version introduced clinically screened observations and allowed two disease components. The original routine-only model and a fixed two-component anchored comparison remain available for investigating what each change contributes.
 

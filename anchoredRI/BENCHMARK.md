@@ -33,7 +33,7 @@ Each replicate contains 2,500 patients from each of two eligible services. Their
 | Right-skewed | Lognormal(log 20, SDlog 0.35) | Lognormal(log 60, SDlog 0.30) | 5% / 15% | BoxCox | Log |
 | Right-skewed, shifted | 10 + Lognormal(log 15, SDlog 0.50) | 10 + Lognormal(log 65, SDlog 0.25) | 5% / 15% | modBoxCox | Log |
 
-All values use synthetic units and are rounded to 0.01. Truth is defined before rounding. The shifted profile deliberately falls outside anchoredRI's current identity/log Gaussian family. Neither method's model is selected by looking at error against the known reference limits. The shifted profile uses modBoxCox by design; its initial default BoxCox plot is also supplied. In clinical data the choice would follow inspection rather than a known simulation profile.
+All values use synthetic units and are rounded to 0.01. Truth is defined before rounding. The shifted profile deliberately falls outside anchoredRI 0.1's identity/log Gaussian family. Neither method's model is selected by looking at error against the known reference limits. The shifted profile uses modBoxCox by design; its initial default BoxCox plot is also supplied. In clinical data the choice would follow inspection rather than a known simulation profile.
 
 refineR uses its released findRI and getRI functions, including its median-model bootstrap point estimate. anchoredRI retains its original full-data point estimate and model selection; its percentile CIs resample within each service and resample the 40 screened patients independently, repeating model selection each time. Direct-method CIs use ordinary percentile bootstrap. Those CIs can be inaccurate in small tail samples; the exports record whether each CI contains its true endpoint. Bootstrap failures remain counted. A numerical boundary flag is not automatically a failed fit.
 
@@ -49,7 +49,7 @@ The published first run contains one worked dataset per profile, each with 200 b
 
 ## Reproduce
 
-The estimator implementation remains anchoredRI 0.1.0. This change replaces the evaluation workflow, not its fitting algorithm. `compare_ri_methods()` and `tools/build-demo.R` retain the earlier stress-test comparisons. Use the new script below for the prepared-cohort workflow.
+The original prepared-cohort rows use the anchoredRI 0.1 identity/log estimator, whose estimates are retained in 0.2. `compare_ri_methods()` and `tools/build-demo.R` retain the earlier stress-test comparisons. The following script reproduces the original four-method rows; the offset extension is described below.
 
 Install refineR 2.0.0 and run from the package directory:
 
@@ -62,3 +62,50 @@ Rscript tools/build-guided-benchmark.R 8 100 200
 The first argument selects parallel workers, the second independent datasets per profile, and the third bootstrap resamples (at least 200). Outputs include CSVs, software versions and the original package's fit plots. Cached cases are stored in `tools/guided-cache`; remove that cache before changing the generator or estimation code. `tools/build-demo.R` regenerates only the earlier stress experiment.
 
 Clinical data would still need actual checks of assay stability, analyte-specific eligibility, physiological partitions and independent validation. Their absence cannot be repaired by a simulation.
+
+## Offset extension: anchoredRI 0.2
+
+This extension was developed in response to the fourth worked example. Those four examples are development cases, not held-out validation. The fresh-data evaluation below was specified separately before generating its datasets.
+
+The new automatic fit compares identity, log and shifted-log transformations, with one, two or three components in each family. The log family is omitted when any observation is nonpositive. The offset is estimated jointly with all component parameters. It is shared across components and settings. No generating parameters, disease labels or true reference limits enter the fitting function.
+
+Family comparisons use original-scale likelihoods, including every observation's transformation Jacobian. The shifted family incurs one additional fitted-parameter penalty in BIC. The existing identity/log point estimates and default transform are retained. This extension estimates an offset before a logarithm; it does not estimate a general Box-Cox power.
+
+The offset is bounded between the smallest observation minus five routine MADs and that minimum minus 0.001 MAD; SD substitutes for a zero MAD. Component log-scale SDs are bounded at 0.005 and 5. Non-baseline weight logits are bounded at -7 and 7. Each candidate uses multiple starting points. A failed candidate has infinite BIC; selected numerical boundary fits are retained and flagged. These constraints and the BIC heuristic do not establish identifiability or model correctness. Sensitivity to bounds and clinical data remains untested.
+
+`bootstrap_anchored_ri()` resamples routine patients within each service and independently resamples screened individuals. Every resample repeats family selection, component-count selection and offset estimation, including data-derived bounds. The full-data fit supplies the point estimate. Percentile intervals are reported if at least 80% of the requested fits succeed; otherwise the function warns and returns missing confidence limits. Failure counts remain visible. The 80% reporting rule is not a coverage guarantee.
+
+The updated worked examples reuse the exact original patient datasets and all published refineR, direct120, direct400 and anchoredRI 0.1 rows. The new method receives the same 40 screened individuals and 5,000 routine results. Each new fit uses 200 bootstrap draws. The other methods' confidence limits are unchanged. Files under `assets/offset` include all new bootstrap estimates, all candidate BICs and the selected family and shift. Source MD5 hashes record the estimator used; caches reject mismatched code.
+
+```sh
+Rscript tools/build-offset-benchmark.R 6 200
+Rscript tools/validate-offset.R 2 20
+```
+
+### Fresh-data validation design
+
+The design and fitter were fixed before these new datasets were generated. There are 20 fresh datasets in each of 11 scenarios, or 220 paired comparisons. Every dataset has 2,500 routine patients per service, one observation per person and an independent screened sample. Values are rounded to 0.01. Seeds are `7610000 + 10000 * scenario_number + replicate_number`, separate from the worked examples.
+
+| Scenario | Reference distribution | Disease distribution | A/B fractions | Screened |
+| --- | --- | --- | --- | --- |
+| Normal | Normal(30, 3) | Normal(42, 4) | 5% / 15% | 40 |
+| Normal overlap | Normal(30, 3) | Normal(36, 4.5) | 20% / 30% | 40 |
+| Lognormal | LN(log 20, 0.35) | LN(log 60, 0.30) | 5% / 15% | 40 |
+| Shift 10 | 10 + LN(log 15, 0.50) | 10 + LN(log 65, 0.25) | 5% / 15% | 40 |
+| Shift 3 | 3 + LN(log 15, 0.50) | 3 + LN(log 65, 0.25) | 5% / 15% | 40 |
+| Shift 20 | 20 + LN(log 15, 0.50) | 20 + LN(log 65, 0.25) | 5% / 15% | 40 |
+| Lower skew | 10 + LN(log 15, 0.30) | 10 + LN(log 65, 0.25) | 5% / 15% | 40 |
+| Higher skew | 10 + LN(log 15, 0.75) | 10 + LN(log 65, 0.25) | 5% / 15% | 40 |
+| Fewer screened | 10 + LN(log 15, 0.50) | 10 + LN(log 65, 0.25) | 5% / 15% | 20 |
+| More screened | 10 + LN(log 15, 0.50) | 10 + LN(log 65, 0.25) | 5% / 15% | 80 |
+| Shifted overlap | 10 + LN(log 15, 0.50) | 10 + LN(log 30, 0.50) | 20% / 30% | 40 |
+
+Normal parameters are mean and SD; LN parameters are log mean and log SD. The original comparator uses identity for normal scenarios and log for all lognormal scenarios. The updated model receives no scenario-specific transform or offset. Every estimate, failure, numerical-boundary flag and selected family is exported. Summaries compare successful pairs, report both failure denominators, and include mean endpoint percentage error, mean larger endpoint error, reference-population coverage, paired wins/ties/losses and the Monte Carlo standard error of the paired error change. Ties have an absolute MPE difference no larger than 0.000001 percentage point.
+
+This repeated evaluation compares two versions of anchoredRI only. It does not establish superiority over refineR, which was not rerun here. It uses point estimates, so it does not estimate bootstrap confidence-interval coverage. Twenty datasets per scenario support only preliminary performance estimates. Correctly specified shared reference distributions and perfect screened labels remain favorable assumptions. In particular, an offset extension cannot correct biased screening or physiological differences between services.
+
+### Observed fresh-data results
+
+All 220 paired datasets completed, with 440 successful estimates and no selected numerical-boundary flags. All 60 pairs in the normal, normal-overlap and ordinary lognormal scenarios were unchanged. All 140 pairs in the seven shifted scenarios without strong disease overlap had lower endpoint percentage error with automatic selection. In the scenario matching the fourth worked example, mean error fell from 7.123% to 1.045%; the paired reduction was 6.078 percentage points with Monte Carlo SE 0.986.
+
+The shifted overlap scenario had 9 improved and 11 worsened pairs. Its mean error increased from 8.509% to 11.832%; the paired increase was 3.323 percentage points with Monte Carlo SE 2.080. The updated model selected one component in 11 of 20 datasets, treating the entire routine mixture as one reference distribution. Its mean upper-limit error was +8.205 units, compared with -4.799 for the original version. Both versions remained inaccurate despite numerical success. This is a limitation of the observed results, not an exclusion from the benchmark. See the full CSVs for individual fits and other metrics. No fitter changes were made after inspecting these validation results.

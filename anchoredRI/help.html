@@ -48,19 +48,27 @@
             <dt>Prepared cohort / physiological partition</dt>
             <dd>A set of patients who can reasonably share a reference interval, with compatible assays and a stable measurement period. In these examples, age, sex and assay effects are held constant by construction. A real dataset needs those checks before fitting.</dd>
             <dt>One dataset versus 200 bootstrap resamples</dt>
-            <dd>Each example starts with one generated group of patients. Bootstrapping repeatedly samples those patients with replacement and refits the method. It measures uncertainty within that example. It does not create 200 independent studies or establish which method usually performs best.</dd>
+            <dd>Each worked example starts with one generated group of patients. Bootstrapping repeatedly samples those patients with replacement and refits the method. It measures uncertainty within that example. It does not create 200 independent studies. The separate validation table uses 220 newly generated datasets to compare the original and updated anchoredRI point estimates.</dd>
             <dt>Reference interval versus confidence interval</dt>
             <dd>The reference interval aims to contain the central 95% of the reference population. A confidence interval describes uncertainty in an estimated endpoint. The chart shows a separate 95% confidence interval around the lower and upper reference limits.</dd>
             <dt>medianBS</dt>
             <dd>refineR's recommended bootstrap point estimate. The package chooses a representative model from the bootstrap fits, then calculates that model's reference limits. It does not simply take the median lower and median upper limit separately.</dd>
             <dt>BoxCox and modBoxCox</dt>
             <dd>refineR models a reference distribution that becomes approximately normal after a transformation. BoxCox estimates a power transformation. modBoxCox also allows a shift, which can help when a skewed distribution starts away from zero. The shifted example uses that model by design; clinical model choice needs fit review.</dd>
+            <dt id="offset">Estimated offset / shifted lognormal</dt>
+            <dd>A skewed distribution can start away from zero. For example, taking the log of a result minus 10 may fit its shape better than taking the log of the result itself. anchoredRI 0.2 estimates that offset from routine and screened observations while fitting the mixture. It is never given the simulation's true offset. The fitted offset is a statistical parameter, not necessarily a biological minimum.</dd>
+            <dt>Automatic family selection</dt>
+            <dd>The updated model compares normal, lognormal and shifted-lognormal fits, each with one to three components. The score rewards fit and penalizes extra parameters. It uses densities on the original measurement scale so the comparison is fair. Every bootstrap repeats this choice; the page reports how often each family was selected.</dd>
+            <dt>A one-component fit</dt>
+            <dd>The model treats the routine cohort and screened sample as one reference distribution. That can be appropriate for an essentially unaffected population. When disease overlaps the reference population, a single flexible curve can also absorb the disease results and distort the reference limits. In the shifted overlap validation scenario, the updated model chose one component in 11 of 20 datasets. Numerical convergence did not identify that problem.</dd>
+            <dt>Monte Carlo standard error</dt>
+            <dd>Uncertainty caused by using a finite number of simulated datasets. The validation CSV reports it for the average paired change in endpoint error. It is different from a confidence interval for a patient's reference limit, and does not address whether the simulation resembles clinical data.</dd>
             <dt>Reference population inside</dt>
             <dd>The percentage of the known simulated reference population falling within the fitted interval. The target is 95%. A value near 95% does not prove both endpoints are correct, so the table also reports endpoint error.</dd>
             <dt>Larger limit error</dt>
             <dd>Calculate the absolute error of each endpoint and report the larger one. For example, a lower limit 0.2 units too high and an upper limit 0.7 units too low give a larger limit error of 0.7. The prepared-cohort page reports one dataset; the stress page averages this error across repeated datasets.</dd>
             <dt id="mean-percentage-error">Mean percentage error (MPE)</dt>
-            <dd>Express each endpoint's absolute error as a percentage of its true value, then average those percentages. The prepared-cohort table averages the two endpoints of the selected dataset. The original paper also averages over many simulated datasets. Smaller values mean less error; the value for one dataset does not establish typical performance.</dd>
+            <dd>Express each endpoint's absolute error as a percentage of its true value, then average those percentages. The worked-example table averages the two endpoints of the selected dataset. The fresh-data table also averages across the 20 datasets in each scenario, as the original paper does across its simulations. Smaller values mean less error; the value for one dataset does not establish typical performance.</dd>
             <dt>Empirical percentiles</dt>
             <dd>Percentiles estimated directly from the ordered screened results, without assuming a normal distribution. The 120- and 400-person rows use the 2.5th and 97.5th percentiles. With 120 people, each tail is informed by only about three observations, so its estimated limit can vary substantially.</dd>
           </dl>
@@ -146,7 +154,7 @@
             <dt id="plot-reading">Shaded band / interval line / error bar</dt>
             <dd>In the Limits view, the shaded band marks the known reference interval and each colored line spans a method’s estimated limits. In the Error view, the colored bar represents the larger limit error, averaged across datasets when that option is selected. Smaller errors indicate more accurate estimated limits.</dd>
             <dt id="point-estimate">Point estimate / confidence interval / bootstrap</dt>
-            <dd>A point estimate is the single reported estimate of a limit. A confidence interval would describe uncertainty in that estimate. Bootstrap calculations repeatedly resample observations to assess variation. The demo displays point estimates and runs refineR with zero bootstrap replicates.</dd>
+            <dd>A point estimate is the single reported estimate of a limit. A confidence interval describes uncertainty in that estimate. Bootstrap calculations repeatedly resample observations to assess variation. The prepared-cohort page uses 200 resamples per method, including full model and offset selection for updated anchoredRI. The earlier stress page displays point estimates and runs refineR without bootstrap resampling.</dd>
             <dt id="accuracy">Accuracy / bias / precision</dt>
             <dd>Accuracy describes how close estimates are to the known limits. Bias is a systematic tendency to estimate a limit too high or too low across repeated datasets. Precision describes how closely repeated estimates cluster together. The larger-limit error summary reflects both systematic error and variation between datasets.</dd>
           </dl>
@@ -206,11 +214,11 @@
             <dt id="likelihood">Likelihood / fitting / maximum likelihood</dt>
             <dd>Likelihood measures how well a proposed set of distributions accounts for the observed values under the model. Fitting adjusts the component centers, spreads and proportions to find values with high likelihood. Each screened result contributes to the designated reference component.</dd>
             <dt id="bic">Bayesian information criterion (BIC)</dt>
-            <dd>A score used to choose among models with different numbers of components. It balances fit to the observed data against the number of fitted parameters. anchoredRI selects the lowest BIC among its one-, two- and three-component models.</dd>
+            <dd>A score that balances fit to the observed data against the number of fitted parameters. anchoredRI selects the lowest BIC among its one-, two- and three-component models. Automatic selection also compares distribution families and penalizes the extra offset parameter. This score is a practical selection rule; a low score does not prove the model is correct.</dd>
             <dt id="tails">Tails / one-sided and two-sided disease effects</dt>
             <dd>The tails are the lower and upper ends of a distribution. An upward disease shift generates higher results on average. A downward shift generates lower results on average. The scenario with shifts in both directions uses two disease-associated distributions on the ward.</dd>
-            <dt id="transform">Identity scale / log transformation</dt>
-            <dd>The identity scale fits the measured values directly and is used for every website comparison. The R package also supports fitting Gaussian components after taking the logarithm of positive results. It converts the reference limits back to the original units.</dd>
+            <dt id="transform">Identity scale / log transformation / shifted log</dt>
+            <dd>Identity fits the measured values directly. Log fits after taking logarithms of positive results. Shifted log first subtracts an estimated offset, then takes logarithms. All reference limits are converted back to the original units. The earlier stress examples use identity. The prepared-cohort page compares the original identity/log approach with automatic selection in version 0.2.</dd>
             <dt id="seed">Random seed / reproducibility</dt>
             <dd>A seed fixes the sequence of random numbers used to generate a dataset. The same scenario, dataset number and sample-size settings reproduce the same simulated observations. Website controls select fits that were calculated in R in advance.</dd>
           </dl>
@@ -224,7 +232,7 @@
             <dt>Optimizer / convergence / starting points</dt>
             <dd>The optimizer is the numerical procedure that adjusts the model parameters. Convergence means it met its numerical stopping rule. The fitter tries several starting points and chooses a converged fit with the highest likelihood. Clinical interpretation still depends on whether the model describes the intended population.</dd>
             <dt>Simulation evidence / clinical validation</dt>
-            <dd>The comparisons show how the methods behave when data are generated under the stated assumptions. The reference labels are perfect, and the simulated Gaussian components match the fitted model family. Clinical validation would require independent reference individuals and assessment of both estimated limits in the intended patient population.</dd>
+            <dd>The comparisons show how the methods behave under the stated assumptions. Reference labels are perfect, and both services share the same reference distribution. The shifted example falls outside the original anchoredRI family; the updated family can represent it. Clinical validation would require independent reference individuals and assessment of both estimated limits in the intended patient population.</dd>
           </dl>
           <p class="help-sources"><a href="R/simulate.R">Simulation code</a> · <a href="R/compare.R">Error calculation</a> · <a href="R/fit_anchored_ri.R">Model fitting code</a></p>
         </section>
@@ -232,6 +240,6 @@
       </div>
     </div>
   </main>
-  <footer><span>anchoredRI 0.1.0</span><span>Fully AI-developed · Research software</span></footer>
+  <footer><span>anchoredRI 0.2.0</span><span>Fully AI-developed · Research software</span></footer>
 </body>
 </html>

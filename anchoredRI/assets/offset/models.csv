@@ -1,0 +1,5 @@
+"profile","selected_transform","components","estimated_shift","at_bound","shift_at_bound","bootstrap_identity","bootstrap_log","bootstrap_shifted_log","bootstrap_boundary","bootstrap_failed"
+"normal","identity",2,0,FALSE,FALSE,193,7,0,0,0
+"overlap","identity",2,0,FALSE,FALSE,162,35,3,4,0
+"lognormal","log",2,0,FALSE,FALSE,0,195,5,1,0
+"shifted","shifted_log",2,10.3038754394698,FALSE,FALSE,0,0,200,1,0

@@ -1,7 +1,7 @@
 Package: anchoredRI
 Type: Package
 Title: Estimate Reference Intervals Using Clinically Screened Observations
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Amrom", "Obstfeld", role = "cre",
     email = "13033252+amromeo@users.noreply.github.com",
@@ -10,7 +10,8 @@ Authors@R: c(
     comment = "AI system that generated the project materials"))
 Description: Research software for estimating a reference distribution in two
     clinical settings using a small, independently screened reference sample.
-    Fits semi-supervised Gaussian mixtures with setting-specific proportions.
+    Fits semi-supervised Gaussian and shifted-lognormal mixtures with
+    setting-specific proportions, model selection and bootstrap intervals.
     Includes paired simulations and optional comparisons with 'refineR'
     (Ammer et al. (2021) <doi:10.1038/s41598-021-95301-2>).
     An AI system developed the code, tests, simulations and documentation
@@ -18,7 +19,7 @@ Description: Research software for estimating a reference distribution in two
 License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.1.0)
-Imports: stats, utils
+Imports: stats, utils, parallel
 Suggests: refineR (>= 2.0.0)
 URL: https://amromeo.github.io/anchoredRI/,
     https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI

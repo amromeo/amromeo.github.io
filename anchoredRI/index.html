@@ -5,8 +5,8 @@
   <title>anchoredRI · Compare on a prepared cohort</title>
   <meta name="description" content="Compare anchoredRI with refineR using the authors' recommended preparation, bootstrap estimation and fit review.">
   <link rel="stylesheet" href="assets/site.css?v=guided1">
-  <link rel="stylesheet" href="assets/guided.css?v=guided1">
-  <script src="assets/guided.js?v=guided1" type="module"></script>
+  <link rel="stylesheet" href="assets/guided.css?v=offset2">
+  <script src="assets/guided.js?v=offset2" type="module"></script>
 </head>
 <body>
 <a class="skip" href="#experiment">Skip to the comparison</a>
@@ -18,10 +18,10 @@
   <div class="guided-hero"><p class="kicker">Reference interval comparison</p>
     <h1>Compare on a prepared cohort</h1>
     <p class="lede">Both methods receive the same 5,000 eligible routine results. refineR uses the authors’ bootstrap workflow. anchoredRI also receives 40 independent screened patients and the service labels.</p>
-    <p class="pilot-note">Four worked synthetic examples, one dataset per distribution. These show estimates and uncertainty. They do not establish which method performs better across repeated studies.</p>
+    <p class="pilot-note">anchoredRI 0.2 can estimate an offset before taking logarithms. The four worked examples guided its development and compare it with the original version and refineR. A separate test below compares both anchoredRI versions on 220 fresh synthetic datasets.</p>
   </div>
   <section id="experiment" aria-labelledby="experiment-title">
-    <div class="section-head"><div><p class="kicker">Prepared cohort</p><h2 id="experiment-title">Limits and uncertainty</h2></div><a href="assets/guided/fits.csv" download>Download results</a></div>
+    <div class="section-head"><div><p class="kicker">Prepared cohort</p><h2 id="experiment-title">Limits and uncertainty</h2></div><a href="assets/offset/fits.csv" download>Download results</a></div>
     <div class="guided-workspace">
       <div class="controls">
         <label for="profile">Reference distribution</label>
@@ -38,6 +38,8 @@
         <div class="table-scroll"><table class="result-table"><thead><tr><th>Method</th><th>Lower limit<br><span>95% CI</span></th><th>Upper limit<br><span>95% CI</span></th><th>Larger limit error</th><th>Reference population inside</th></tr></thead><tbody id="result-rows"></tbody></table></div>
         <p class="chart-key">Error is the larger absolute difference between an estimated endpoint and its known value. <a href="help.html#mean-percentage-error">MPE</a> averages the percentage errors at both endpoints for this dataset. Reference-population coverage has a 95% target. Reference limits and absolute errors use synthetic units.</p>
         <p id="fit-status" role="status"></p>
+        <p id="anchor-note" class="chart-key"></p>
+        <p class="chart-key"><a id="anchor-selection-link" href="assets/offset/normal-selection.csv" download>Model comparison</a> · <a id="anchor-bootstrap-link" href="assets/offset/normal-bootstrap.csv" download>All 200 updated anchoredRI bootstrap fits</a></p>
       </div>
     </div>
     <details class="fit-review" open><summary>Inspect the refineR fit</summary><div class="details-body">
@@ -47,16 +49,25 @@
       <p id="default-fit" hidden><a id="default-fit-link" href="assets/guided/shifted-default-01.svg" target="_blank" rel="noopener">Inspect the initial one-parameter Box-Cox fit</a>. The shifted example uses modBoxCox, specified before looking at its error against truth.</p>
     </div></details>
   </section>
+  <section class="story" aria-labelledby="validation-title">
+    <div class="section-head"><div><p class="kicker">Fresh datasets</p><h2 id="validation-title">Does the improvement repeat?</h2></div><a href="assets/offset/validation-summary.csv" download>Download summary</a></div>
+    <p>Each row uses 20 newly generated datasets with 5,000 routine patients. The two versions receive the same patients and screened results. The design varies the offset, skew, disease overlap and screened sample size. These runs compare anchoredRI 0.1 with automatic selection in 0.2; refineR was not rerun in this repeated test.</p>
+    <p class="pilot-note">For the scenario matching the fourth example, mean endpoint error fell from 7.12% to 1.04%. All three unshifted scenarios were unchanged. In the shifted scenario with strong disease overlap, error increased from 8.51% to 11.83% on average. All 440 fits returned estimates; numerical success did not prevent that bias.</p>
+    <div class="table-scroll"><table class="result-table"><thead><tr><th>Scenario</th><th>Original MPE</th><th>Updated MPE</th><th>Updated: better / tied / worse</th><th>Successful pairs</th></tr></thead><tbody id="validation-rows"></tbody></table></div>
+    <p id="validation-status" role="status"></p>
+    <p class="chart-key">MPE is averaged across both endpoints and all successful paired datasets. Smaller is better. The win counts compare errors within each pair; ties differ by no more than 0.000001 percentage point. The CSV also reports the Monte Carlo standard error of the paired change, failures, boundary fits and selected families. Twenty datasets per scenario give a preliminary estimate of performance. These point-estimate runs do not measure confidence-interval coverage.</p>
+    <p><a href="assets/offset/validation-fits.csv" download>Every fresh fit</a> · <a href="assets/offset/validation-design.csv" download>Scenario definitions</a> · <a href="tools/validate-offset.R">Validation script</a></p>
+  </section>
   <section class="story" aria-labelledby="workflow-title"><div class="section-head"><h2 id="workflow-title">What follows the authors’ guidance</h2></div>
     <div class="story-grid">
       <article><h3>A suitable input population</h3><p>Each fit uses one physiological partition from two eligible services. Expected affected fractions are 10% or 25%. Both methods use the same routine patients. In a clinical study, assay comparability, age/sex partitions, repeated patients and high-risk services would need actual review.</p></article>
       <article><h3>The released refineR workflow</h3><p>refineR 2.0.0 runs 200 bootstrap resamples and reports <code>medianBS</code> estimates with 95% CIs. The normal and lognormal examples use BoxCox. The shifted example uses modBoxCox, and its default fit is available for inspection.</p></article>
       <article><h3>Direct estimates from 120 and 400</h3><p>These rows use the empirical 2.5th and 97.5th percentiles, as in the original paper’s direct-method comparison. The earlier stress page retains its Gaussian mean-and-SD estimates. The 40-, 120- and 400-person reference samples are nested and independent of routine patients.</p></article>
-      <article><h3>Conditions that challenge each method</h3><p>Overlapping disease can bias refineR even when most results are non-pathological. The shifted lognormal example challenges anchoredRI’s current identity/log Gaussian model. Its fit is not given the true shift. Screened labels are perfect in all four examples.</p></article>
+      <article><h3>Conditions that challenge each method</h3><p>Overlapping disease can bias refineR even when most results are non-pathological. The shifted lognormal example exposes a limitation of anchoredRI 0.1. Version 0.2 estimates the offset jointly with the mixture. It receives no true distribution parameters. Screened labels are perfect in all examples.</p></article>
     </div>
-    <p>anchoredRI uses its existing point estimator. Its bootstrap resamples both routine services and screened patients, and repeats model selection. Bootstrap failures and numerical boundary flags are retained. One dataset cannot establish CI coverage or comparative accuracy; the reproducible script supports repeated simulations.</p>
-    <p><a href="BENCHMARK.md">Full protocol and assumptions</a> · <a href="tools/build-guided-benchmark.R">R benchmark script</a> · <a href="assets/guided/versions.txt">Software versions</a> · <a href="stress.html#install">Install the package</a></p>
+    <p>Automatic selection compares normal, lognormal and shifted-lognormal mixtures with one to three components. BIC scores use the original measurement scale and penalize the extra offset parameter. Every bootstrap resamples both services and screened patients, then repeats the entire selection and offset fit. Numerical bounds and model assumptions still matter; the shifted-log model does not estimate a general Box-Cox power.</p>
+    <p><a href="BENCHMARK.md">Full protocol and assumptions</a> · <a href="tools/build-offset-benchmark.R">Updated benchmark script</a> · <a href="assets/offset/versions.txt">Software versions</a> · <a href="downloads/anchoredRI_0.2.0.tar.gz" download>Download R package 0.2.0</a> · <a href="stress.html#install">Install instructions</a></p>
   </section>
   <section class="credits"><h3>Sources</h3><p><a href="https://doi.org/10.1038/s41598-021-95301-2">Ammer et al., 2021: original algorithm and evaluation</a><br><a href="https://doi.org/10.1093/jalm/jfac101">Ammer et al., 2023: practical guide</a><br><a href="https://cloud.r-project.org/web/packages/refineR/vignettes/refineR_package.html">refineR package vignette</a></p><p>anchoredRI is an independent research prototype. All examples are synthetic; no CHOP data were used. Clinical performance is unvalidated. The existing project’s AI-development disclosure is available on the <a href="stress.html#method">method page</a>.</p></section>
-</main><footer><span>anchoredRI · Research software</span><span>refineR workflow comparison</span></footer>
+</main><footer><span>anchoredRI 0.2.0 · Research software</span><span>refineR workflow comparison</span></footer>
 </body></html>

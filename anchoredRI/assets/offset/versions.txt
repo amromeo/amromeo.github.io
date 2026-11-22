@@ -1,0 +1,6 @@
+R version 4.5.0 (2025-04-11)
+anchoredRI 0.2.0
+Bootstrap resamples: 200
+Original worked datasets and refineR/direct/anchoredRI 0.1 comparator rows preserved.
+Automatic family and component-count selection repeated in every bootstrap.
+Offset estimated from observations; no true parameters enter the fitter.

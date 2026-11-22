@@ -1,0 +1,12 @@
+"id","title","family","shift","median","sd","disease_median","disease_sd","p_a","p_b","n_anchor"
+"normal","Normal","normal",0,30,3,42,4,0.05,0.15,40
+"overlap","Normal, overlapping disease","normal",0,30,3,36,4.5,0.2,0.3,40
+"lognormal","Lognormal, no shift","lognormal",0,20,0.35,60,0.3,0.05,0.15,40
+"shift10","Shift 10, SDlog 0.50","lognormal",10,15,0.5,65,0.25,0.05,0.15,40
+"shift3","Shift 3","lognormal",3,15,0.5,65,0.25,0.05,0.15,40
+"shift20","Shift 20","lognormal",20,15,0.5,65,0.25,0.05,0.15,40
+"skew03","Shift 10, SDlog 0.30","lognormal",10,15,0.3,65,0.25,0.05,0.15,40
+"skew075","Shift 10, SDlog 0.75","lognormal",10,15,0.75,65,0.25,0.05,0.15,40
+"anchor20","Shift 10, 20 screened","lognormal",10,15,0.5,65,0.25,0.05,0.15,20
+"anchor80","Shift 10, 80 screened","lognormal",10,15,0.5,65,0.25,0.05,0.15,80
+"shift_overlap","Shift 10, overlapping disease","lognormal",10,15,0.5,30,0.5,0.2,0.3,40

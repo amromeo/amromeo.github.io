@@ -4,7 +4,7 @@
 # be independent of the target result. Use separate individuals for validation.
 # BIC selects one, two or three components. All settings share the component
 # shapes, but each setting has its own mixture proportions.
-fit_anchored_ri <- function(value, setting, anchor, transform = c("identity", "log")) {
+.fit_anchored_fixed <- function(value, setting, anchor, transform = c("identity", "log")) {
   transform <- match.arg(transform)
   if (!is.numeric(value) || !is.numeric(anchor) || length(anchor) < 2L ||
       length(value) != length(setting) || length(unique(setting)) != 2L ||
@@ -72,10 +72,11 @@ fit_anchored_ri <- function(value, setting, anchor, transform = c("identity", "l
     fits <- lapply(slots, function(probs) {
       init <- c(mean(a), unname(quantile(z, probs)), log(ref_sd),
                 rep(log(1), k-1L), rep(0, 2L * (k-1L)))
-      optim(init, calc, function(p) calc(p, TRUE), method = "L-BFGS-B",
-            lower = lo, upper = hi, control = list(maxit = 450L, factr = 1e6))
+      tryCatch(optim(init, calc, function(p) calc(p, TRUE), method = "L-BFGS-B",
+            lower = lo, upper = hi, control = list(maxit = 450L, factr = 1e6)),
+            error = function(e) NULL)
     })
-    fits <- Filter(function(f) f$convergence == 0L && is.finite(f$value), fits)
+    fits <- Filter(function(f) !is.null(f) && f$convergence == 0L && is.finite(f$value), fits)
     if (!length(fits)) return(NULL)
     fit <- fits[[which.min(vapply(fits, function(f) f$value, numeric(1)))]]
     list(p = unpack(fit$par), bic = 2*n*fit$value + length(fit$par)*log(n),
@@ -98,10 +99,54 @@ fit_anchored_ri <- function(value, setting, anchor, transform = c("identity", "l
   }, numeric(2)))
   dimnames(candidate_limits) <- list(as.character(1:3), c("lower", "upper"))
   limits <- inverse(center + scale * (p$mu[1] + qnorm(c(.025,.975))*p$sigma[1]))
+  # Density conversion back to the measurement scale. This constant cancels
+  # across component counts, but is essential when comparing transformations.
+  correction <- 2*n*log(scale) + if (transform == "log") 2*sum(log(c(value, anchor))) else 0
   list(limits = setNames(limits, c("lower","upper")), components = k,
        weights = p$w, bic = setNames(bics, 1:3), at_bound = fits[[k]]$at_bound,
+       bic_original = setNames(bics + correction, 1:3),
+       selected_bic = bics[k] + correction, transform = transform, shift = 0,
+       candidate_shift = setNames(rep(0, 3), 1:3), shift_bounds = NULL,
        candidate_limits = candidate_limits,
        candidate_at_bound = vapply(fits, function(f) {
          if (is.null(f)) NA else f$at_bound
        }, logical(1)))
+}
+
+# Preserve the existing default; the new automatic selection is opt-in.
+fit_anchored_ri <- function(value, setting, anchor,
+                            transform = c("identity", "log", "shifted_log", "auto"),
+                            shift_bounds = NULL) {
+  transform <- match.arg(transform)
+  if (!is.numeric(value) || !is.numeric(anchor) || length(anchor) < 2L ||
+      length(value) != length(setting) || length(unique(setting)) != 2L ||
+      anyNA(setting) || any(!is.finite(c(value, anchor)))) {
+    stop("Supply numeric results from two settings and independent reference values.")
+  }
+  if (!is.null(shift_bounds) && !transform %in% c("shifted_log", "auto"))
+    stop("shift_bounds applies only to shifted_log or auto.")
+  if (transform %in% c("identity", "log")) {
+    result <- .fit_anchored_fixed(value, setting, anchor, transform)
+  } else if (transform == "shifted_log") {
+    result <- .fit_anchored_shifted(value, setting, anchor, shift_bounds)
+    if (!is.finite(result$selected_bic)) stop("No shifted-log candidate model converged.")
+  } else {
+    families <- c("identity", if (all(c(value, anchor) > 0)) "log", "shifted_log")
+    fits <- lapply(families, function(family) {
+      if (family == "shifted_log") .fit_anchored_shifted(value, setting, anchor, shift_bounds)
+      else .fit_anchored_fixed(value, setting, anchor, family)
+    })
+    scores <- vapply(fits, function(f) f$selected_bic, numeric(1))
+    if (!any(is.finite(scores))) stop("No candidate model converged.")
+    result <- fits[[which.min(scores)]]
+    result$selection <- do.call(rbind, lapply(seq_along(fits), function(i) {
+      f <- fits[[i]]
+      data.frame(transform = families[i], components = 1:3,
+                 shift = unname(f$candidate_shift),
+                 bic_original = unname(f$bic_original),
+                 at_bound = unname(f$candidate_at_bound))
+    }))
+  }
+  result$requested_transform <- transform
+  result
 }
