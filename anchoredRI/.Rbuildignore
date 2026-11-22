@@ -6,3 +6,6 @@
 ^help\.html$
 ^stress\.html$
 ^BENCHMARK\.md$
+
+^robustness\.html$
+^STRESS_PROTOCOL\.md$
