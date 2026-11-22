@@ -4,7 +4,7 @@ An R research package for asking whether a small group of independently screened
 
 **Fully AI-developed.** A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and wrote the method implementation, simulation experiments, tests, package documentation and website. The estimator uses conventional maximum likelihood in R. Clinical performance has yet to be established.
 
-[Interactive experiment](https://amromeo.github.io/anchoredRI/) · [Simulation results (CSV)](https://amromeo.github.io/anchoredRI/assets/fits.csv) · [R source archive](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.1.0.tar.gz)
+[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Current results (CSV)](https://amromeo.github.io/anchoredRI/assets/guided/fits.csv) · [R source archive](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.1.0.tar.gz)
 
 ## Install from GitHub
 
@@ -17,7 +17,37 @@ remotes::install_github("amromeo/amromeo.github.io", subdir = "anchoredRI")
 
 Model fitting uses R's standard packages. To run the published comparator, install `refineR` with `install.packages("refineR")`.
 
-## Try 40 screened patients with 1,000 routine results
+## Primary comparison: refineR as intended
+
+The main page now uses the authors' practical workflow: the same 5,000 eligible routine patients for both methods, a single physiological partition, one result per person, 200 bootstrap resamples and `medianBS` refineR estimates with 95% CIs. anchoredRI adds 40 independent screened patients and service labels. Direct benchmarks use empirical percentiles from 120 and 400 screened patients. Normal, lognormal and shifted lognormal examples test more than the Gaussian case. The shifted profile uses `modBoxCox` for refineR and the existing log transform for anchoredRI.
+
+The first published run contains one worked dataset per profile. It shows the estimates, confidence intervals and original refineR diagnostic plots. It does not establish comparative accuracy, bias or CI coverage across repeated datasets. The script supports larger repeated evaluations.
+
+```sh
+Rscript tools/build-guided-benchmark.R 8 1 200
+# For a replicated evaluation, increase the second argument, for example to 100.
+```
+
+Read [BENCHMARK.md](BENCHMARK.md) for the prespecified distributions, metrics and sources. The [2023 practical guide](https://doi.org/10.1093/jalm/jfac101) and [package vignette](https://cloud.r-project.org/web/packages/refineR/vignettes/refineR_package.html) define the workflow. The original clinic/ward experiment below remains a stress test: its default pooled disease fraction is 61.25%, and the outpatient subset has only 250 observations.
+
+### Apply the workflow to a prepared partition
+
+`eligible` below is a data frame of compatible routine results with one row per patient and two eligible service labels. `screened` contains independent reference-eligible patients. Decide eligibility and physiological partitions before fitting, without filtering by an existing reference interval.
+
+```r
+ref <- refineR::findRI(eligible$value, model = "BoxCox",
+                      NBootstrap = 200, seed = 123, NCores = 2)
+refineR::getRI(ref, pointEst = "medianBS", CIprop = 0.95)
+plot(ref, pointEst = "medianBS")
+
+anch <- anchoredRI::fit_anchored_ri(
+  eligible$value, eligible$service, screened$value, transform = "identity")
+anch$limits
+```
+
+Inspect the distribution and fitted curve before accepting the result. Consider `modBoxCox` for a skewed distribution shifted from zero; choose anchoredRI's identity or log model on defensible distributional grounds. The comparison script supplies a bootstrap for anchoredRI because its core fitting function returns only a point estimate. `compare_ri_methods()` retains the older stress-test workflow.
+
+## Earlier stress example: 40 screened and 1,000 routine patients
 
 ```r
 library(anchoredRI)
@@ -31,6 +61,7 @@ fit$components             # model size selected by BIC
 fit$at_bound               # optimizer reached a numeric parameter bound
 d$truth                    # available for simulated data
 
+# Legacy stress-test comparison; use the prepared-cohort script above for the new workflow.
 compare_ri_methods(d$routine$value, d$routine$setting, d$anchor)
 ```
 
@@ -44,7 +75,7 @@ A screened patient contributes once. If you review charts from the same set of r
 
 The initial prototype labeled the component enriched in the outpatient cohort. It struggled in simulations where both settings had the same fraction of affected patients or disease shifted values in both directions. The next version introduced clinically screened observations and allowed two disease components. The original routine-only model and a fixed two-component anchored comparison remain available for investigating what each change contributes.
 
-## What the interactive experiment compares
+## Earlier clinic/ward stress experiment
 
 | Method | Data used |
 | --- | --- |
@@ -65,11 +96,11 @@ out <- benchmark_setting_ri(reps = 12, n_clinic = 250, n_ward = 750, n_anchor = 
 summarize_ri_benchmark(out)
 ```
 
-To regenerate every website result, run `Rscript tools/build-demo.R` from the package source directory with refineR installed. On Unix, an optional positive integer argument sets the worker count. The CSV records every fitted pair of endpoints. The website renders the CSV using plain JavaScript and can be served by any static HTTP server. [Data generator](R/simulate.R) · [Benchmark script](tools/build-demo.R) · [Recorded package versions](assets/versions.txt)
+To regenerate the earlier stress-test results, run `Rscript tools/build-demo.R` from the package source directory with refineR installed. On Unix, an optional positive integer argument sets the worker count. The CSV records every fitted pair of endpoints. The website renders the CSV using plain JavaScript and can be served by any static HTTP server. [Data generator](R/simulate.R) · [Benchmark script](tools/build-demo.R) · [Recorded package versions](assets/versions.txt)
 
 ## Interpretation for pediatric laboratories
 
-The generator assumes a single age group, one assay, common healthy physiology across settings, one independent result per individual and perfect clinical eligibility labels. It uses Gaussian mixture components, which favor the assumptions of the anchored model. It does not model developmental trajectories, repeated measurements, censored reporting, preanalytical differences or mislabeled clinical histories. The 1,000-result design gives the outpatient-only comparator 250 observations, below refineR's 1,000-result caution threshold.
+Both experiments assume a single physiological partition, one assay, a common reference distribution across settings, independent patients and perfect clinical eligibility labels. The earlier stress generator uses Gaussian components, which favor anchoredRI's model. The prepared-cohort comparison also includes lognormal and shifted lognormal distributions. Neither models developmental trajectories, censored reporting, preanalytical differences or mislabeled clinical histories. The earlier 1,000-result stress design gives the outpatient-only comparator 250 observations, below refineR's 1,000-result caution threshold.
 
 The appropriate number of screened observations still needs to be established for each intended application. The exercise tests errors in estimated reference limits. It does not evaluate classification of individual patients. A clinical study would need an independent reference cohort covering both tails and an evaluation of uncertainty before reporting an interval. No CHOP data were used.
 

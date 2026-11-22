@@ -1,0 +1,5 @@
+"id","title","p_a","p_b","refine_model","anchor_transform"
+"normal","Normal, separated disease",0.05,0.15,"BoxCox","identity"
+"overlap","Normal, overlapping disease",0.2,0.3,"BoxCox","identity"
+"lognormal","Right-skewed",0.05,0.15,"BoxCox","log"
+"shifted","Right-skewed and shifted",0.05,0.15,"modBoxCox","log"

@@ -15,9 +15,9 @@
     <div class="top-inner">
       <a class="brand" href="./" aria-label="anchoredRI, back to the experiment"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
       <nav aria-label="Main navigation">
-        <a href="./#experiment">Experiment</a>
-        <a href="./#method">Method</a>
-        <a href="./#install">Install</a>
+        <a href="index.html">Prepared cohort</a>
+        <a href="stress.html">Stress tests</a>
+        <a href="stress.html#install">Install</a>
         <a href="help.html" aria-current="page">Help</a>
         <a class="source" href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">GitHub <span aria-hidden="true">↗</span></a>
       </nav>
@@ -27,10 +27,11 @@
     <div class="help-intro">
       <h1>Help and definitions</h1>
       <p class="lede">What the patient groups, model labels and error summaries mean in this simulator.</p>
-      <p>The examples use synthetic aPTT-like results in seconds. The two main terminology changes are <a href="#disease">“affected” → analyte-altering disease</a> and <a href="#limit-error">“mean worst error” → average larger limit error</a>.</p>
+      <p>The <a href="index.html">prepared-cohort comparison</a> uses 5,000 routine patients, 200 bootstrap resamples, medianBS refineR estimates and nonparametric 120/400-person direct estimates. Its first run has one dataset per profile. <a href="BENCHMARK.md">Read the protocol and metrics</a>.</p><p>The definitions below describe the <a href="stress.html">earlier clinic/ward stress tests</a>. The examples use synthetic aPTT-like results in seconds. The two main terminology changes are <a href="#disease">“affected” → analyte-altering disease</a> and <a href="#limit-error">“mean worst error” → average larger limit error</a>.</p>
     </div>
     <div class="help-layout">
       <nav class="help-contents" aria-label="Help topics">
+        <a href="#prepared-cohort">Prepared-cohort comparison</a>
         <a href="#patient-groups">Patients and screening</a>
         <a href="#sample-size">Comparing sample sizes</a>
         <a href="#case-mix">The four case mixes</a>
@@ -41,6 +42,29 @@
         <a href="#fitting-limits">Fitting warnings</a>
       </nav>
       <div class="help-content">
+        <section class="help-section" id="prepared-cohort" aria-labelledby="prepared-title">
+          <h2 id="prepared-title">The prepared-cohort comparison</h2>
+          <dl class="glossary">
+            <dt>Prepared cohort / physiological partition</dt>
+            <dd>A set of patients who can reasonably share a reference interval, with compatible assays and a stable measurement period. In these examples, age, sex and assay effects are held constant by construction. A real dataset needs those checks before fitting.</dd>
+            <dt>One dataset versus 200 bootstrap resamples</dt>
+            <dd>Each example starts with one generated group of patients. Bootstrapping repeatedly samples those patients with replacement and refits the method. It measures uncertainty within that example. It does not create 200 independent studies or establish which method usually performs best.</dd>
+            <dt>Reference interval versus confidence interval</dt>
+            <dd>The reference interval aims to contain the central 95% of the reference population. A confidence interval describes uncertainty in an estimated endpoint. The chart shows a separate 95% confidence interval around the lower and upper reference limits.</dd>
+            <dt>medianBS</dt>
+            <dd>refineR's recommended bootstrap point estimate. The package chooses a representative model from the bootstrap fits, then calculates that model's reference limits. It does not simply take the median lower and median upper limit separately.</dd>
+            <dt>BoxCox and modBoxCox</dt>
+            <dd>refineR models a reference distribution that becomes approximately normal after a transformation. BoxCox estimates a power transformation. modBoxCox also allows a shift, which can help when a skewed distribution starts away from zero. The shifted example uses that model by design; clinical model choice needs fit review.</dd>
+            <dt>Reference population inside</dt>
+            <dd>The percentage of the known simulated reference population falling within the fitted interval. The target is 95%. A value near 95% does not prove both endpoints are correct, so the table also reports endpoint error.</dd>
+            <dt>Larger limit error</dt>
+            <dd>Calculate the absolute error of each endpoint and report the larger one. For example, a lower limit 0.2 units too high and an upper limit 0.7 units too low give a larger limit error of 0.7. The prepared-cohort page reports one dataset; the stress page averages this error across repeated datasets.</dd>
+            <dt id="mean-percentage-error">Mean percentage error (MPE)</dt>
+            <dd>Express each endpoint's absolute error as a percentage of its true value, then average those percentages. The prepared-cohort table averages the two endpoints of the selected dataset. The original paper also averages over many simulated datasets. Smaller values mean less error; the value for one dataset does not establish typical performance.</dd>
+            <dt>Empirical percentiles</dt>
+            <dd>Percentiles estimated directly from the ordered screened results, without assuming a normal distribution. The 120- and 400-person rows use the 2.5th and 97.5th percentiles. With 120 people, each tail is informed by only about three observations, so its estimated limit can vary substantially.</dd>
+          </dl>
+        </section>
         <section class="help-section" id="patient-groups" aria-labelledby="patients-title">
           <h2 id="patients-title">Patients and screening</h2>
           <dl class="glossary">

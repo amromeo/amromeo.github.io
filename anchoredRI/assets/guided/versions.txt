@@ -1,0 +1,10 @@
+R version 4.5.0 (2025-04-11)
+refineR 2.0.0
+future 1.82.0
+future.apply 1.21.0
+ash 1.0.15
+Replicates per profile: 1
+Bootstrap resamples: 200
+5,000 routine results from two eligible services; same routine inputs for both models.
+40/120/400 nested independent screened reference individuals, never result-filtered.
+Original refineR fit plots, medianBS, 95% bootstrap CIs; no clinical data.
