@@ -36,7 +36,17 @@ out <- file.path(cfg$output,'reproducibility');dir.create(out,recursive=TRUE,sho
 write.csv(x,file.path(out,'armA-reproducibility.csv'),row.names=FALSE)
 write.csv(x[which(!model_pairs|!finite|x$model_changed|x$outside_tolerance),],file.path(out,'exceptions.csv'),row.names=FALSE)
 write.csv(summary,file.path(out,'summary.csv'),row.names=FALSE)
-writeLines(c('## Arm A reproducibility across runtimes','',
+section <- c('## Arm A reproducibility across runtimes','',
   sprintf('Among %d/%d datasets with a selected model in both runtimes, %d selected a different component count or shift specification.',summary$model_pairs,summary$prespecified,summary$model_changes),
-  sprintf('For %d pairs with finite limits, %d exceeded 0.1%% of the Actions interval width. The largest difference was %.6g Hb units; the largest relative difference was %.3f%%.',summary$limit_pairs,summary$outside_tolerance,summary$largest_absolute,100*summary$largest_fraction)),
-  file.path(out,'REPORT.md'))
+  sprintf('For %d pairs with finite limits, %d exceeded 0.1%% of the Actions interval width. The largest difference was %.6g Hb units (largest relative difference %.3f%%).',summary$limit_pairs,summary$outside_tolerance,summary$largest_absolute,100*summary$largest_fraction))
+writeLines(section,file.path(out,'REPORT.md'))
+# Either the local scoring or the Actions repeat can finish first.
+main <- file.path(cfg$output,'REPORT.md')
+if(file.exists(main)) {
+  lines <- readLines(main)
+  marker <- which(lines %in% c(section[1],'The paired 156-dataset Arm A reproducibility results are pending.'))
+  stopifnot(length(marker)==1L)
+  temp <- tempfile('repro-report-',tmpdir=dirname(main))
+  writeLines(c(lines[seq_len(marker-1L)],section),temp)
+  stopifnot(file.rename(temp,main))
+}
