@@ -1,0 +1,5 @@
+group,n,lower,lrt,either,both
+All anchoredRI fits,1440,12,473,473,12
+Mean absolute z > 5,55,12,55,55,12
+Mean absolute z < 0.25,823,0,126,126,0
+Either eligible endpoint |z| > 5,64,12,64,64,12
