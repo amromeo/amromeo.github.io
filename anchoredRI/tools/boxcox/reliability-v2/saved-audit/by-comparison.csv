@@ -1,0 +1,39 @@
+runtime,method,group,cohort,comparison,checked,violations,unavailable,excluded
+Actions,armA,RIbench small,replay 1-156,adjacent K,624,2,0,0
+Actions,armA,RIbench small,replay 1-156,free shape vs identity,936,9,0,0
+Actions,armA,RIbench small,replay 1-156,free shape vs log,738,1,0,198
+Actions,armA,RIbench small,replay 1-156,free shape vs shifted log,430,1,38,0
+Actions,armA,RIbench small,replay 1-156,shifted vs unshifted,270,23,0,198
+Actions,baseline,RIbench small,replay 1-156,adjacent K,899,0,37,0
+Actions,baseline,RIbench small,replay 1-156,shifted vs unshifted,242,10,28,198
+Actions preflight,baseline,RIbench small,replay 1-156,adjacent K,12,0,0,0
+Actions preflight,baseline,RIbench small,replay 1-156,shifted vs unshifted,3,0,0,3
+local,armA,RIbench 50000,other,adjacent K,574,0,0,0
+local,armA,RIbench 50000,other,free shape vs identity,861,41,0,0
+local,armA,RIbench 50000,other,free shape vs log,825,16,0,36
+local,armA,RIbench 50000,other,free shape vs shifted log,430,8,2,0
+local,armA,RIbench 50000,other,shifted vs unshifted,396,54,0,36
+local,armA,RIbench small,other,adjacent K,960,4,0,0
+local,armA,RIbench small,other,free shape vs identity,1440,44,0,0
+local,armA,RIbench small,other,free shape vs log,1044,4,0,396
+local,armA,RIbench small,other,free shape vs shifted log,719,6,1,0
+local,armA,RIbench small,other,shifted vs unshifted,324,29,0,396
+local,armA,RIbench small,replay 1-156,adjacent K,624,2,0,0
+local,armA,RIbench small,replay 1-156,free shape vs identity,936,12,0,0
+local,armA,RIbench small,replay 1-156,free shape vs log,738,0,0,198
+local,armA,RIbench small,replay 1-156,free shape vs shifted log,466,2,2,0
+local,armA,RIbench small,replay 1-156,shifted vs unshifted,270,17,0,198
+local,armB,RIbench 50000,other,adjacent K,1381,78,343,0
+local,armB,RIbench 50000,other,shifted vs unshifted,467,46,193,60
+local,armB,RIbench small,other,adjacent K,2570,127,310,0
+local,armB,RIbench small,other,shifted vs unshifted,460,93,80,660
+local,armB,RIbench small,replay 1-156,adjacent K,1766,84,106,0
+local,armB,RIbench small,replay 1-156,shifted vs unshifted,410,95,40,330
+local,baseline,RIbench 50000,other,adjacent K,6858,6,6,0
+local,baseline,RIbench 50000,other,shifted vs unshifted,1516,71,5,2799
+local,baseline,RIbench small,other,adjacent K,13351,24,1,0
+local,baseline,RIbench small,other,shifted vs unshifted,2789,136,1,5382
+local,baseline,RIbench small,replay 1-156,adjacent K,934,0,2,0
+local,baseline,RIbench small,replay 1-156,shifted vs unshifted,268,10,2,198
+local,baseline,Simulation,other,adjacent K,5400,3,0,0
+local,baseline,Simulation,other,shifted vs unshifted,2313,69,0,387
