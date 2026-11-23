@@ -1,5 +1,7 @@
 # Task E implementation status
 
+**Current status.** Validation resumed after approval of the 5% model-change rule. The earlier pauses below record the history of the audit.
+
 Implementation started after user approval on 22 November 2026. No package files under `R/` were changed.
 
 The analytic gradient checks, multiplicity checks, inverse-domain checks and initial frozen identity/log/automatic-fit checks passed. A synthetic fitted-shape smoke test also completed.
@@ -28,3 +30,15 @@ Validation paused on 22 November 2026 after 156 of 5,220 datasets. All completed
 The largest absolute limit difference is 0.1707087 for Index 100. The largest width-normalized difference is 4.207564% for Index 148. These are partial validation findings, not estimates for the full benchmark. They trigger the user-approved pause because any selected model change requires review.
 
 The controller has stopped after completing its active batch. `HALT.txt` remains in the run directory. No experimental benchmark fits or scoring have started. No estimator, fitting setting, outcome or success criterion was changed. The exception and summary tables are saved under `validation/`. Continuing requires the user's review of this gate; it must not be bypassed automatically.
+
+
+## Review decision and local BICs
+
+The full audit now runs through all 4,320 archived comparisons. It pauses if more than 216 datasets change model. The exact same-machine checks cover all 5,220 datasets and stop on any failure. The original 156 checkpoints did not retain the other families’ candidate limits. A fresh run records all candidate limits so each near tie can be evaluated. The earlier checkpoints are preserved.
+
+| Hb index | Local winner | Next local candidate | BIC gap | Upper limit, winner → runner-up |
+|---|---|---|---:|---:|
+| 100 | log, 3 components | identity, 3 | 5.7511 | 16.1338 → 15.9278 |
+| 148 | identity, 3 components | shifted-log, 2 | 37.2374 | 15.9583 → 16.2142 |
+
+Neither local result is within 2 BIC points. For Index 148, the archived winner (shifted-log, 3 components) ranks third locally, 41.3002 points behind identity. The two CSVs in `validation/` hold all 18 BICs, candidate limits and the two margins. The original C2 percentile objects contain only percentiles, estimates and runtime. The original custom CSVs contain the winning transform and component count. Candidate BIC tables from the GitHub Actions reproduction will be identified as new calculations.

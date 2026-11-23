@@ -1,9 +1,11 @@
 library(RIbench)
 source('tools/boxcox/models.R')
+source('tools/boxcox/candidates.R')
+source('tools/boxcox/export-candidates.R')
 source('tools/stress-design.R')
-source('tools/anchors-only/estimators.R')
 cfg <- readRDS(commandArgs(TRUE)[1]); root <- cfg$output
 stopifnot(file.exists(file.path(root,'FITTED.txt')),!file.exists(file.path(root,'HALT.txt')))
+bc_export_tables(root,include_arms=TRUE)
 t <- loadTestsetDefinition(); t <- t[t$N<=50000,]
 methods <- c('armA','armB','anchoredRI','anchorsOnly','refineR')
 diagnostics <- list(); summaries <- list(); pairs <- list()
@@ -57,18 +59,21 @@ for(stage in c('small','large')) {
       p <- merge(p,d[,setdiff(names(d),c('Analyte','N'))],by='Index')
       p$reported <- !p$declined & !p$technical
     }
+    p$stratum <- paste(p$Distribution,ifelse(p$fractionPathol<=.2,'low <=20%','high >20%'))
     scored[[method]] <- p
     write.csv(p,file.path(w,paste0(method,'-performance.csv')),row.names=FALSE)
-    for(group in c('all','lambda=0.432',unique(p$Distribution))) for(filter in c('before','after')) {
-      q <- if(group=='all')p else if(group=='lambda=0.432')p[abs(p$GT_Lambda-.432)<1e-12,] else p[p$Distribution==group,]
+    for(group in c('all','lambda=0.432',unique(p$Distribution),unique(p$stratum))) for(filter in c('before','after')) {
+      q <- if(group=='all')p else if(group=='lambda=0.432')p[abs(p$GT_Lambda-.432)<1e-12,] else p[p$Distribution==group | p$stratum==group,]
       total <- nrow(q); reported <- sum(q$reported)
+      declines <- if('declined' %in% names(q))sum(q$declined) else 0L
+      technical <- if('technical' %in% names(q))sum(q$technical) else 0L
       if(filter=='after')q <- q[q$reported,]
       err <- q$zzDevAbs_Ov; missing <- !is.finite(err)
       summaries[[length(summaries)+1]] <- data.frame(stage=stage,group=group,method=method,filter=filter,
-        attempts=total,reported=reported,scored=sum(!missing),missing=sum(missing),
+        attempts=total,reported=reported,declined=declines,technical_withheld=technical,scored=sum(!missing),missing=sum(missing),
         decline_or_withhold_rate=1-reported/total,mean_abs_z=mean(err,na.rm=TRUE),
         capped_mean=mean(q$zzDevAbsCutoff_Ov,na.rm=TRUE),
-        all_attempt_capped=mean(ifelse(missing,5,pmin(err,5))),
+        all_attempt_capped=mean(ifelse(missing,5,q$zzDevAbsCutoff_Ov)),
         implausible=sum(err>5,na.rm=TRUE),implausible_or_missing=sum(missing|err>5),
         fit_seconds=sum(q$Runtime,na.rm=TRUE))
     }
@@ -126,9 +131,7 @@ for(case in 1:45) for(replicate in 1:20) {
   r <- readRDS(file.path(root,'fits',paste0(key,'.rds')))
   old <- readRDS(file.path(root,'validation',paste0(key,'.rds')))
   r$anchoredRI <- list(fit=old$baseline,safeguard=old$safeguard,seconds=NA_real_)
-  auto <- ao_auto(d$anchor)
-  r$anchorsOnly <- list(fit=auto,safeguard=list(limits=auto$limits,reported=auto$limits,declined=FALSE,technical=FALSE),seconds=NA_real_)
-  for(method in names(r)[names(r)%in%c('armA','armB','anchoredRI','anchorsOnly')]) {
+  for(method in c('armA','armB','anchoredRI')) {
     f <- r[[method]]$fit; g <- r[[method]]$safeguard
     for(filter in c('before','after')) {
       limits <- if(is.null(g))c(NA_real_,NA_real_) else if(filter=='before')g$limits else g$reported
@@ -139,9 +142,16 @@ for(case in 1:45) for(replicate in 1:20) {
   }
 }
 sim <- do.call(rbind,sim)
-legacy <- read.csv(cfg$simulation_archive)
-legacy <- legacy[legacy$method=='refineR'&legacy$replicate<=20,]
-stopifnot(nrow(legacy)==900,!anyDuplicated(paste(legacy$case,legacy$replicate)))
+read_comparator <- function(zip,member,method,label) {
+  conn <- unz(zip,member,open='r'); on.exit(close(conn)); all <- read.csv(conn)
+  rows <- all[all$method==method & all$replicate %in% 1:20,]; rows$method <- label
+  stopifnot(nrow(rows)==900L,!anyDuplicated(rows[,c('case','replicate')]),
+            all(rows$seed==8300000L+10000L*rows$case+rows$replicate))
+  rows
+}
+refine <- read_comparator('assets/comparison-study/summary/comparison-results.zip','all-results.csv','refineR','refineR')
+auto <- read_comparator('assets/anchors-only/anchors-only-results.zip','estimates.csv','anchors_auto','anchorsOnly')
+legacy <- rbind(refine[,names(auto)],auto)
 for(filter in c('before','after')) {
   legacy$filter <- filter
   sim <- rbind(sim,legacy[,names(sim)])
@@ -160,8 +170,6 @@ for(arm in c('armA','armB')) for(other in c('anchoredRI','anchorsOnly','refineR'
   }
 }
 write.csv(do.call(rbind,regression),file.path(root,'simulation-paired.csv'),row.names=FALSE)
-writeLines('Native RIbench scoring and simulation summaries complete. See success-criteria.csv and paired tables.',
-           file.path(root,'SCORED.txt'))
 
 text <- c('# Task E results', '',
   'Baseline commit 55eee86b3f4111197b0043cc062ef0b781dc2057. RIbench uses the frozen C2 one-group adapter. Simulation uses the original two-setting estimator.', '',
@@ -179,4 +187,20 @@ text <- c(text,'','Success is judged before the safeguard. Missing fits receive 
   'Heavily mixed populations with many mildly abnormal patients, including ICU-only populations, can still produce wrong intervals that pass both checks.', '',
   'Simulation replicates 1–20 are development and regression checks, not independent confirmation. A paired increase exceeding twice its Monte Carlo standard error flags a regression. Unflagged differences do not establish equivalence.', '',
   'The frozen anchoredRI baseline was refitted in the same runtime as both arms. Anchors-only and refineR were retained from the archives and can have small cross-platform numerical differences. Those differences were not measured by refitting. Validation and fit wall times are saved separately. Input generation reuses the hash-verified archived data, so no new generation time is attributed to this study.')
+ties <- read.csv(file.path(root,'baseline-near-tie-summary.csv'))
+text <- c(text,'','## Baseline model selection','',
+          '| Dataset group | Within 2 BIC points / attempted | Percent | Median largest limit change (% of interval width) | Maximum (%) |',
+          '|---|---:|---:|---:|---:|')
+for(i in which(ties$group %in% c('all','small','50000','simulation'))) {
+  r <- ties[i,]; text <- c(text,sprintf('| %s | %d / %d | %.2f | %.3f | %.3f |',r$group,r$within_2,
+      r$attempts,100*r$share_all,100*r$median_fraction_of_width,100*r$max_fraction_of_width))
+}
+text <- c(text,'','The near-tie CSV reports both requested limits and their differences for each fit. The width is the selected interval width. For CRP it is the zero-to-upper span. The per-method candidate and BIC-gap tables include all eligible models.','')
+cross <- read.csv(file.path(root,'cross-machine-summary.csv'))
+text <- c(text,sprintf('The frozen baseline selected a different transform or component count on %d/%d RIbench datasets (%.2f%%) across machines. %d datasets exceeded the 0.1%% limit tolerance. The largest endpoint change was %.3f%% of the archived width.',
+   cross$model_changes,cross$datasets,100*cross$model_change_fraction,cross$outside,100*cross$max_fraction_of_width),'')
+repro <- file.path(root,'reproducibility','REPORT.md')
+if(file.exists(repro)) text <- c(text,readLines(repro)) else text <- c(text,'The paired 156-dataset Arm A reproducibility results are pending.')
 writeLines(text,file.path(root,'REPORT.md'))
+
+writeLines('Native RIbench scoring and simulation summaries complete.',file.path(root,'SCORED.txt'))

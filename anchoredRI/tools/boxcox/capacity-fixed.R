@@ -144,6 +144,9 @@ fit_anchored_ri <- function(value, setting, anchor,
     scores <- vapply(fits, function(f) f$selected_bic, numeric(1))
     if (!any(is.finite(scores))) stop("No candidate model converged.")
     result <- fits[[which.min(scores)]]
+    # Keep all families' diagnostic limits and parameters without changing BIC selection.
+    result$family_candidates <- setNames(lapply(fits, function(f) list(
+      limits=f$candidate_limits, parameters=f$candidate_parameters, fits=f$candidate_fits)), families)
     result$selection <- do.call(rbind, lapply(seq_along(fits), function(i) {
       f <- fits[[i]]
       data.frame(transform = families[i], components = seq_len(STUDY_K),

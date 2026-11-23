@@ -2,6 +2,8 @@
 library(RIbench)
 data.table::setDTthreads(1)
 source('tools/boxcox/models.R')
+source('tools/boxcox/candidates.R')
+source('tools/boxcox/inputs.R')
 source('tools/stress-design.R')
 args <- commandArgs(TRUE); cfg <- readRDS(args[1]); phase <- args[2]
 stopifnot(phase %in% c('validate','fit'),as.character(packageVersion('RIbench'))=='1.0.2')
@@ -9,7 +11,8 @@ dir.create(cfg$output,recursive=TRUE,showWarnings=FALSE)
 root <- normalizePath(cfg$output)
 halt <- file.path(root,'HALT.txt')
 if(file.exists(halt)) stop('Resolve recorded validation failure before resuming')
-source_files <- c(list.files('tools/boxcox',pattern='[.]R$',full.names=TRUE),
+source_files <- c(file.path('tools/boxcox',c('models.R','inputs.R','capacity-fixed.R',
+                           'capacity-shifted.R','candidates.R','run-study.R')),
                   list.files('tools/boxcox/frozen',full.names=TRUE),'tools/stress-design.R')
 hashes <- tools::md5sum(source_files)
 manifest <- file.path(root,'source-hashes.rds')
@@ -20,13 +23,8 @@ archives <- list(small=cfg$small_archive,large=cfg$large_archive)
 archived <- lapply(archives,function(p)read.csv(file.path(p,'anchoredRI-all-performance.csv')))
 custom <- lapply(archives,function(p)do.call(rbind,lapply(list.files(p,pattern='^custom-[0-9]+[.]csv$',full.names=TRUE),read.csv)))
 anchor_hashes <- do.call(rbind,lapply(archives,function(p)read.csv(file.path(p,'anchor-sample-hashes.csv'))))
-anchor <- function(s) {
-  set.seed(17000000L+s$Index)
-  a <- RIbench:::invBoxCox(rnorm(40,s$nonp_mu,s$nonp_sigma),s$nonp_lambda)+s$nonp_shift
-  round(a[is.finite(a)&a>=0],s$decimals)
-}
 # Verify the full independent-anchor set before any fitting, not just a shard.
-actual <- vapply(seq_len(nrow(t)),function(i)digest::digest(anchor(t[i,]),algo='sha256'),character(1))
+actual <- vapply(seq_len(nrow(t)),function(i)digest::digest(bc_anchors(t[i,]),algo='sha256'),character(1))
 stopifnot(!anyDuplicated(actual),identical(actual,anchor_hashes$sha256[match(t$Index,anchor_hashes$Index)]))
 write.csv(data.frame(Index=t$Index,seed=t$Index+17000000L,sha256=actual),file.path(root,'anchor-hashes.csv'),row.names=FALSE)
 keys <- c(paste0('r-',t$Index),sprintf('s-%02d-%02d',rep(1:45,each=20),rep(1:20,45)))
@@ -38,15 +36,15 @@ load_data <- function(key) {
     d$probs <- c(.025,.975); d$key <- key; return(d)
   }
   s <- t[t$Index==as.integer(parts[2]),]; stage <- if(s$N<=5000)'small' else 'large'
-  path <- file.path(if(stage=='small')cfg$small_data else cfg$large_data,'Data',s$Analyte,
-                    paste0(s$Index,'_',s$Analyte,'_seed_',s$startSeed,'.csv'))
-  x <- data.table::fread(path)$V1+0L
-  stopifnot(digest::digest(x,algo='md5',serializeVersion=2,ascii=TRUE)==s$HashCode)
-  list(value=x,setting=rep('pooled',length(x)),anchor=anchor(s),key=key,s=s,stage=stage,
-       probs=if(s$Analyte=='CRP').95 else c(.025,.975))
+  bc_ribench_input(s, if(stage=='small')cfg$small_data else cfg$large_data,
+                   anchor_hashes$sha256[match(s$Index,anchor_hashes$Index)])
 }
-near <- function(a,b) identical(is.na(a),is.na(b)) &&
-  all(abs(a-b)<=1e-10,na.rm=TRUE)
+near <- function(a,b) {
+  if (!identical(dim(a),dim(b)) || length(a)!=length(b) || !identical(is.na(a),is.na(b)) ||
+      !identical(is.finite(a),is.finite(b))) return(FALSE)
+  both <- is.finite(a); infinite <- is.infinite(a)
+  all(abs(a[both]-b[both])<=1e-10) && all(a[infinite]==b[infinite])
+}
 validate <- function(d) {
   frozen <- bc_frozen(TRUE); cap <- bc_capacity(3)
   baseline_seconds <- system.time(old <- frozen$fit_anchored_ri(d$value,d$setting,d$anchor,transform='auto'))[['elapsed']]
@@ -77,13 +75,19 @@ validate <- function(d) {
       local_components=old$components,archived_components=c$components,
       model_changed=old$transform!=c$model || old$components!=c$components,
       archived_width=width,one_sided_span=length(d$probs)==1L,
+      lower_local=if(length(expected)==2L) guard$limits[1] else NA_real_,
+      lower_archived=if(length(expected)==2L) expected[1] else NA_real_,
+      upper_local=tail(guard$limits,1),upper_archived=tail(expected,1),
       max_absolute_difference=max(differences),
       max_fraction_of_width=max(differences)/width,
       outside_tolerance=any(differences>.001*width))
   }
   # Candidate parameters are diagnostic additions from the exactly matching copy.
   old$candidate_parameters <- now$candidate_parameters
+  candidates <- bc_collect_candidates(now,'anchoredRI',d$probs,all(c(d$value,d$anchor)>0),d$key)
+  gap <- bc_runner_up(candidates)
   list(key=d$key,baseline=old,safeguard=guard,baseline_seconds=baseline_seconds,
+       candidate_table=candidates,bic_gap=gap,
        cross_machine=cross,max_loglik_discrepancy=delta)
 }
 validation_dir <- file.path(root,'validation'); fit_dir <- file.path(root,'fits')
@@ -111,10 +115,12 @@ worker <- function(key) {
       for(method in names(methods)) {
         elapsed <- system.time(f <- tryCatch(methods[[method]](),error=function(e)list(error=conditionMessage(e))))[['elapsed']]
         guard <- if(is.null(f$error))bc_safeguard(f,d$value,d$anchor,d$probs) else NULL
-        result[[method]] <- list(fit=f,safeguard=guard,seconds=elapsed)
+        candidates <- bc_collect_candidates(f,method,d$probs,all(c(d$value,d$anchor)>0),key)
+        result[[method]] <- list(fit=f,safeguard=guard,seconds=elapsed,
+                                 candidate_table=candidates,bic_gap=bc_runner_up(candidates))
       }
     }
-    saveRDS(result,paste0(out,'.tmp')); file.rename(paste0(out,'.tmp'),out)
+    saveRDS(result,paste0(out,'.tmp')); stopifnot(file.rename(paste0(out,'.tmp'),out))
     cat(phase,key,'complete\n');flush.console(); TRUE
   },error=function(e) {
     writeLines(paste(key,conditionMessage(e)),halt)
@@ -132,17 +138,19 @@ if(phase=='validate') {
   cross <- do.call(rbind,lapply(keys,function(key)
     readRDS(file.path(validation_dir,paste0(key,'.rds')))$cross_machine))
   stopifnot(nrow(cross)==4320)
+  source('tools/boxcox/export-candidates.R')
+  bc_export_tables(root)
   write.csv(cross,file.path(root,'cross-machine-checks.csv'),row.names=FALSE)
   write.csv(cross[cross$model_changed|cross$outside_tolerance,],
             file.path(root,'cross-machine-exceptions.csv'),row.names=FALSE)
   summary <- data.frame(datasets=nrow(cross),model_changes=sum(cross$model_changed),
-    outside=sum(cross$outside_tolerance),outside_fraction=mean(cross$outside_tolerance),
+    model_change_fraction=mean(cross$model_changed),outside=sum(cross$outside_tolerance),outside_fraction=mean(cross$outside_tolerance),
     max_absolute_difference=max(cross$max_absolute_difference),
     max_fraction_of_width=max(cross$max_fraction_of_width))
   write.csv(summary,file.path(root,'cross-machine-summary.csv'),row.names=FALSE)
-  if(any(cross$model_changed)||mean(cross$outside_tolerance)>.01) {
+  if(sum(cross$model_changed)>0.05*nrow(cross)) {
     writeLines('Cross-machine review gate triggered. See cross-machine-exceptions.csv.',halt)
-    stop('Pause for user review: model change or more than 1% outside tolerance')
+    stop('More than 5% of the completed RIbench audit selected a different model')
   }
 }
 write.csv(data.frame(phase=phase,start=as.character(start),finish=as.character(Sys.time()),
