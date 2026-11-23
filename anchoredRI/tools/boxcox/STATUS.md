@@ -1,6 +1,6 @@
 # Task E implementation status
 
-The accuracy comparison is on hold. The study completed all 5,220 frozen-baseline checks, the 4,320-dataset cross-machine audit and the original 156-dataset Arm A replay. [Nesting audit](reliability-v2/saved-audit/REPORT.md) · [Original cross-machine validation](results/validation/README.md)
+The accuracy comparison is on hold. The 156-dataset multistart v2.1 replay finished. The baseline missed the zero-nesting requirement, and Arm A missed the model and endpoint agreement targets. [Reliability results](reliability-v2/results/REPORT.md) [Nesting audit](reliability-v2/saved-audit/REPORT.md) · [Original cross-machine validation](results/validation/README.md)
 
 ## Earlier validation runs
 

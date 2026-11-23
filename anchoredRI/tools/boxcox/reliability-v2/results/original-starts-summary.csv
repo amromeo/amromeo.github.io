@@ -1,0 +1,9 @@
+runtime,source,original,improved,paired,within_1e_10,max_scaled_difference
+local,grid,26208,26208,26208,26208,2.22044604925031e-15
+local,original seed identity,738,738,738,738,1.77635683940025e-15
+local,original seed log,738,738,738,738,1.77635683940025e-15
+local,original seed shifted_log,431,431,431,431,0.0
+Actions,grid,26208,26208,26208,26208,2.22044604925031e-15
+Actions,original seed identity,738,738,738,596,1.99997906298046
+Actions,original seed log,738,738,738,642,1.99998445008412
+Actions,original seed shifted_log,430,429,429,308,1.99998754839431

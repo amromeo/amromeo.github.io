@@ -1,0 +1,8 @@
+"Index","runtime","method","transform","k","nested_transform","nested_k","loglik_loss","nested_start","start_saved","min_nested_sd","minimum_allowed_sd","max_nested_sd","maximum_allowed_sd","projected","loss_from_projection","sd_outside_box"
+22,"local","baseline","shifted_log",3,"log",3,0.177400321695814,"unshifted log",TRUE,0.00414821499492954,0.005,0.264790728851443,5,TRUE,0.186759102431779,TRUE
+22,"Actions","baseline","shifted_log",3,"log",3,0.17740032174197,"unshifted log",TRUE,0.00414821499492954,0.005,0.264790728748249,5,TRUE,0.186759102431324,TRUE
+82,"local","baseline","shifted_log",2,"log",2,0.0779425576324684,"unshifted log",TRUE,0.00361681486988001,0.005,0.0738147606275344,5,TRUE,0.323844144111035,TRUE
+82,"Actions","baseline","shifted_log",2,"log",2,0.0779425576317863,"unshifted log",TRUE,0.00361681486988001,0.005,0.0738147608692153,5,TRUE,0.323844144109671,TRUE
+102,"Actions","baseline","shifted_log",3,"log",3,0.075816586692099,"unshifted log",TRUE,0.0041774431865354,0.005,0.214471112367341,5,TRUE,0.179738530911209,TRUE
+118,"local","baseline","shifted_log",3,"log",3,0.0290931083152373,"unshifted log",TRUE,0.0043850931286309,0.005,0.259487597858489,5,TRUE,0.131227048834717,TRUE
+118,"Actions","baseline","shifted_log",3,"log",3,0.0290931083259238,"unshifted log",TRUE,0.0043850931286309,0.005,0.259487739455533,5,TRUE,0.131227048835171,TRUE
