@@ -1,0 +1,17 @@
+"group","rule","n","flagged","rate"
+"all","lower_flag",2880,9,0.003125
+"all","lrt_flag",2880,533,0.185069444444444
+"all","either_flag",2880,533,0.185069444444444
+"all","both_flag",2880,9,0.003125
+"mean_abs_z_gt5","lower_flag",23,9,0.391304347826087
+"mean_abs_z_gt5","lrt_flag",23,23,1
+"mean_abs_z_gt5","either_flag",23,23,1
+"mean_abs_z_gt5","both_flag",23,9,0.391304347826087
+"mean_abs_z_lt025","lower_flag",1952,0,0
+"mean_abs_z_lt025","lrt_flag",1952,224,0.114754098360656
+"mean_abs_z_lt025","either_flag",1952,224,0.114754098360656
+"mean_abs_z_lt025","both_flag",1952,0,0
+"either_endpoint_gt5","lower_flag",33,9,0.272727272727273
+"either_endpoint_gt5","lrt_flag",33,32,0.96969696969697
+"either_endpoint_gt5","either_flag",33,32,0.96969696969697
+"either_endpoint_gt5","both_flag",33,9,0.272727272727273
