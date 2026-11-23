@@ -1,6 +1,6 @@
 # Export local improved-baseline estimates and the original Task E safeguard.
-comparator_row <- function(models, meta, value, anchor, probs) {
-  eligible <- Filter(function(m) m$k<=3L && m$transform %in% r3_families,models)
+comparator_row <- function(models, meta, value, anchor, probs, max_components=3L, method="anchoredRI") {
+  eligible <- Filter(function(m) m$k<=max_components && m$transform %in% r3_families,models)
   tab <- v2_table(eligible,probs)
   selected <- tab[tab$selected,]
   stopifnot(nrow(selected)==1L)
@@ -15,7 +15,7 @@ comparator_row <- function(models, meta, value, anchor, probs) {
   both <- length(probs)==2L
   raw <- if (both) c(selected$lower,selected$upper) else selected$upper
   stopifnot(isTRUE(all.equal(unname(guard$limits),unname(raw),tolerance=1e-12)))
-  cbind(meta,data.frame(method="anchoredRI",fitter="multistart-v3",max_components=3L,
+  cbind(meta,data.frame(method=method,fitter="multistart-v3",max_components=max_components,
         fitter_source_commit="ec3dd35197759424d32a6a341320173e5db08c89",
         transform=m$transform,lambda=m$p$lambda,shift=m$p$shift,components=m$k,
         loglik=m$ll,bic=m$bic,convergence_code=m$code,at_bound=m$at_bound,

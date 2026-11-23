@@ -1,6 +1,6 @@
 # Task E implementation status
 
-Arm A stopped under its prespecified weak-identification rule (12/156). At Hb 142, both runtimes recovered the better three-component log fit when given the local starting parameters. Arm B passed with 155/156 matching models, 155/156 limit pairs within tolerance and zero nesting violations. The improved baseline and Arm B await review before accuracy testing. [Review report](post-round3/results/REPORT.md) · [Comparator export](anchorRefine-comparator/README.md) · [Round 3 findings](reliability-v3/results/REPORT.md)
+The user released the improved baseline and Arm B for accuracy testing on 2,880 small-N RIbench datasets and 900 grid datasets. Arm A stopped after its reliability review. N = 50,000 requires a separate decision after the first-stage results and timing estimate. [Protocol](PROTOCOL.md) · [Reliability review](post-round3/results/REPORT.md) · [Baseline comparator](anchorRefine-comparator/README.md)
 
 ## Earlier validation runs
 

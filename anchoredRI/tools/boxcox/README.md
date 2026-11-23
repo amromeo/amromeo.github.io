@@ -1,6 +1,6 @@
 # Box-Cox shape and mixture capacity study
 
-Arm A stopped after 12 of 156 Hb datasets (7.7%) met the prespecified weak-identification rule. Its fitted Box-Cox accuracy comparison is closed. Its code and reliability results remain available. Arm B passed the two-runtime check with 155/156 matching models and limit pairs and zero nesting violations. The improved baseline and Arm B accuracy comparison awaits review of Hb 142 and the Arm B results. [Hb 142 and Arm B report](post-round3/results/REPORT.md) · [Arm A results](reliability-v3/results/REPORT.md) · [Baseline comparator for anchorRefine](anchorRefine-comparator/README.md) · [Protocol](PROTOCOL.md)
+The user released the improved baseline and Arm B for accuracy testing on 2,880 small-N RIbench datasets and 900 grid datasets. Arm A stopped after its reliability review. N = 50,000 requires a separate decision after the first-stage results and timing estimate. [Protocol](PROTOCOL.md) · [Reliability review](post-round3/results/REPORT.md) · [Baseline comparator](anchorRefine-comparator/README.md)
 
 Implementation of the approved Task E protocol. The package code in `R/` is unchanged. The original frozen baseline is `55eee86b3f4111197b0043cc062ef0b781dc2057` and the one-group adapter is copied from `f72ea14fc7978bf2478f54c87548cb6c127fa766`.
 
