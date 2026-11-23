@@ -2,7 +2,8 @@
 bootstrap_anchored_ri <- function(value, setting, anchor,
                                   transform = c("auto", "identity", "log", "shifted_log"),
                                   n_boot = 200L, conf = .95, seed = 123L,
-                                  workers = 1L, shift_bounds = NULL) {
+                                  workers = 1L, shift_bounds = NULL,
+                                  safeguard = TRUE, probs = c(.025,.975)) {
   transform <- match.arg(transform)
   integer_scalar <- function(x, minimum) is.numeric(x) && length(x)==1L &&
     is.finite(x) && x==floor(x) && x>=minimum && x<=.Machine$integer.max
@@ -10,7 +11,7 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
       !integer_scalar(seed,0L) || !is.numeric(conf) || length(conf)!=1L ||
       !is.finite(conf) || conf<=0 || conf>=1)
     stop("Use n_boot >= 2, workers >= 1, a nonnegative integer seed, and 0 < conf < 1.")
-  point <- fit_anchored_ri(value,setting,anchor,transform,shift_bounds)
+  point <- fit_anchored_ri(value,setting,anchor,transform,shift_bounds,safeguard,probs)
   existed <- exists(".Random.seed",envir=.GlobalEnv,inherits=FALSE)
   if (existed) previous_seed <- get(".Random.seed",envir=.GlobalEnv,inherits=FALSE)
   on.exit({
@@ -23,16 +24,35 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
   groups <- split(seq_along(value),as.character(setting))
   one_draw <- function(b) {
     set.seed(seeds[b])
-    rows <- unlist(lapply(groups,function(g)sample(g,length(g),replace=TRUE)),use.names=FALSE)
+    rows <- unlist(lapply(groups,function(g)g[sample.int(length(g),length(g),replace=TRUE)]),use.names=FALSE)
     a <- sample(anchor,length(anchor),replace=TRUE)
-    f <- tryCatch(fit_anchored_ri(value[rows],setting[rows],a,transform,shift_bounds),error=identity)
-    ok <- !inherits(f,"error") && length(f$limits)==2L && all(is.finite(f$limits)) && f$limits[1]<f$limits[2]
-    data.frame(replicate=b,lower=if(ok)unname(f$limits[1])else NA_real_,
-      upper=if(ok)unname(f$limits[2])else NA_real_,
-      transform=if(ok)f$transform else NA_character_,shift=if(ok)f$shift else NA_real_,
-      components=if(ok)f$components else NA_integer_,at_bound=if(ok)f$at_bound else NA,
-      status=if(ok)"ok"else"failed",
-      error=if(inherits(f,"error"))conditionMessage(f)else if(!ok)"Non-finite or unordered limits"else"")
+    f <- tryCatch(fit_anchored_ri(value[rows],setting[rows],a,transform,shift_bounds,
+                                  safeguard,probs),error=identity)
+    fit_error <- inherits(f,"error")
+    invalid <- !fit_error && f$status=="reported" &&
+      (any(!is.finite(f$limits)) || (length(probs)==2L && f$limits[1]>=f$limits[2]))
+    failed <- fit_error || invalid
+    take <- function(x,name)if(name %in% names(x))unname(x[name])else NA_real_
+    row <- data.frame(replicate=b,
+      lower=if(failed)NA_real_ else take(f$limits,"lower"),
+      upper=if(failed)NA_real_ else take(f$limits,"upper"),
+      diagnostic_lower=if(failed)NA_real_ else take(f$diagnostics$anchored$limits,"lower"),
+      diagnostic_upper=if(failed)NA_real_ else take(f$diagnostics$anchored$limits,"upper"),
+      anchors_lower=if(failed)NA_real_ else take(f$diagnostics$anchors_only$limits,"lower"),
+      anchors_upper=if(failed)NA_real_ else take(f$diagnostics$anchors_only$limits,"upper"),
+      transform=if(failed)NA_character_ else f$transform,
+      shift=if(failed)NA_real_ else f$shift,
+      components=if(failed)NA_integer_ else f$components,
+      at_bound=if(failed)NA else f$at_bound,
+      lrt_statistic=if(failed)NA_real_ else f$safeguard$lrt_statistic,
+      lrt_p=if(failed)NA_real_ else f$safeguard$lrt_p,
+      lrt_flag=if(failed)NA else f$safeguard$lrt_flag,
+      lower_flag=if(failed)NA else f$safeguard$lower_flag,
+      lower_check_skipped=!safeguard || length(probs)==1L,
+      status=if(failed)"failed" else if(f$status=="reported")"ok" else f$status,
+      reason=if(failed)"" else paste(f$reason,collapse="; "),
+      error=if(fit_error)conditionMessage(f) else if(invalid)"Non-finite or unordered limits" else f$safeguard$error)
+    list(row=row,diagnostics=if(failed)NULL else f$diagnostics)
   }
   if (.Platform$OS.type=="windows" && workers>1L) {
     warning("Parallel bootstrap is available on Unix; using one worker on Windows.")
@@ -40,16 +60,25 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
   }
   draws <- if(workers==1L)lapply(seq_len(n_boot),one_draw)else
     parallel::mclapply(seq_len(n_boot),one_draw,mc.cores=workers,mc.set.seed=FALSE)
-  if (!all(vapply(draws,is.data.frame,logical(1))))
+  if (!all(vapply(draws,function(x)is.list(x)&&is.data.frame(x$row),logical(1))))
     stop("A bootstrap worker failed outside the fitter; retry with fewer workers.")
-  draws <- do.call(rbind,draws)
+  diagnostics <- lapply(draws,function(x)x$diagnostics)
+  draws <- do.call(rbind,lapply(draws,function(x)x$row))
   ok <- draws$status=="ok"
-  ci <- matrix(NA_real_,2,2,dimnames=list(c("lower","upper"),c("low","high")))
-  if (sum(ok)>=max(2L,ceiling(.8*n_boot)))
-    ci[,] <- t(vapply(draws[ok,c("lower","upper"),drop=FALSE],
+  limit_names <- .ri_limit_names(probs)
+  ci <- matrix(NA_real_,length(probs),2,dimnames=list(limit_names,c("low","high")))
+  if (point$status=="reported" && sum(ok)>=max(2L,ceiling(.8*n_boot)))
+    ci[,] <- t(vapply(draws[ok,limit_names,drop=FALSE],
        quantile,numeric(2),probs=c((1-conf)/2,1-(1-conf)/2),names=FALSE))
-  else warning("Fewer than 80% of bootstrap fits succeeded; confidence limits are unavailable.")
-  list(fit=point,limits=point$limits,ci=ci,confidence=conf,bootstrap=draws,
-       requested=n_boot,successful=sum(ok),failed=sum(!ok),
+  else if(point$status=="reported")
+    warning("Fewer than 80% of bootstrap draws were accepted; confidence limits are unavailable.")
+  list(fit=point,limits=point$limits,probs=point$probs,ci=ci,confidence=conf,bootstrap=draws,
+       status=point$status,declined=point$declined,reason=point$reason,
+       recommendation=point$recommendation,safeguard=point$safeguard,
+       diagnostics=list(point=point$diagnostics,bootstrap=diagnostics),
+       ci_conditional_on_safeguard=safeguard,
+       requested=n_boot,successful=sum(ok),failed=sum(draws$status=="failed"),
+       declined_draws=sum(draws$status=="declined"),
+       withheld_draws=sum(draws$status=="withheld"),
        boundary_fits=sum(draws$at_bound[ok],na.rm=TRUE),seed=seed)
 }

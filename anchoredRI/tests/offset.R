@@ -1,4 +1,8 @@
 library(anchoredRI)
+# Freeze the pre-safeguard numerical assertions. Safeguard behavior has its own tests.
+fit_anchored_ri <- function(...) anchoredRI::fit_anchored_ri(..., safeguard=FALSE)
+bootstrap_anchored_ri <- function(...) anchoredRI::bootstrap_anchored_ri(..., safeguard=FALSE)
+
 # Check the analytic gradient, including the transformation Jacobian.
 calc_factory <- getFromNamespace(".anchored_shift_objective","anchoredRI")
 x <- c(.2,.5,1,1.7,3);a <- c(.3,.7,1.2)

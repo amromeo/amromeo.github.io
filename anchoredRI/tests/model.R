@@ -1,4 +1,8 @@
 library(anchoredRI)
+# Freeze the pre-safeguard numerical assertions. Safeguard behavior has its own tests.
+fit_anchored_ri <- function(...) anchoredRI::fit_anchored_ri(..., safeguard=FALSE)
+bootstrap_anchored_ri <- function(...) anchoredRI::bootstrap_anchored_ri(..., safeguard=FALSE)
+
 set.seed(17)
 rng_before <- .Random.seed
 d <- simulate_ri_study()
@@ -18,7 +22,7 @@ stopifnot(max(abs(fit$limits - d$truth)) < 3,
 on_log <- fit_anchored_ri(exp(x$value/10), x$setting, exp(d$anchor/10), "log")
 stopifnot(isTRUE(all.equal(unname(on_log$limits), unname(exp(fit$limits/10)), tolerance = 1e-4)))
 fails <- function(expr) inherits(try(force(expr), silent = TRUE), "try-error")
-stopifnot(fails(fit_anchored_ri(x$value, rep("a", nrow(x)), d$anchor)),
+stopifnot(fails(fit_anchored_ri(x$value, rep(c("a","b","c"), length.out=nrow(x)), d$anchor)),
           fails(fit_anchored_ri(x$value, x$setting, numeric())),
           fails(fit_anchored_ri(x$value, x$setting, -d$anchor, "log")),
           fails(simulate_ri_case(1.5, 1)), fails(simulate_ri_study(n_anchor = -1)))
@@ -27,7 +31,8 @@ stopifnot(identical(two$method, c("joint", "pooled_mixture")))
 bench <- benchmark_setting_ri(1, 2, FALSE, 120, 360, 20)
 summary <- summarize_ri_benchmark(bench)
 stopifnot(nrow(bench) == 5, nrow(summary) == 5,
-          all(summary$worst_limit_mae >= summary$lower_mae))
+          all(summary$worst_limit_mae >= summary$lower_mae,na.rm=TRUE),
+          sum(summary$attempted)==5,all(summary$reported<=summary$attempted))
 if (requireNamespace("refineR", quietly = TRUE)) {
   both <- compare_ri_methods(x$value, x$setting, include_stock = TRUE)
   original <- refineR::getRI(refineR::findRI(x$value, NBootstrap = 0L))$PointEst
