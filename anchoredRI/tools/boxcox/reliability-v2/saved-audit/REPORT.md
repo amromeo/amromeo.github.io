@@ -21,6 +21,6 @@ The comparisons use statistical nesting, the allowed shift interval, the counts 
 
 The Actions Arm A checkpoints retained the fixed-model starting parameters. We evaluated the likelihood at those saved parameters on the same verified routine and anchor vectors. The Actions fixed-model seed inventory is incomplete for 29 of 156 datasets. We count only comparisons with both likelihoods available when estimating inversion rates. The original C2 archive kept the selected model. A separate archived-image preflight saved all candidates for Hb 100 and 148.
 
-[Dataset counts](violation-summary.csv) · [Counts by nesting relationship](by-comparison.csv) · [All dataset decisions](fit-decisions)
+[Dataset counts](violation-summary.csv) · [Counts by nesting relationship](by-comparison.csv) · [Results by analyte or simulation family](by-analyte-or-simulation-family.csv) · [All dataset decisions](fit-decisions)
 
 The [list of every inversion](violations.csv) gives both likelihoods, the amount the larger fit lost and the floating-point allowance. The analysis script also emits every pair checked, including unavailable comparisons and structural exclusions.

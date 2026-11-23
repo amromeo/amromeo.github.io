@@ -21,13 +21,25 @@ def table(path, fields, records):
         w.writeheader();w.writerows(records)
 
 
-def saved(src):
+def saved(src, dataset_manifest=None):
     allfits=list(rows(src/"datasets-audited.csv.gz"))
     parts=defaultdict(list)
     for r in allfits:
         assert re.fullmatch(r"(r-[0-9]+|s-[0-9]{2}-[0-9]{2})",r["key"])
         assert 0<=int(r["violations"])<=int(r["pairs"])
         parts[(r["runtime"],r["method"],r["group"])].append(r)
+    if dataset_manifest:
+        metadata={r["key"]:r for r in rows(dataset_manifest)}
+        strata=defaultdict(list)
+        for r in allfits:
+            strata[r["runtime"],r["method"],r["group"],metadata[r["key"]]["subtype"],r["cohort"]].append(r)
+        detail=[]
+        for (rt,m,g,sub,cohort),items in sorted(strata.items()):
+            flagged=sum(int(x["violations"])>0 for x in items)
+            detail.append(dict(runtime=rt,method=m,group=g,analyte_or_simulation_family=sub,cohort=cohort,
+                datasets=len(items),with_violation=flagged,rate=flagged/len(items),
+                changes_under_bounds=sum(x["saved_winner"]!=x["winner_using_nested_bounds"] for x in items)))
+        table(src/"by-analyte-or-simulation-family.csv",list(detail[0]),detail)
     cols=("key","cohort","pairs","violations","unavailable","excluded","max_loglik_loss","saved_winner","winner_using_nested_bounds","incomplete_seed_inventory")
     for group,items in parts.items():
         name="-".join(group).replace(" ","-")+".csv"
@@ -41,7 +53,25 @@ def saved(src):
 def improved(src, local, actions):
     allfits=list(rows(src/"candidate-fits.csv.gz"))
     assert len(allfits)==156*15*2
-    cols=("Index","transform","k","selected","loglik","bic","lambda","shift","lower","upper","origin","code","initial_retained","at_bound","starts","nonzero_codes","perturbation_seed")
+    fits=defaultdict(list)
+    for r in allfits: fits[r["Index"],r["runtime"],r["method"]].append(r)
+    chosen={}
+    for key,items in fits.items():
+        ordered=sorted(items,key=lambda r:float(r["bic"]))
+        assert ordered[0]["selected"]=="TRUE"
+        winner=float(ordered[0]["bic"])
+        gap=float(ordered[1]["bic"])-winner
+        for rank,r in enumerate(ordered,1):
+            r.update(rank=rank,delta_bic=float(r["bic"])-winner,runner_up_gap=gap)
+        chosen[key]=ordered[0]
+    paired=[]
+    for r in rows(src/"paired-replay.csv"):
+        for rt,suffix in (("local","local"),("Actions","actions")):
+            pick=chosen[r["Index"],rt,r["method"]]
+            for field in ("lambda","shift","runner_up_gap"):r[field+"_"+suffix]=pick[field]
+        paired.append(r)
+    table(src/"paired-replay.csv",list(paired[0]),paired)
+    cols=("Index","transform","k","selected","rank","loglik","bic","delta_bic","runner_up_gap","lambda","shift","lower","upper","origin","code","initial_retained","at_bound","starts","nonzero_codes","perturbation_seed")
     for runtime, method in itertools.product(("local","Actions"),("baseline","armA")):
         sel=[r for r in allfits if r["runtime"]==runtime and r["method"]==method]
         assert len(sel)==156*(9 if method=="baseline" else 6)
