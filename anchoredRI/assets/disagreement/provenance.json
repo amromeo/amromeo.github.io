@@ -1,0 +1,21 @@
+{
+  "protocol_commit": "dea1da81da6344e57b5c82361e682b75e5329df4",
+  "threshold_changes": false,
+  "bootstrap_replicates": 1000,
+  "datasets": 900,
+  "unique_anchor_samples": 60,
+  "sha256": {
+    "R/bootstrap_anchored_ri.R": "d9ff4ab4925f0c523e33cea6a38f464ddec5d569d2f390ef5e02627774d871ea",
+    "R/compare.R": "21f12b9c8882412acd3ef659a19c99231d67e281b5d77d0353e8afdee59235cd",
+    "R/fit_anchored_ri.R": "dcfbae24db2da0b349b477453a73e493e01ea18ee09a40ad1c3d78b38aea3b80",
+    "R/fit_anchored_shifted.R": "5c0ae2b6e74e804cc7650dc5219a7503862da7e23bbe622f8f87d27dbecb4deb",
+    "R/fit_setting_ri.R": "55b61b94c137dda83baec150a1a54c9ad554330251ca7c66d8448ae754ce89ff",
+    "R/simulate.R": "bd846bb6d9b4933347c7e802a636f3da92a8bc187fa14542cf6f99f2eeaec0ff",
+    "tools/stress-design.R": "4e073401042b6c01ce27f4c13facd0558ba31332b0314fe9b0537bd745b7debe",
+    "tools/anchors-only/PROTOCOL.md": "810244528b6ca1a2686237dc365209eb2274e093b6349134600bea4c1cf971df",
+    "tools/anchors-only/estimators.R": "262ef504c59f9adf13268fba7a7b4327f62266b1eb7600e134b04cc5c2187647",
+    "tools/disagreement/run.R": "96a84e821fe52468e80be1584a359b4d9a90ba00b97e8b01b4b088cc463c64fa",
+    "tools/disagreement/summarize.py": "10c22787fd46bac0e78596880f04aa2a7bb78d8c21d4f6c4273291f3e6f20eed",
+    "assets/comparison-study/summary/comparison-results.zip": "ec67505dcf58086b319d215d78aca6ed5bc32eb59de55b67fc4e11368eb1d6de"
+  }
+}

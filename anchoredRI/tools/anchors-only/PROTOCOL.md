@@ -1,6 +1,6 @@
 # Task A, Step 1: anchors-only comparator protocol
 
-Status: draft for user review. No estimator implementation or analysis run is authorized until the user reviews this protocol.
+Status: Step A approved by the user and completed. Step B authorized by the user and specified below before execution. The original Step A execution gate is retained as historical documentation.
 Prepared: 22 November 2026 (America/New_York).
 
 ## Question and scope
