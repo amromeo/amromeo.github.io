@@ -1,0 +1,48 @@
+name: Task E collect completed C2 replay
+on:
+  push:
+    branches: [study/boxcox-c2-runtime]
+    paths: ['.github/workflows/boxcox-collect-replay.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SOURCE_RUN: 45131636241
+    steps:
+      - name: Select complete artifact for every shard
+        run: |
+          set -euo pipefail
+          mkdir -p replay-156
+          gh api "/repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN/artifacts?per_page=100" > artifacts.json
+          for shard in $(seq 1 26); do
+            name="armA-replay-$shard"
+            id=$(jq -r --arg name "$name" '
+              [.artifacts[] | select(.name == $name and .expired == false)]
+              | sort_by(.size_in_bytes) | last | .id // empty
+            ' artifacts.json)
+            test -n "$id"
+            curl --fail --location --silent --show-error +              -H "Authorization: Bearer $GH_TOKEN" +              -H "Accept: application/vnd.github+json" +              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$id/zip" +              --output "artifact-$shard.zip"
+            mkdir -p "replay-156/armA-replay-$shard"
+            unzip -q "artifact-$shard.zip" -d "replay-156/armA-replay-$shard"
+          done
+      - name: Verify 156 unique datasets
+        run: |
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          files = list(Path("replay-156").glob("armA-replay-*/selected.csv"))
+          indices = [int(row["Index"]) for f in files for row in csv.DictReader(f.open())]
+          assert len(files) == 26
+          assert sorted(indices) == list(range(1, 157))
+          assert len(indices) == len(set(indices)) == 156
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: armA-replay-156
+          path: replay-156/
+          retention-days: 30
