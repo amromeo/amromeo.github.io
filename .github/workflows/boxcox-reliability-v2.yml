@@ -1,0 +1,67 @@
+name: Task E multistart reliability on C2 image
+on:
+  push:
+    branches: [study/boxcox-c2-runtime]
+    paths:
+      - .github/workflows/boxcox-reliability-v2.yml
+      - anchoredRI/tools/boxcox/reliability-v2/release-sha.txt
+permissions:
+  contents: read
+  actions: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    env:
+      OMP_NUM_THREADS: 1
+      OPENBLAS_NUM_THREADS: 1
+    steps:
+      - name: Check original C2 runner image
+        run: |
+          echo "Observed image $ImageVersion"
+          test "$ImageVersion" = 20261116.202.1
+      - uses: actions/checkout@v4
+      - name: Read frozen source commit
+        id: source
+        run: |
+          ref=$(cat anchoredRI/tools/boxcox/reliability-v2/release-sha.txt)
+          [[ "$ref" =~ ^[a-f0-9]{40}$ ]]
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.source.outputs.ref }}
+          path: study
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+      - uses: actions/checkout@v4
+        with:
+          ref: f72ea14fc7978bf2478f54c87548cb6c127fa766
+          path: c2-runtime
+      - working-directory: c2-runtime/anchoredRI
+        run: Rscript tools/ribench/install.R
+      - uses: actions/download-artifact@v4
+        with:
+          name: ribench-data-small
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-data
+      - uses: actions/download-artifact@v4
+        with:
+          name: ribench-scored-independent
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-fits
+      - name: Verify objective and fit improved baseline and Arm A
+        working-directory: study/anchoredRI
+        run: |
+          set -eu
+          Rscript tools/boxcox/reliability-v2/build.R "$RUNNER_TEMP/reliability.so"
+          Rscript tools/boxcox/reliability-v2/test-fitter.R "$RUNNER_TEMP/reliability.so"
+          Rscript tools/boxcox/reliability-v2/run-replay.R Actions ../../original-data ../../original-fits ../../reliability-results 1 1 4 "$RUNNER_TEMP/reliability.so"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: boxcox-multistart-v2-156
+          path: reliability-results/
+          if-no-files-found: error
+          retention-days: 30
