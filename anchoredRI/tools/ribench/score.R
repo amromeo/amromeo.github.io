@@ -2,7 +2,12 @@ library(RIbench)
 a<-commandArgs(TRUE);workingDir<-normalizePath(a[1]);testsets<-loadTestsetDefinition();testsets<-testsets[testsets$N<=5000,]
 algos<-c('anchoredRI','anchorsOnly','refineR')
 for(algo in algos)stopifnot(length(list.files(file.path(workingDir,'Results',algo),pattern='Rdata$',recursive=TRUE))==2880)
-score<-evaluateAlgorithmResults(workingDir,algoNames=algos,subset=testsets)
+score<-tryCatch(evaluateAlgorithmResults(workingDir,algoNames=algos,subset=testsets),error=function(e){
+ if(!grepl('length(errorList) == length(nameList)',conditionMessage(e),fixed=TRUE))stop(e)
+ writeLines(conditionMessage(e),file.path(workingDir,'RIbench-subset-plot-error.txt'))
+ message('RIbench subset plot failed; exporting unchanged native metrics and small-N category scores.')
+ NULL
+})
 saveRDS(score,file.path(workingDir,'small-N-benchmark-score.rds'));capture.output(str(score),file=file.path(workingDir,'small-N-benchmark-score.txt'))
 # Preserve the native per-dataset performance tables, including FT4 alone.
 all<-list()
@@ -19,6 +24,12 @@ for(algo in algos){
  saveRDS(ri[['FT4']],file.path(workingDir,paste0(algo,'-lambda-0.432.rds')))
 }
 saveRDS(all,file.path(workingDir,'all-performance.rds'))
+# Keep RIbench's fixed 27-row layout; absent high-N categories remain NA.
+# The overall row summarizes only this observed small-N subset.
+small_score<-RIbench:::getBenchmarkResults(errorList=all,nameVec=algos,tableTCs=testsets,cutoffZ=5,
+ perfCombination='mean')
+saveRDS(small_score,file.path(workingDir,'small-N-category-score.rds'))
+capture.output(print(small_score),file=file.path(workingDir,'small-N-category-score.txt'))
 cat('Completed small-N scoring; lambda=0.432 results retained separately\n')
 rows<-list()
 for(algo in algos){
@@ -31,7 +42,7 @@ for(algo in algos){
  }
 }
 summary<-do.call(rbind,rows);write.csv(summary,file.path(workingDir,'summary.csv'),row.names=FALSE)
-text<-c('# RIbench: N <= 5,000','', 'All 2,880 datasets were evaluated with each of three methods. This is a subset evaluation, not the published full RIbench benchmark score. AnchoredRI and anchorsOnly receive simulated screened anchors; refineR receives only routine data.','', 'Runtime below is the sum of per-fit elapsed seconds, excluding generation, installation and workflow queueing. Parallel execution wall time should be reported separately.','', '| Subset | Method | N | Failed | Mean absolute Z deviation | Capped mean | Fit runtime (minutes) |','|---|---|---:|---:|---:|---:|---:|')
+text<-c('# RIbench: N <= 5,000','', 'RIbench evaluateAlgorithmResults stopped at a sample-size subset plot. Native per-dataset metrics and category scores were recovered using its unchanged computePerfMeasAll and getBenchmarkResults functions. No fits were rerun.', '', 'All 2,880 datasets were evaluated with each of three methods. This is a subset evaluation, not the published full RIbench benchmark score. AnchoredRI and anchorsOnly receive simulated screened anchors; refineR receives only routine data.','', 'Runtime below is the sum of per-fit elapsed seconds, excluding generation, installation and workflow queueing. Parallel execution wall time should be reported separately.','', '| Subset | Method | N | Failed | Mean absolute Z deviation | Capped mean | Fit runtime (minutes) |','|---|---|---:|---:|---:|---:|---:|')
 for(i in which(summary$group %in% c('all','lambda=0.432'))){r<-summary[i,];text<-c(text,sprintf('| %s | %s | %d | %d | %.4f | %.4f | %.2f |',r$group,r$algorithm,r$n,r$failed,r$mean_abs_z,r$mean_capped_abs_z,r$runtime_total_seconds/60))}
 text<-c(text,'','The uncapped metric summarizes available results; inspect failure counts with it. Capped deviations and RIbench subset scores retain RIbench conventions. FT4 is the lambda=0.432 subset. CRP uses its one-sided 95th percentile.','', 'No N=50,000 or N=500,000 fit was run. Report these runtime results before proceeding to those stages. All source versions, native Rdata outputs and per-analyte CSVs are retained.')
 writeLines(text,file.path(workingDir,'REPORT.md'))
