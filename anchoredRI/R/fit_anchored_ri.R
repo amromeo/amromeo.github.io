@@ -7,9 +7,9 @@
 .fit_anchored_fixed <- function(value, setting, anchor, transform = c("identity", "log")) {
   transform <- match.arg(transform)
   if (!is.numeric(value) || !is.numeric(anchor) || length(anchor) < 2L ||
-      length(value) != length(setting) || length(unique(setting)) != 2L ||
+      length(value) != length(setting) || !length(unique(setting)) %in% 1:2 ||
       anyNA(setting) || any(!is.finite(c(value, anchor)))) {
-    stop("Supply numeric results from two settings and independent reference values.")
+    stop("Supply numeric results from one or two settings and independent reference values.")
   }
   if (transform == "log" && any(c(value, anchor) <= 0)) stop("Log requires positive values.")
   forward <- if (transform == "log") log else identity
@@ -23,15 +23,16 @@
   a <- (forward(anchor) - center) / scale
   x <- sort(unique(z))
   groups <- unique(as.character(setting))
+  G <- length(groups)
   g <- match(as.character(setting), groups)
-  counts <- matrix(tabulate(match(z, x) + (g - 1L) * length(x), 2L * length(x)),
-                   ncol = 2L, dimnames = list(NULL, groups))
+  counts <- matrix(tabulate(match(z, x) + (g - 1L) * length(x), G * length(x)),
+                   ncol = G, dimnames = list(NULL, groups))
   n_group <- colSums(counts)
   n <- length(z) + length(a)
   # Component means, log SDs, and non-baseline log odds for each setting.
   fit_k <- function(k) {
     unpack <- function(par) {
-      eta <- rbind(matrix(tail(par, 2L * (k - 1L)), ncol = 2L), c(0, 0))
+      eta <- rbind(matrix(tail(par, G * (k - 1L)), ncol = G), rep(0, G))
       weights <- exp(sweep(eta, 2, apply(eta, 2, max), "-"))
       list(mu = par[seq_len(k)], sigma = exp(par[k + seq_len(k)]),
            w = sweep(weights, 2, colSums(weights), "/"))
@@ -43,8 +44,8 @@
       }, numeric(length(x)))
       ll <- sum(dnorm(a, p$mu[1], p$sigma[1], log = TRUE))
       contributions <- matrix(0, length(x), k)
-      weight_score <- matrix(0, k - 1L, 2L)
-      for (h in 1:2) {
+      weight_score <- matrix(0, k - 1L, G)
+      for (h in seq_len(G)) {
         parts <- sweep(log_density, 2, log(p$w[, h]), "+")
         peak <- do.call(pmax, as.data.frame(parts))
         scaled <- exp(parts - peak)
@@ -67,11 +68,11 @@
     }
     slots <- if (k == 2L) list(.15, .5, .85) else list(c(.12,.85), c(.60,.90), c(.10,.40))
     ref_sd <- min(19.9, max(.06, sd(a)))
-    lo <- c(rep(min(c(z,a)), k), rep(log(.05), k), rep(-7, 2L * (k-1L)))
-    hi <- c(rep(max(c(z,a)), k), rep(log(20), k), rep(7, 2L * (k-1L)))
+    lo <- c(rep(min(c(z,a)), k), rep(log(.05), k), rep(-7, G * (k-1L)))
+    hi <- c(rep(max(c(z,a)), k), rep(log(20), k), rep(7, G * (k-1L)))
     fits <- lapply(slots, function(probs) {
       init <- c(mean(a), unname(quantile(z, probs)), log(ref_sd),
-                rep(log(1), k-1L), rep(0, 2L * (k-1L)))
+                rep(log(1), k-1L), rep(0, G * (k-1L)))
       tryCatch(optim(init, calc, function(p) calc(p, TRUE), method = "L-BFGS-B",
             lower = lo, upper = hi, control = list(maxit = 450L, factr = 1e6)),
             error = function(e) NULL)
@@ -85,7 +86,7 @@
   all_z <- c(z, a)
   one_mu <- mean(all_z)
   one_sd <- sqrt(mean((all_z - one_mu)^2))
-  one <- list(p = list(mu = one_mu, sigma = one_sd, w = matrix(1, 1L, 2L)),
+  one <- list(p = list(mu = one_mu, sigma = one_sd, w = matrix(1, 1L, G)),
               bic = -2 * sum(dnorm(all_z, one_mu, one_sd, log = TRUE)) + 2*log(n),
               at_bound = FALSE)
   fits <- list(one, fit_k(2L), fit_k(3L))
@@ -119,9 +120,9 @@ fit_anchored_ri <- function(value, setting, anchor,
                             shift_bounds = NULL) {
   transform <- match.arg(transform)
   if (!is.numeric(value) || !is.numeric(anchor) || length(anchor) < 2L ||
-      length(value) != length(setting) || length(unique(setting)) != 2L ||
+      length(value) != length(setting) || !length(unique(setting)) %in% 1:2 ||
       anyNA(setting) || any(!is.finite(c(value, anchor)))) {
-    stop("Supply numeric results from two settings and independent reference values.")
+    stop("Supply numeric results from one or two settings and independent reference values.")
   }
   if (!is.null(shift_bounds) && !transform %in% c("shifted_log", "auto"))
     stop("shift_bounds applies only to shifted_log or auto.")

@@ -2,6 +2,7 @@
 # A common, estimated location shift followed by log-normal mixture components.
 # The log-Jacobian is included for every observation, including each anchor.
 .anchored_shift_objective <- function(x, anchor, counts, k) {
+  G <- ncol(counts)
   n_group <- colSums(counts)
   total_counts <- rowSums(counts)
   n <- sum(counts) + length(anchor)
@@ -11,8 +12,8 @@
       mu <- par[seq_len(k)]
       sigma <- exp(par[k + seq_len(k)])
       shift <- tail(par, 1L)
-      eta <- if (k == 1L) matrix(0, 1, 2) else
-        rbind(matrix(par[2L*k + seq_len(2L*(k-1L))], ncol = 2L), c(0, 0))
+      eta <- if (k == 1L) matrix(0, 1, G) else
+        rbind(matrix(par[2L*k + seq_len(G*(k-1L))], ncol = G), rep(0, G))
       w <- exp(sweep(eta, 2, apply(eta, 2, max), "-"))
       w <- sweep(w, 2, colSums(w), "/")
       y <- log(x - shift)
@@ -21,8 +22,8 @@
                          numeric(length(x)))
       ll <- sum(dnorm(a, mu[1], sigma[1], log = TRUE)) - sum(a) - sum(total_counts*y)
       contributions <- matrix(0, length(x), k)
-      weight_score <- matrix(0, k - 1L, 2L)
-      for (h in 1:2) {
+      weight_score <- matrix(0, k - 1L, G)
+      for (h in seq_len(G)) {
         parts <- sweep(density, 2, log(w[, h]), "+")
         peak <- do.call(pmax, as.data.frame(parts))
         scaled <- exp(parts - peak)
@@ -70,8 +71,9 @@
   a <- (anchor-location)/spread
   x <- sort(unique(v))
   groups <- unique(as.character(setting))
+  G <- length(groups)
   g <- match(as.character(setting), groups)
-  counts <- matrix(tabulate(match(v,x)+(g-1L)*length(x), 2L*length(x)), ncol=2L)
+  counts <- matrix(tabulate(match(v,x)+(g-1L)*length(x), G*length(x)), ncol=G)
   n <- length(value)+length(anchor)
   zero <- min(bounds[2], max(bounds[1], -location/spread))
   shifts <- unique(c(zero, bounds[1]+.5*diff(bounds), bounds[1]+.9*diff(bounds)))
@@ -80,13 +82,13 @@
     slots <- if (k==1L) list(numeric()) else if (k==2L) list(.15,.5,.85) else
       list(c(.12,.85),c(.60,.90),c(.10,.40))
     lo <- c(rep(log(min(c(x,a))-bounds[2]),k), rep(log(.005),k),
-            rep(-7,2L*(k-1L)), bounds[1])
+            rep(-7,G*(k-1L)), bounds[1])
     hi <- c(rep(log(max(c(x,a))-bounds[1]),k), rep(log(5),k),
-            rep(7,2L*(k-1L)), bounds[2])
+            rep(7,G*(k-1L)), bounds[2])
     starts <- unlist(lapply(shifts, function(d) lapply(slots, function(probs) {
       y <- log(v-d); aa <- log(a-d)
       c(mean(aa), unname(quantile(y,probs)), log(min(4.9,max(.006,sd(aa)))),
-        rep(log(min(4.9,max(.006,sd(y)))),k-1L), rep(0,2L*(k-1L)),d)
+        rep(log(min(4.9,max(.006,sd(y)))),k-1L), rep(0,G*(k-1L)),d)
     })), recursive=FALSE)
     candidates <- lapply(starts,function(init) {
       tryCatch(optim(init,calc,function(p)calc(p,TRUE),method="L-BFGS-B",lower=lo,upper=hi,

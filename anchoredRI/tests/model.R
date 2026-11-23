@@ -18,7 +18,7 @@ stopifnot(max(abs(fit$limits - d$truth)) < 3,
 on_log <- fit_anchored_ri(exp(x$value/10), x$setting, exp(d$anchor/10), "log")
 stopifnot(isTRUE(all.equal(unname(on_log$limits), unname(exp(fit$limits/10)), tolerance = 1e-4)))
 fails <- function(expr) inherits(try(force(expr), silent = TRUE), "try-error")
-stopifnot(fails(fit_anchored_ri(x$value, rep("a", nrow(x)), d$anchor)),
+stopifnot(fails(fit_anchored_ri(x$value, rep(c("a","b","c"), length.out=nrow(x)), d$anchor)),
           fails(fit_anchored_ri(x$value, x$setting, numeric())),
           fails(fit_anchored_ri(x$value, x$setting, -d$anchor, "log")),
           fails(simulate_ri_case(1.5, 1)), fails(simulate_ri_study(n_anchor = -1)))
