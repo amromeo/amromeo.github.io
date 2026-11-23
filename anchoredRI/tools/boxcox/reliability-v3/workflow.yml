@@ -1,0 +1,88 @@
+name: Task E round 3 baseline and Arm A reliability
+on:
+  push:
+    branches: [study/boxcox-c2-runtime]
+    paths:
+      - .github/workflows/boxcox-reliability-v3.yml
+      - anchoredRI/tools/boxcox/reliability-v3/release-sha.txt
+permissions:
+  contents: read
+  actions: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 160
+    env:
+      OMP_NUM_THREADS: 1
+      OPENBLAS_NUM_THREADS: 1
+    steps:
+      - name: Verify archived image
+        run: |
+          echo "Runner image $ImageVersion"
+          test "$ImageVersion" = 20261116.202.1
+      - uses: actions/checkout@v4
+      - id: pin
+        run: |
+          ref=$(cat anchoredRI/tools/boxcox/reliability-v3/release-sha.txt)
+          [[ "$ref" =~ ^[a-f0-9]{40}$ ]]
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.pin.outputs.ref }}
+          path: study
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+      - uses: actions/checkout@v4
+        with:
+          ref: f72ea14fc7978bf2478f54c87548cb6c127fa766
+          path: c2-runtime
+      - working-directory: c2-runtime/anchoredRI
+        run: Rscript tools/ribench/install.R
+      - uses: actions/download-artifact@v4
+        with:
+          name: ribench-data-small
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-data
+      - uses: actions/download-artifact@v4
+        with:
+          name: ribench-scored-independent
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-fits
+      - uses: actions/download-artifact@v4
+        with:
+          name: boxcox-multistart-v2_1-156
+          run-id: 45175838337
+          github-token: ${{ github.token }}
+          path: saved-v21
+      - name: Check objective and finish the 156 paired fits
+        working-directory: study/anchoredRI
+        run: |
+          set -eu
+          r=tools/boxcox/reliability-v3
+          Rscript "$r/build-production.R" "$RUNNER_TEMP/round3.so"
+          Rscript "$r/test.R" "$RUNNER_TEMP/round3.so"
+          Rscript "$r/replay.R" Actions ../../original-data ../../original-fits ../../saved-v21 ../../round3/phase1 4 "$RUNNER_TEMP/round3.so"
+          cp "$RUNNER_TEMP/round3.so.sources.csv" ../../round3/phase1/native-sources.csv
+      - name: Upload completed continuation fits for local reciprocal starts
+        uses: actions/upload-artifact@v4
+        with:
+          name: boxcox-round3-exchange
+          path: round3/phase1/exchange/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Reciprocal starts in the verified C2 runtime
+        working-directory: study/anchoredRI
+        run: |
+          r=tools/boxcox/reliability-v3
+          Rscript "$r/cross.R" Actions ../../original-data ../../original-fits "$r/exchange/local" ../../round3/phase1/exchange ../../round3/cross 4 "$RUNNER_TEMP/round3.so"
+      - name: Save fitted parameters, numerical checks and convergence history
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: boxcox-round3-actions
+          path: round3/
+          if-no-files-found: ignore
+          retention-days: 30
