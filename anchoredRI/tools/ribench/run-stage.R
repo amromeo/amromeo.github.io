@@ -53,7 +53,7 @@ for(i in seq_len(nrow(testsets))){
   fit<-data.frame(Percentile=probs,PointEst=estimate,Runtime=c(unname(runtime[3]),rep(NA_real_,length(probs)-1)))
   dest<-file.path(workingDir,'Results',algo,s$Analyte);dir.create(dest,recursive=TRUE,showWarnings=FALSE)
   save(fit,file=file.path(dest,paste0(stem,'_',algo,'.Rdata')))
-  rows[[length(rows)+1]]<-data.frame(Index=s$Index,Analyte=s$Analyte,N=s$N,lambda=s$nonp_lambda,algo=algo,anchor_seed=s$Index+17000000L,anchors=length(a),model=model,shift=shift,components=components,runtime=unname(runtime[3]),error=error,at_bound=bound,lrt_statistic=lrt_stat,lrt_p=lrt_p)
+  rows[[length(rows)+1]]<-data.frame(Index=s$Index,Analyte=s$Analyte,N=s$N,lambda=s$nonp_lambda,algo=algo,routine_min=min(x),anchor_seed=s$Index+17000000L,anchors=length(a),model=model,shift=shift,components=components,runtime=unname(runtime[3]),error=error,at_bound=bound,lrt_statistic=lrt_stat,lrt_p=lrt_p)
  }
  cat('shard',shard,'completed',i,'of',nrow(testsets),'\n');flush.console()
 }
