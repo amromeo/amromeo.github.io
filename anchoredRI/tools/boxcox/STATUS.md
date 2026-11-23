@@ -15,3 +15,16 @@ No experimental benchmark fits or performance comparisons have run. The validati
 ## Validation amendment approved
 
 The user approved the cross-machine validation amendment on 22 November 2026. It is recorded in PROTOCOL.md. A fresh validation run preserves the original failed run and uses the unchanged estimators. Every same-machine comparison must pass absolute tolerance 1e-10. Cross-machine differences are audited against 0.1% of archived interval width, with a review gate for any model change or more than 1% outside tolerance. The baseline for scoring is now the frozen C2 source refitted in the experimental runtime. Experimental fits remain gated on completion of this validation.
+
+## Amended review gate triggered
+
+Validation paused on 22 November 2026 after 156 of 5,220 datasets. All completed same-machine checks passed at absolute tolerance 1e-10. Among these 156 RIbench datasets, two selected a different transform than the archived C2 result. Both also exceed the 0.1%-of-archived-width limit tolerance.
+
+| Analyte | Index | N | Local transform | Archived transform | Components, local / archived | Largest limit difference / archived width |
+|---|---:|---:|---|---|---|---:|
+| Hb | 100 | 1,000 | log | identity | 3 / 3 | 4.170293% |
+| Hb | 148 | 5,000 | identity | shifted_log | 3 / 3 | 4.207564% |
+
+The largest absolute limit difference is 0.1707087 for Index 100. The largest width-normalized difference is 4.207564% for Index 148. These are partial validation findings, not estimates for the full benchmark. They trigger the user-approved pause because any selected model change requires review.
+
+The controller has stopped after completing its active batch. `HALT.txt` remains in the run directory. No experimental benchmark fits or scoring have started. No estimator, fitting setting, outcome or success criterion was changed. The exception and summary tables are saved under `validation/`. Continuing requires the user's review of this gate; it must not be bypassed automatically.

@@ -1,0 +1,3 @@
+"Index","Analyte","N","local_transform","archived_transform","local_components","archived_components","model_changed","archived_width","one_sided_span","max_absolute_difference","max_fraction_of_width","outside_tolerance"
+100,"Hb",1000,"log","identity",3,3,TRUE,4.0934455290995,FALSE,0.170708665349151,0.04170292828758,TRUE
+148,"Hb",5000,"identity","shifted_log",3,3,TRUE,3.9866576490172,FALSE,0.167741189054963,0.0420756442671507,TRUE
