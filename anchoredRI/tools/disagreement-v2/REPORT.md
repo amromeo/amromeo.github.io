@@ -1,6 +1,86 @@
 # Routine-data separation study
 
-Development selected rule a at t = 0.80. Confirmation is pending.
+**Confirmation.** Rule a at t = 0.80 did not meet both criteria. It declined 92/312 (29.5%) of estimates with error over 10% and 21/453 (4.6%) of estimates with error under 5%.
+
+The prespecified targets were at least two-thirds and at most 5%, respectively.
+
+## Confirmation
+
+All 900 datasets passed the frozen-fit comparison. The largest absolute difference in either limit or the offset was 0. BIC selected one component in 224/900 datasets.
+
+| Decision | All declined | Declined among E > 10% | Declined among E > 25% | Declined among E < 5% | Technical withholdings |
+| --- | --- | --- | --- | --- | --- |
+| Rule a, t = 0.80 | 122/900 (13.6%) | 92/312 (29.5%) | 84/163 (51.5%) | 21/453 (4.6%) | 0 |
+| LRT alone | 91/900 (10.1%) | 86/312 (27.6%) | 83/163 (50.9%) | 5/453 (1.1%) | 0 |
+
+Error among reported intervals, as a percentage of the true interval width
+
+| Decision | Number reported | Mean | Median | 90th percentile | Maximum | E > 10% |
+| --- | --- | --- | --- | --- | --- | --- |
+| Rule a, t = 0.80 | 778 | 10.07 | 4.28 | 25.54 | 89.03 | 220/778 (28.3%) |
+| LRT alone | 809 | 9.94 | 4.28 | 24.84 | 89.03 | 226/809 (27.9%) |
+
+Fitted overlap by design level, pooled over all datasets with a defined O.
+
+| Overlap | True | Mean fitted O | Defined / attempted |
+| --- | --- | --- | --- |
+| Separated | 5.1% | 5.3% | 300/300 |
+| Moderate | 48.6% | 49.6% | 300/300 |
+| Heavy | 81.8% | 75.5% | 76/300 |
+
+### Normal
+
+Mean fitted O, with the number of defined estimates out of 20 in parentheses. The remaining fits selected one component.
+
+| Overlap | 10% affected | 30% | 50% | 70% | 90% |
+| --- | --- | --- | --- | --- | --- |
+| Separated (5.1% true) | 5.5% (20/20) | 4.9% (20/20) | 5.3% (20/20) | 5.8% (20/20) | 6.0% (20/20) |
+| Moderate (48.6% true) | 52.4% (20/20) | 49.2% (20/20) | 49.5% (20/20) | 51.5% (20/20) | 52.6% (20/20) |
+| Heavy (81.8% true) | 68.4% (7/20) | 79.6% (11/20) | 79.4% (9/20) | 77.0% (4/20) | undefined (0/20) |
+
+Declines per cell, selected rule / LRT alone.
+
+| Overlap | 10% affected | 30% | 50% | 70% | 90% |
+| --- | --- | --- | --- | --- | --- |
+| Separated | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) |
+| Moderate | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) |
+| Heavy | 4/20 (20.0%) / 0/20 (0.0%) | 10/20 (50.0%) / 0/20 (0.0%) | 5/20 (25.0%) / 1/20 (5.0%) | 6/20 (30.0%) / 5/20 (25.0%) | 16/20 (80.0%) / 16/20 (80.0%) |
+
+### Lognormal
+
+Mean fitted O, with the number of defined estimates out of 20 in parentheses. The remaining fits selected one component.
+
+| Overlap | 10% affected | 30% | 50% | 70% | 90% |
+| --- | --- | --- | --- | --- | --- |
+| Separated (5.1% true) | 5.2% (20/20) | 5.4% (20/20) | 5.0% (20/20) | 5.1% (20/20) | 5.0% (20/20) |
+| Moderate (48.6% true) | 49.8% (20/20) | 48.0% (20/20) | 48.4% (20/20) | 48.4% (20/20) | 50.0% (20/20) |
+| Heavy (81.8% true) | 83.0% (8/20) | 74.5% (7/20) | 75.6% (3/20) | 75.1% (4/20) | 72.5% (4/20) |
+
+Declines per cell, selected rule / LRT alone.
+
+| Overlap | 10% affected | 30% | 50% | 70% | 90% |
+| --- | --- | --- | --- | --- | --- |
+| Separated | 0/20 (0.0%) / 1/20 (5.0%) | 0/20 (0.0%) / 1/20 (5.0%) | 0/20 (0.0%) / 1/20 (5.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) |
+| Moderate | 0/20 (0.0%) / 1/20 (5.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 1/20 (5.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) |
+| Heavy | 6/20 (30.0%) / 0/20 (0.0%) | 7/20 (35.0%) / 3/20 (15.0%) | 5/20 (25.0%) / 5/20 (25.0%) | 9/20 (45.0%) / 8/20 (40.0%) | 13/20 (65.0%) / 13/20 (65.0%) |
+
+### Shifted lognormal
+
+Mean fitted O, with the number of defined estimates out of 20 in parentheses. The remaining fits selected one component.
+
+| Overlap | 10% affected | 30% | 50% | 70% | 90% |
+| --- | --- | --- | --- | --- | --- |
+| Separated (5.1% true) | 5.2% (20/20) | 5.3% (20/20) | 5.2% (20/20) | 5.0% (20/20) | 5.4% (20/20) |
+| Moderate (48.6% true) | 48.4% (20/20) | 49.5% (20/20) | 47.9% (20/20) | 49.2% (20/20) | 49.3% (20/20) |
+| Heavy (81.8% true) | 61.6% (4/20) | 70.5% (8/20) | 78.9% (3/20) | 77.3% (4/20) | undefined (0/20) |
+
+Declines per cell, selected rule / LRT alone.
+
+| Overlap | 10% affected | 30% | 50% | 70% | 90% |
+| --- | --- | --- | --- | --- | --- |
+| Separated | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) |
+| Moderate | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) | 0/20 (0.0%) / 0/20 (0.0%) |
+| Heavy | 1/20 (5.0%) / 0/20 (0.0%) | 5/20 (25.0%) / 2/20 (10.0%) | 7/20 (35.0%) / 6/20 (30.0%) | 11/20 (55.0%) / 10/20 (50.0%) | 17/20 (85.0%) / 17/20 (85.0%) |
 
 ## Development
 
