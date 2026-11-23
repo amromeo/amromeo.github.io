@@ -19,7 +19,9 @@ for(algo in c('anchoredRI','anchorsOnly','refineR')){
  bad[q$Analyte=='CRP']<-abs(q$zzDev_URL[q$Analyte=='CRP'])>5
  q<-q[which(bad),];q<-merge(q,t[,c('Index','fractionPathol','Distribution')],by='Index')
  if(algo!='refineR')q<-merge(q,d[d$algo==algo,c('Index','model','components','at_bound')],by='Index',all.x=TRUE) else {
-  q$model<-paste0('BoxCox lambda=',q$Est_Lambda,'; shift=',q$Est_Shift);q$components<-1L;q$at_bound<-NA
+  q$model<-sprintf('BoxCox lambda=%s; shift=%s',q$Est_Lambda,q$Est_Shift)
+  q$components<-rep.int(1L,nrow(q))
+  q$at_bound<-rep.int(NA,nrow(q))
  }
  extreme[[algo]]<-q[,c('Index','Analyte','Algorithm','fractionPathol','Distribution','model','components','at_bound','zzDev_LRL','zzDev_URL')]
 }

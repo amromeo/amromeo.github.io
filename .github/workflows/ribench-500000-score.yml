@@ -1,0 +1,54 @@
+name: RIbench N500000 complete scored archive
+on:
+  push:
+    branches: [anchoredri-ribench-independent-500000]
+    paths: ['.github/workflows/ribench-500000-score.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: 1
+      RIBENCH_N: 500000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+      - run: Rscript tools/ribench/install.R
+        working-directory: anchoredRI
+      - uses: actions/download-artifact@v4
+        with:
+          name: ribench-scored-independent-500000
+          run-id: 45110114996
+          github-token: ${{ github.token }}
+          path: benchmark
+      - name: Verify all original fits and native category scores
+        run: |
+          Rscript - <<'RS'
+          methods <- c("anchoredRI","anchorsOnly","refineR")
+          s <- read.csv("benchmark/summary.csv")
+          category <- readRDS("benchmark/stage-category-score.rds")
+          stopifnot(nrow(category)==27L,nrow(s)==36L)
+          for(m in methods) {
+            files <- list.files(file.path("benchmark","Results",m),pattern="[.]Rdata$",recursive=TRUE)
+            p <- read.csv(file.path("benchmark",paste0(m,"-all-performance.csv")))
+            overall <- as.numeric(category[category$DistributionType=="Overall",m])
+            stopifnot(length(files)==1440L,nrow(p)==1440L,!anyDuplicated(p$Index),
+                      abs(overall-mean(p$zzDevAbsCutoff_Ov,na.rm=TRUE))<1e-10)
+          }
+          RS
+      - name: Complete paired comparisons and endpoint audit
+        run: Rscript tools/ribench/compare-stage.R "$GITHUB_WORKSPACE/benchmark"
+        working-directory: anchoredRI
+      - name: Export per-dataset diagnostics
+        run: Rscript tools/ribench/export-diagnostics.R "$GITHUB_WORKSPACE/benchmark"
+        working-directory: anchoredRI
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ribench-scored-independent-500000
+          path: benchmark/
+          retention-days: 30
