@@ -91,12 +91,13 @@ for a in sorted(old50):
     projection.append(dict(analyte=a,remaining=n,archived_large_fits=len(old50[a]),
         fresh_small_5000=len(current5[a]),small_5000_cpu_proxy=t5,archived_50k_to_5k_ratio=factor,
         source="measured at N=5000" if direct else "cross-analyte calibration",
-        projected_cpu_seconds=n*t5*factor,median_ratio_sensitivity_seconds=n*t5*factor2))
+        all_144_from_scratch_seconds=144*t5*factor,projected_cpu_seconds=n*t5*factor,median_ratio_sensitivity_seconds=n*t5*factor2))
 save("large-runtime-projection.csv",projection)
 assert sum(q["remaining"] for q in projection)==1296
 eff=runtime[-1]["fit_cpu_seconds"]/runtime[-1]["elapsed_seconds"]
 eta=sum(q["projected_cpu_seconds"] for q in projection)/eff
 sensitivity=sum(q["median_ratio_sensitivity_seconds"] for q in projection)/eff
+cold=sum(q["all_144_from_scratch_seconds"] for q in projection)/eff
 # Audit runner-up gaps and endpoint movement, preserving all candidate BICs.
 cands=defaultdict(list)
 for r in read(out/"candidates.csv"): cands[r["dataset_id"]].append(r)
@@ -108,11 +109,25 @@ for key,rows in cands.items():
         first,second=order[:2]
         ds=[abs(val(first[c])-val(second[c])) for c in ("lower","upper")]
         finite=[d for d in ds if math.isfinite(d)]
+        width=val(first["upper"])-(val(first["lower"]) if math.isfinite(val(first["lower"])) else 0)
+        gap_in_width=max(finite)/width if finite and width>0 else math.nan
         gaps.append(dict(dataset_id=key,stage="small" if key.startswith("r-") else "grid",method=label,
                          first=first["transform"],k=first["k"],second=second["transform"],second_k=second["k"],
                          bic_gap=val(second["bic"])-val(first["bic"]),lower_difference=ds[0],
-                         upper_difference=ds[1],max_limit_difference=max(finite) if finite else math.nan))
+                         upper_difference=ds[1],max_limit_difference=max(finite) if finite else math.nan,
+                         max_difference_as_fraction_of_width=gap_in_width))
 save("runner-up-gaps.csv",gaps)
+near_ties=[]
+for group in ("small","grid"):
+    for method in ("anchoredRI","armB"):
+        eligible=[r for r in gaps if r["stage"]==group and r["method"]==method]
+        near=[r for r in eligible if r["bic_gap"]<=2]
+        sizes=[r["max_difference_as_fraction_of_width"] for r in near if math.isfinite(r["max_difference_as_fraction_of_width"])]
+        near_ties.append(dict(stage=group,method=method,attempts=len(eligible),within_two=len(near),
+                       fraction_within_two=len(near)/len(eligible),finite_differences=len(sizes),
+                       median_relative_difference=st.median(sizes) if sizes else math.nan,
+                       largest_relative_difference=max(sizes) if sizes else math.nan))
+save("runner-up-summary.csv",near_ties)
 ri=read(out/"ribench-summary.csv");grid=read(out/"grid-summary.csv")
 criteria=read(out/"small-success-criteria.csv");ep=read(out/"winning-optimizer-exits.csv")
 assert len(previous)==3924 and len({r["dataset_id"] for r in previous})==3924
@@ -133,6 +148,8 @@ report=["# Task E accuracy at small N and on the simulation grid","",
     "After-safeguard means describe the intervals retained by each method. The archived anchors-only and refineR methods use their original reporting behavior.","",
     table(["Small-N criterion","Improved score","Frozen baseline threshold","Decision"],
           [[labels[r["method"]],sf(r["small_native_capped"]),sf(r["threshold"]),"Passed" if r["passed"]=="TRUE" else "Missed"] for r in criteria]),"",
+    table(["Method","Filter","Scored","Uncapped mean absolute z","Mean absolute z > 5"],
+          [[labels[r["method"]],r["filter"],r["scored"],sf(r["mean_abs_z"]),r["implausible"]] for r in ri if r["group"]=="all"]),"",
     "### Skewed sets with lambda = 0.432","",
     stage_table([dict(r,group="all") for r in ri if r["group"]=="lambda=0.432"],"capped_mean"),"",
     "## Simulation grid","",stage_table(grid,"mean_width_error"),"",
@@ -146,7 +163,13 @@ report=["# Task E accuracy at small N and on the simulation grid","",
 for m in ("anchoredRI","armB"):
     q=[r for r in gridpairs if r["arm"]==m and r["comparator"]=="frozenLocal" and r["filter"]=="before" and r["group"]!="all"]
     report.append(f'{labels[m]} had {sum(r["regression"]=="TRUE" for r in q)} of 45 grid cells with mean error higher than the frozen local baseline by more than two paired Monte Carlo SEs.');report.append("")
-report+=["## Winning optimizer exits","",
+report+=["The distribution and pathological-fraction table reports paired differences, wins, ties, losses and the common reporting denominator before and after safeguarding. [RIbench paired comparisons](ribench-pairs.csv) · [Grid comparisons and MCSE](grid-pairs.csv)","",
+    "## BIC near ties","",
+    table(["Stage","Method","Runner-up within 2 BIC","Median largest endpoint difference in near ties (% of interval width)"],
+       [[r["stage"],labels[r["method"]],f'{r["within_two"]}/{r["attempts"]} ({100*r["fraction_within_two"]:.1f}%)',
+         f'{100*r["median_relative_difference"]:.2f}%'] for r in near_ties]),"",
+    "One-sided CRP fits use the zero-to-upper reporting span. [Near-tie summary](runner-up-summary.csv)","",
+    "## Winning optimizer exits","",
     table(["Stage","Method","Iteration-limit wins","Line-search-error wins"],
             [[stage,labels[m],sum(r["stage"]==stage and r["method"]==m and r["code"]=="1" for r in ep),
              sum(r["stage"]==stage and r["method"]==m and r["code"]=="52" for r in ep)]
@@ -156,7 +179,7 @@ report+=["## Winning optimizer exits","",
     table(["Stage","Completed","Fresh","Cached","Wall time (min)","Fresh fitting CPU (hours)"],
       [[r["stage"],r["datasets"],r["fresh"],r["cached"],f'{r["elapsed_seconds"]/60:.1f}',f'{r["fit_cpu_seconds"]/3600:.2f}'] for r in runtime]),"",
     f"The two stages shared eight workers and ran concurrently. Extraction and scoring took {int((root/'scoring-seconds.txt').read_text())/60:.1f} additional minutes. The projected fitting time for the remaining 1,296 large datasets is {eta/3600:.2f} hours at observed throughput "
-    f"({sensitivity/3600:.2f} hours using median archived timing ratios). This uses fresh small-N fitting times and the earlier C2 50,000-to-5,000 timing ratio for each analyte. "
+    f"({sensitivity/3600:.2f} hours using median archived timing ratios). Repeating all 1,440 from scratch would take approximately {cold/3600:.2f} hours. This uses fresh small-N fitting times and the earlier C2 50,000-to-5,000 timing ratio for each analyte. "
     "A cross-analyte correction supplies the 5,000 estimate where all corresponding small fits were cached. This is a planning estimate for fitting. Scoring and publication add time.","",
     "The comparator CSV now includes 2,880 small-N datasets, 900 grid datasets, and the 144 pre-existing large-N Hb datasets. The large-N accuracy comparison awaits approval.","",
     "[Comparator CSV](../../anchorRefine-comparator/anchoredRI-comparator.csv) · [Summary and paired tables](.)"]
