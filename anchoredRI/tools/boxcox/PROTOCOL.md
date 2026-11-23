@@ -2,7 +2,7 @@
 
 ## Status and frozen baseline
 
-Protocol for review before implementation or fitting. Create `study/boxcox` from main commit `55eee86b3f4111197b0043cc062ef0b781dc2057`. This commit defines current anchoredRI for this study. All new code, manifests, checks and reports belong under `anchoredRI/tools/boxcox/`. Record source hashes and package versions. Keep `R/` and the simulation design at the pinned commit.
+Approved for implementation by the user on 22 November 2026. The following protocol was committed and reviewed before coding or fitting. Create `study/boxcox` from main commit `55eee86b3f4111197b0043cc062ef0b781dc2057`. This commit defines current anchoredRI for this study. All new code, manifests, checks and reports belong under `anchoredRI/tools/boxcox/`. Record source hashes and package versions. Keep `R/` and the simulation design at the pinned commit.
 
 Current main requires two routine settings. RIbench supplies one vector. For RIbench, use a study-local one-group adaptation matching the already executed C2 adapter at `f72ea14fc7978bf2478f54c87548cb6c127fa766`. Verify that this adaptation reproduces the archived baseline fits before comparing arms. For the simulation grid, use the pinned two-setting estimator directly. Describe this distinction in every report. A mismatch stops the affected comparison for investigation.
 
@@ -63,4 +63,4 @@ Evaluate each arm separately. Primary success uses the unfiltered, before-safegu
 
 Use full-precision archived comparators, not rounded report values. Report any missing/failed fits explicitly. If an arm has missing fits, give the native score and an additional all-attempt score assigning missing fits the cutoff of 5; require the all-attempt score to meet the threshold and count technical fit failures with implausible results for the 1% check. Report safeguard-retained performance and coverage separately from the primary verdict. Show simulation regressions alongside the verdict.
 
-The fixed thresholds, numerical choices and interpretation of the primary criterion must be reviewed before implementation. Stop here and show this protocol to the user. No study fitting starts before that review.
+The fixed thresholds, numerical choices and interpretation of the primary criterion were reviewed before implementation. The user authorized proceeding on 22 November 2026. They remain unchanged.

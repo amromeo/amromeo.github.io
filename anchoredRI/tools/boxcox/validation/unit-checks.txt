@@ -1,0 +1,1 @@
+Gradient, multiplicity, inverse-domain, frozen fit and fixed-shape objective checks passed.
