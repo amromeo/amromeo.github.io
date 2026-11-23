@@ -1,6 +1,6 @@
 # Task E implementation status
 
-The user released the improved baseline and Arm B for accuracy testing on 2,880 small-N RIbench datasets and 900 grid datasets. Arm A stopped after its reliability review. N = 50,000 requires a separate decision after the first-stage results and timing estimate. [Protocol](PROTOCOL.md) · [Reliability review](post-round3/results/REPORT.md) · [Baseline comparator](anchorRefine-comparator/README.md)
+The accuracy comparison on 2,880 small RIbench and 900 grid datasets is complete for the improved baseline and Arm B. Arm A stopped during reliability testing. N = 50,000 awaits the separate runtime review. [Accuracy results](accuracy/results/REPORT.md) · [Protocol](PROTOCOL.md) · [Baseline comparator for anchorRefine](anchorRefine-comparator/README.md)
 
 ## Earlier validation runs
 

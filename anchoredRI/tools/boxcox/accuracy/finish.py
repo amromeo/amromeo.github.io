@@ -42,7 +42,7 @@ def table(headers, rows):
                      + ["| "+" | ".join(map(str, row))+" |" for row in rows])
 
 
-labels = dict(anchoredRI="Improved baseline", armB="Arm B", frozenLocal="Original same-runtime fit",
+labels = dict(anchoredRI="Improved baseline", armB="Arm B", frozenLocal="Original frozen local fit",
               archivedC2="Archived C2", archivedGrid="Archived grid fit", anchorsOnly="Anchors only", refineR="refineR")
 times = read(out/"timings.csv")
 assert len(times)==len({r["dataset_id"] for r in times})==3780
@@ -142,6 +142,8 @@ def stage_table(rows,metric):
 report=["# Task E accuracy at small N and on the simulation grid","",
     "The improved three-component baseline and five-component Arm B were evaluated on 2,880 RIbench datasets and 900 grid datasets. "
     "Each fit used 40 screened anchors before any RIbench filtering. Arm A stopped during reliability testing.","",
+    "The 50-dataset replay passed for 49/50 improved baseline fits and 49/50 Arm B fits. Two distinct datasets missed. The prespecified rule therefore required Actions fits for every dataset. Index 4298 changed from three to two shifted-log components for the baseline, and Index 3033 changed from four to five for Arm B. [Replay results](runtime-replay.csv)","",
+    "All 120 fitting batches succeeded. The workflow took 59 minutes 50 seconds including setup, queues and the replay decision. The two Ubuntu 24.04 runner image revisions fitted 2,062 and 1,718 datasets, respectively (20261116.133.1 and 20261116.376.1). Both used R 4.5.0, RIbench 1.0.2 and the pinned fitting source. The frozen local baseline was fitted in the earlier local runtime. Numerical runtime effects can contribute to differences from this comparator. [Per-dataset provenance](runtime-provenance.csv) · [GitHub Actions run](https://github.com/amromeo/amromeo.github.io/actions/runs/45257620744)","",
     "## Small-N RIbench","",stage_table(ri,"capped_mean"),"",
     "Values are native RIbench mean absolute z deviations after its cutoff. The native cutoff omits dataset errors above 5. "
     "The uncapped mean, number included by the cutoff, extreme endpoints and counts of implausible fits are reported separately. "
@@ -178,7 +180,7 @@ report+=["The distribution and pathological-fraction table reports paired differ
     "## Runtime and N = 50,000 estimate","",
     table(["Stage","Completed","Fresh","Cached","Wall time (min)","Fresh fitting CPU (hours)"],
       [[r["stage"],r["datasets"],r["fresh"],r["cached"],f'{r["elapsed_seconds"]/60:.1f}',f'{r["fit_cpu_seconds"]/3600:.2f}'] for r in runtime]),"",
-    f"The two stages shared eight workers and ran concurrently. Extraction and scoring took {int((root/'scoring-seconds.txt').read_text())/60:.1f} additional minutes. The projected fitting time for the remaining 1,296 large datasets is {eta/3600:.2f} hours at observed throughput "
+    f"The two stages ran concurrently on GitHub Actions with four workers per batch. Wall times span the first to last accepted fit and include queue gaps. Extraction and scoring took {int((root/'scoring-seconds.txt').read_text())/60:.1f} additional minutes. The projected fitting time for the remaining 1,296 large datasets is {eta/3600:.2f} hours at observed throughput "
     f"({sensitivity/3600:.2f} hours using median archived timing ratios). Repeating all 1,440 from scratch would take approximately {cold/3600:.2f} hours. This uses fresh small-N fitting times and the earlier C2 50,000-to-5,000 timing ratio for each analyte. "
     "A cross-analyte correction supplies the 5,000 estimate where all corresponding small fits were cached. This is a planning estimate for fitting. Scoring and publication add time.","",
     "The comparator CSV now includes 2,880 small-N datasets, 900 grid datasets, and the 144 pre-existing large-N Hb datasets. The large-N accuracy comparison awaits approval.","",

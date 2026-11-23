@@ -140,3 +140,11 @@ An initial continuation at Hb 104 repeatedly returned a line-search error at the
 ## Accuracy stage release, 23 November 2026
 
 The user released the improved baseline and Arm B for 2,880 small-N RIbench datasets and 900 grid datasets. The separate N = 50,000 release requires review of runtime. Keep the previously exported 144 large-N estimates in the comparator file. Use RIbench Index for the perturbation seed. For grid datasets use the frozen routine seed as the integer dataset identifier for perturbations and the generator’s two-decimal rounding step. Fit each family in increasing component count once and select the two winners from their respective candidate sets. Identical cached small-N candidates can be reused with verified source and input hashes. Record a winning iteration-limit or line-search exit even when the fitter retained the start. Use the original safeguards and outcome rules.
+
+### Runtime migration for the small-N and grid accuracy study
+
+Local workers stopped without an R error. Four checkpoint series ended about five to six minutes after a restart. Historical kernel and OOM logs were unavailable. A single N = 5,000 diagnostic fit reached 80 MiB peak resident memory. The timing was consistent with session shutdown. The cause could not be confirmed.
+
+The migration manifest identified 1,274 saved datasets. A seeded random sample of 50 from the original 1,029 was refitted on Actions. For each dataset, both component caps had to reproduce the transform and component count and all applicable limits within 0.5% of the local reporting width. For CRP the width ran from zero to the upper limit. A single failure required fitting every dataset on Actions. This rule preceded the replay. No estimator or scoring threshold changed.
+
+The baseline matched on 49/50 datasets and Arm B matched on 49/50. The exceptions involved different datasets. The baseline selected two shifted-log components on Actions versus three locally for Index 4298. Arm B selected five versus four locally for Index 3033. All 2,880 small RIbench datasets and 900 simulation datasets therefore use Actions fits in the accuracy analysis. The historical frozen local fit and archived comparators retain their original provenance.

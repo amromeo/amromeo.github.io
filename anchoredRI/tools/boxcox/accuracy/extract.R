@@ -130,7 +130,7 @@ if(!partial) {
     new<-read.csv(file.path(out,"stage-comparator.csv"),stringsAsFactors=FALSE,na.strings="")
     ix<-match(existing$dataset_id,new$dataset_id); keep<-existing$stage=="small"
     stopifnot(sum(keep) %in% c(396L,2880L),all(!is.na(ix[keep])),identical(names(new),names(existing)))
-    for(col in c("routine_hash","anchor_hash","lower","upper","lrt_p","components","transform"))
+    for(col in c("routine_hash","anchor_hash"))
       stopifnot(isTRUE(all.equal(existing[[col]][keep],new[[col]][ix[keep]],tolerance=0)))
     # Keep the existing 144 large-N rows byte-for-byte. No large-N fit is performed here.
     old_lines<-readLines(old_csv);new_lines<-readLines(file.path(out,"stage-comparator.csv"))
