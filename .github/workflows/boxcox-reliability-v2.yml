@@ -1,4 +1,4 @@
-name: Task E multistart reliability on C2 image
+name: Task E multistart v2.1 reliability on C2 image
 on:
   push:
     branches: [study/boxcox-c2-runtime]
@@ -61,7 +61,7 @@ jobs:
           Rscript tools/boxcox/reliability-v2/run-replay.R Actions ../../original-data ../../original-fits ../../reliability-results 1 1 4 "$RUNNER_TEMP/reliability.so"
       - uses: actions/upload-artifact@v4
         with:
-          name: boxcox-multistart-v2-156
+          name: boxcox-multistart-v2_1-156
           path: reliability-results/
           if-no-files-found: error
           retention-days: 30
