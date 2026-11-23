@@ -18,7 +18,7 @@ old_csv <- "tools/boxcox/anchorRefine-comparator/anchoredRI-comparator.csv"
 files <- list.files(file.path(root,"fits"),"[.]rds$",full.names=TRUE)
 partial <- length(args)>=3L && args[3]=="preview"
 if(!partial)stopifnot(file.exists(file.path(root,"FITTED.txt")),length(files)==3780L)
-diagnostics <- exit_details <- timings <- candidates <- simulations <- baselines <- list()
+parameters <- diagnostics <- exit_details <- timings <- candidates <- simulations <- baselines <- list()
 for (j in seq_along(files)) {
   z <- readRDS(files[j]);key <- z$key;fields <- strsplit(key,"-",fixed=TRUE)[[1]]
   small <- fields[1]=="r"
@@ -44,6 +44,17 @@ for (j in seq_along(files)) {
   pair <- lapply(c(3L,5L),function(k) comparator_row(z$models,meta,d$value,d$anchor,d$probs,k,
                                                 if(k==3) "anchoredRI" else "armB"))
   baselines[[j]]<-pair[[1]]
+  for(a in pair) {
+    m<-z$models[[paste(a$transform,a$components)]]
+    par<-m$p;settings<-unique(as.character(d$setting))
+    stopifnot(nrow(par$w)==m$k,ncol(par$w)==length(settings))
+    ix<-expand.grid(component=seq_len(m$k),setting_index=seq_along(settings))
+    parameters[[length(parameters)+1L]]<-data.frame(dataset_id=key,stage=meta$stage,method=a$method,
+       transform=m$transform,lambda=par$lambda,shift=par$shift,component=ix$component,
+       screened_component=ix$component==1L,setting=settings[ix$setting_index],
+       transformed_mean=par$mu[ix$component]+if(m$transform=="identity")1 else 0,
+       transformed_sd=par$sigma[ix$component],routine_weight=par$w[as.matrix(ix)])
+  }
   timings[[j]]<-data.frame(dataset_id=key,stage=meta$stage,analyte=meta$Analyte,N=meta$N,
        unique_values=length(unique(c(d$value,d$anchor))),cached=z$cached,began=z$began,ended=z$ended,cpu=z$cpu,fit_seconds=z$elapsed)
   full$selected_baseline<-full$transform==pair[[1]]$transform & full$k==pair[[1]]$components
@@ -108,7 +119,7 @@ save_outputs<-function(x,n)write.csv(x,file.path(out,paste0(n,".csv")),row.names
 diag<-bind(diagnostics);save_outputs(diag,"diagnostics")
 exits<-if(length(exit_details))bind(exit_details)else data.frame(dataset_id=character(),stage=character(),method=character(),code=integer())
 save_outputs(exits,"winning-optimizer-exits")
-save_outputs(bind(timings),"timings");save_outputs(bind(candidates),"candidates")
+save_outputs(bind(parameters),"selected-component-parameters");save_outputs(bind(timings),"timings");save_outputs(bind(candidates),"candidates")
 save_outputs(bind(simulations),"grid-outcomes")
 write_comparator(baselines,file.path(out,"stage-comparator.csv"))
 if(!partial) {
