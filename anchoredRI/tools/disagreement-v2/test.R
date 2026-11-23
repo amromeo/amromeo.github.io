@@ -72,4 +72,27 @@ criterion$n_under5 <- 19L
 stopifnot(!passes(criterion))
 criterion$n_over10 <- 0L
 stopifnot(is.na(passes(criterion)))
+local({
+  fixture <- tempfile("b2-report-")
+  dir.create(fixture)
+  on.exit(unlink(fixture, recursive = TRUE))
+  render <- new.env(parent = globalenv())
+  render$study_dir <- fixture
+  render$results_dir <- fixture
+  for (name in c("update_protocol", "write_csv")) {
+    render[[name]] <- get(name)
+    environment(render[[name]]) <- render
+  }
+  stopifnot(file.copy(file.path(study_dir, "PROTOCOL.md"), fixture))
+  selection <- data.frame(status = "selected", rule = "a", threshold = .70,
+    declined_over10 = 4L, n_over10 = 5L, declined_under5 = 1L, n_under5 = 25L)
+  render$update_protocol(selection)
+  stopifnot("| a | 0.70 | 4/5 | 1/25 |" %in% readLines(file.path(fixture, "PROTOCOL.md")))
+  selection$status <- "no_eligible_rule"
+  render$update_protocol(selection)
+  stopifnot(any(startsWith(readLines(file.path(fixture, "PROTOCOL.md")), "| No eligible rule |")))
+  render$write_csv(bb, "fixture-datasets.csv")
+  back <- read.csv(gzfile(file.path(fixture, "fixture-datasets.csv.gz")))
+  stopifnot(identical(bb$declined, back$declined), identical(bb$message, back$message))
+})
 cat("All separation, equivalence, decision, selection and reporting checks passed.\n")

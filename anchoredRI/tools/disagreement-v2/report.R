@@ -59,7 +59,12 @@ read_phase <- function(phase) {
 }
 
 write_csv <- function(x, name) {
-  write.csv(x, file.path(results_dir, name), row.names = FALSE, na = "")
+  path <- file.path(results_dir, name)
+  if (grepl("-(datasets|components|decisions-before-scoring)\\.csv$", name)) {
+    connection <- gzfile(paste0(path, ".gz"), open = "wt", compression = 9L)
+    on.exit(close(connection), add = TRUE)
+    write.csv(x, connection, row.names = FALSE, na = "")
+  } else write.csv(x, path, row.names = FALSE, na = "")
 }
 read_csv <- function(name) read.csv(file.path(results_dir, name), stringsAsFactors = FALSE)
 format_number <- function(x, digits = 1L) ifelse(is.finite(x),
@@ -105,6 +110,18 @@ summarize_phase <- function(phase) {
       decide(rows, candidate_ids$rule[i], candidate_ids$threshold[i]))
     decisions <- list(lrt = decide(rows, "lrt"))
     scored <- score(rows)
+    historical <- read.csv("assets/disagreement/datasets.csv")
+    key <- function(x) paste(x$case, x$replicate, sep = "/")
+    idx <- match(key(rows), key(historical))
+    stopifnot(nrow(historical) == nrow(rows), !anyDuplicated(key(historical)), !anyNA(idx))
+    prior <- historical[idx, ]
+    # Same LRT function. Original Step B used archived estimates from a separate R runtime.
+    write_csv(data.frame(datasets = nrow(rows),
+      decisions_agree = sum(prior$secondary_declined == decisions$lrt$declined),
+      max_abs_p_difference = max(abs(prior$lrt_p - rows$lrt_p), na.rm = TRUE),
+      max_abs_lower_difference = max(abs(prior$diagnostic_anchored_lower - rows$diagnostic_lower)),
+      max_abs_upper_difference = max(abs(prior$diagnostic_anchored_upper - rows$diagnostic_upper))),
+      "development-archived-step-b-check.csv")
     candidates <- cbind(candidate_ids, do.call(rbind, lapply(all_decisions, function(x) metrics(scored$error, x))))
     candidates$eligible <- candidates$n_under5 > 0L & 20L * candidates$declined_under5 <= candidates$n_under5
     winner <- choose(candidates)
@@ -180,6 +197,11 @@ phase_section <- function(phase) {
     report_table(c("Decision", "Number reported", "Mean", "Median", "90th percentile", "Maximum", "E > 10%"),
       data.frame(label(s$method), s$reported, format_number(s$reported_mean, 2), format_number(s$reported_median, 2),
         format_number(s$reported_p90, 2), format_number(s$reported_max, 2), fraction(s$reported_over10, s$reported))))
+  if (phase == "development") {
+    old <- read_csv("development-archived-step-b-check.csv")
+    out <- c(out, sprintf("The current LRT-alone decision agreed with archived Step B in %d/%d datasets. The archive used the earlier fitted limits.",
+      old$decisions_agree, old$datasets), "")
+  }
   families <- c(normal = "Normal", lognormal = "Lognormal", shifted = "Shifted lognormal")
   overlap_levels <- c("separated", "moderate", "heavy")
   affected <- c(.1, .3, .5, .7, .9)
