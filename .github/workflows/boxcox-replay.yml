@@ -1,0 +1,119 @@
+name: Task E reproduce fits on C2 image
+on:
+  push:
+    branches: [study/boxcox-c2-runtime]
+    paths: ['.github/workflows/boxcox-replay.yml', 'anchoredRI/tools/boxcox/replay-release.csv']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: 1
+    outputs:
+      arm_a: ${{ steps.release.outputs.arm_a }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+      - uses: actions/checkout@v4
+        with:
+          ref: f72ea14fc7978bf2478f54c87548cb6c127fa766
+          path: c2-runtime
+      - working-directory: c2-runtime/anchoredRI
+        run: Rscript tools/ribench/install.R
+      - uses: actions/download-artifact@v4
+        with:
+          name: ribench-data-small
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-data
+      - uses: actions/download-artifact@v4
+        with:
+          name: ribench-scored-independent
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-fits
+      - working-directory: anchoredRI
+        run: Rscript tools/boxcox/archived-runtime.R preflight ../original-data ../original-fits ../replay 1 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: c2-baseline-bic-replay
+          path: replay/
+          retention-days: 30
+      - id: release
+        run: |
+          if test -f anchoredRI/tools/boxcox/replay-release.csv; then
+            Rscript -e 'x <- read.csv("anchoredRI/tools/boxcox/replay-release.csv"); stopifnot(nrow(x)==1L,x$exact_checked==5220,x$datasets==4320,x$model_changes<=0.05*x$datasets)'
+            echo 'arm_a=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'arm_a=false' >> "$GITHUB_OUTPUT"
+          fi
+  repeat:
+    needs: preflight
+    if: needs.preflight.outputs.arm_a == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      max-parallel: 13
+      fail-fast: false
+      matrix:
+        shard: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
+    env:
+      OMP_NUM_THREADS: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+      - uses: actions/checkout@v4
+        with:
+          ref: f72ea14fc7978bf2478f54c87548cb6c127fa766
+          path: c2-runtime
+      - working-directory: c2-runtime/anchoredRI
+        run: Rscript tools/ribench/install.R
+      - uses: actions/download-artifact@v4
+        with:
+          name: ribench-data-small
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-data
+      - uses: actions/download-artifact@v4
+        with:
+          name: ribench-scored-independent
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-fits
+      - working-directory: anchoredRI
+        run: Rscript tools/boxcox/archived-runtime.R armA ../original-data ../original-fits ../replay ${{ matrix.shard }} 26
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: armA-replay-${{ matrix.shard }}
+          path: replay/
+          retention-days: 30
+  collect:
+    needs: repeat
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: armA-replay-*
+          path: replay-156
+      - name: Verify 156 unique datasets
+        run: |
+          python - <<'PY'
+          import csv, pathlib
+          files = list(pathlib.Path('replay-156').glob('*/selected.csv'))
+          indices = [int(row['Index']) for f in files for row in csv.DictReader(f.open())]
+          assert len(files) == 26 and sorted(indices) == list(range(1,157))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: armA-replay-156
+          path: replay-156/
+          retention-days: 30
