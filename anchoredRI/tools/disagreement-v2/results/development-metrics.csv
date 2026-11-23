@@ -1,0 +1,3 @@
+"method","one_component","fit_failures","max_abs_parity_difference","attempted","declined","reported","technical_withheld","lrt_unavailable","declined_over10","n_over10","declined_over25","n_over25","declined_under5","n_under5","reported_mean","reported_median","reported_p90","reported_max","reported_over10"
+"selected",219,0,0,900,116,784,0,0,89,289,77,159,24,485,9.54480687263048,3.87350325445572,25.5147711950509,86.3555085870275,200
+"lrt",219,0,0,900,91,809,0,0,84,289,76,159,7,485,9.46936410939436,3.88646528705994,25.2288380596065,86.3555085870275,205

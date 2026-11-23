@@ -1,6 +1,6 @@
 # Task B2 protocol for the routine-data separation check
 
-**Status.** Awaiting review before implementation or study runs. The development choice is open.
+**Status.** Development complete. The rule below is fixed for confirmation.
 
 Can the fitted mixture identify an inaccurate reference interval before it is reported? The primary result comes from fresh replicates 21–40. The rule succeeds if it declines at least two-thirds of estimates with error over 10% and no more than 5% of estimates with error under 5%.
 
@@ -65,7 +65,7 @@ For each candidate, pool the 900 development datasets. A candidate qualifies if 
 
 | Rule | Threshold | Declined / all with $E>10$ | Declined / all with $E<5$ |
 | --- | --- | --- | --- |
-| Pending development | Pending | Pending | Pending |
+| a | 0.80 | 89/289 | 24/485 |
 
 Record all 14 development results. Enter the winner and its counts above and commit the protocol and analysis code before generating, fitting or inspecting any replicate from 21–40. If no candidate meets the 5% cap, record that result and stop before confirmation.
 
