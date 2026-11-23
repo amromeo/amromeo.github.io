@@ -6,6 +6,20 @@ An R research package for asking whether a small group of independently screened
 
 [Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Current results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [R source archive](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.2.0.tar.gz)
 
+## Proposed safeguard (Task F, awaiting review)
+
+The proposed release adds `safeguard = TRUE` to `fit_anchored_ri()` and `bootstrap_anchored_ri()`. After the selected point fit and every bootstrap fit, two checks decide whether an interval can be reported. The Step B likelihood-ratio test compares the anchors under component 1 with their own normal MLE on the selected transform and fixed offset. A nominal chi-squared p-value with 2 df below 0.01 declines the interval. A lower limit strictly below the smallest routine value also declines it. The lower-limit check is skipped for one-sided limits.
+
+A declined result has missing reported limits and a recorded reason. The reason is “routine data disagree with the screened sample” for the LRT flag or “estimated lower limit is below every observed result” for the lower-limit flag. Both reasons are retained if both checks flag. The fitted anchoredRI interval and the anchors-only interval remain available as diagnostics. A declined result recommends at least 120 screened patients or verifying a suitable published interval with 20 screened patients. For at least 50,000 routine results, it also suggests an established indirect method such as refineR.
+
+Bootstrap output distinguishes declined fits from numerical failures and retains both checks for every draw. A declined point fit withholds the reported interval and confidence intervals. For an accepted point fit, confidence intervals use accepted, finite bootstrap draws and require at least 80% of requested draws. Report the accepted and declined counts and identify these as intervals conditional on passing the safeguard. This bootstrap policy is proposed for review before implementation.
+
+Researchers can request `safeguard = FALSE` to return the fitted intervals regardless of these checks. The output records that the checks were disabled. With checks enabled, unavailable check statistics cause a separately identified technical withholding.
+
+Heavily mixed routine data with many mildly abnormal patients, including ICU-only populations, can produce wrong reference intervals that pass both checks. Passing the safeguard does not establish clinical validity.
+
+Validation will reproduce the committed B2 confirmation decisions and the archived RIbench decline counts using the same raw estimates and inputs. The tests will distinguish native mean-absolute-z implausibility from an extreme error at either endpoint. Current main requires two routine settings, while the archived RIbench studies used a one-group adapter. Supporting that one-group input and one-sided reporting is a prerequisite for reproducing the RIbench counts through the package entry points. Those additions will preserve the existing two-setting fits and central-95% defaults and will be checked against the frozen fits.
+
 ## Version 0.2: estimate the offset
 
 `transform = "auto"` compares normal, lognormal and shifted-lognormal mixtures, each with one to three components. The shifted model estimates its offset jointly with the component shapes and service proportions. BIC includes the transformation Jacobian and the extra offset parameter, so scores are comparable on the measurement scale. The default point-fit transform remains `"identity"` for compatibility.
