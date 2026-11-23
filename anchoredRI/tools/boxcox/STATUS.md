@@ -11,3 +11,7 @@ For Hb Index 2, the archived limits are 11.68842156845287 and 16.22519510342150.
 The frozen C2 source hashes match the artifact's source manifest exactly. Local R and archived R are both version 4.5.0, but the local system is Debian 13 with reference BLAS and the archived run used Ubuntu with OpenBLAS. This is a possible numerical explanation, not yet a demonstrated cause.
 
 No experimental benchmark fits or performance comparisons have run. The validation gate remains closed. No threshold, optimizer setting, estimator or scoring rule has been changed to accommodate this discrepancy. The next step is to reproduce the baseline in the archived runtime and resolve the discrepancy before continuing.
+
+## Validation amendment approved
+
+The user approved the cross-machine validation amendment on 22 November 2026. It is recorded in PROTOCOL.md. A fresh validation run preserves the original failed run and uses the unchanged estimators. Every same-machine comparison must pass absolute tolerance 1e-10. Cross-machine differences are audited against 0.1% of archived interval width, with a review gate for any model change or more than 1% outside tolerance. The baseline for scoring is now the frozen C2 source refitted in the experimental runtime. Experimental fits remain gated on completion of this validation.

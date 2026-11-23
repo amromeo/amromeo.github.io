@@ -11,7 +11,7 @@ for(stage in c('small','large')) {
   sets <- t[if(stage=='small')t$N<=5000 else t$N==50000,]
   archive <- if(stage=='small')cfg$small_archive else cfg$large_archive
   w <- file.path(root,stage); dir.create(w,recursive=TRUE,showWarnings=FALSE)
-  for(algo in c('anchoredRI','anchorsOnly','refineR')) {
+  for(algo in c('anchorsOnly','refineR')) {
     dest <- file.path(w,'Results');dir.create(dest,recursive=TRUE,showWarnings=FALSE)
     stopifnot(file.copy(file.path(archive,'Results',algo),dest,recursive=TRUE))
   }
@@ -20,12 +20,12 @@ for(stage in c('small','large')) {
     s <- sets[i,]; key <- paste0('r-',s$Index)
     r <- readRDS(file.path(root,'fits',paste0(key,'.rds')))
     baseline <- readRDS(file.path(root,'validation',paste0(key,'.rds')))
-    r$anchoredRI <- list(fit=baseline$baseline,safeguard=baseline$safeguard,seconds=NA_real_)
+    r$anchoredRI <- list(fit=baseline$baseline,safeguard=baseline$safeguard,seconds=baseline$baseline_seconds)
     for(method in c('armA','armB','anchoredRI')) {
       f <- r[[method]]$fit; g <- r[[method]]$safeguard
       probs <- if(s$Analyte=='CRP').95 else c(.025,.975)
       limits <- if(is.null(g))rep(NA_real_,length(probs)) else g$limits
-      if(method!='anchoredRI') {
+      { # Every anchored baseline is the same-runtime frozen-source refit.
         fit <- data.frame(Percentile=probs,PointEst=limits,Runtime=c(r[[method]]$seconds,rep(NA_real_,length(probs)-1)))
         dest <- file.path(w,'Results',method,s$Analyte);dir.create(dest,recursive=TRUE,showWarnings=FALSE)
         save(fit,file=file.path(dest,paste0(s$Index,'_',s$Analyte,'_seed_',s$startSeed,'_',method,'.Rdata')))
@@ -165,7 +165,7 @@ writeLines('Native RIbench scoring and simulation summaries complete. See succes
 
 text <- c('# Task E results', '',
   'Baseline commit 55eee86b3f4111197b0043cc062ef0b781dc2057. RIbench uses the frozen C2 one-group adapter. Simulation uses the original two-setting estimator.', '',
-  'All 5,220 input and equivalence checks passed before either experimental arm ran. Native RIbench scoring uses the same 2,880 small-N and 1,440 N=50,000 datasets and independent anchor seeds as C2.', '',
+  'All 5,220 same-machine input and equivalence checks passed, and the amended cross-machine review gate passed, before either experimental arm ran. Native RIbench scoring uses the same 2,880 small-N and 1,440 N=50,000 datasets and independent anchor seeds as C2.', '',
   '| Stage | Subset | Method | Safeguard | Scored | Mean absolute z | Capped mean | Reported / attempted |',
   '|---|---|---|---|---:|---:|---:|---:|')
 for(i in which(summary$group %in% c('all','lambda=0.432'))) {
@@ -178,5 +178,5 @@ text <- c(text,'','Success is judged before the safeguard. Missing fits receive 
   'The fitted Box-Cox likelihood retains the original estimator’s untruncated transformed-normal convention. Nonzero shapes have a restricted inverse domain. Invalid endpoints are withheld without clipping.', '',
   'Heavily mixed populations with many mildly abnormal patients, including ICU-only populations, can still produce wrong intervals that pass both checks.', '',
   'Simulation replicates 1–20 are development and regression checks, not independent confirmation. A paired increase exceeding twice its Monte Carlo standard error flags a regression. Unflagged differences do not establish equivalence.', '',
-  'Validation and fit wall times are saved separately. Input generation reuses the hash-verified archived data, so no new generation time is attributed to this study.')
+  'The frozen anchoredRI baseline was refitted in the same runtime as both arms. Anchors-only and refineR were retained from the archives and can have small cross-platform numerical differences. Those differences were not measured by refitting. Validation and fit wall times are saved separately. Input generation reuses the hash-verified archived data, so no new generation time is attributed to this study.')
 writeLines(text,file.path(root,'REPORT.md'))

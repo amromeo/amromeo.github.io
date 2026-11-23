@@ -46,10 +46,10 @@ load_data <- function(key) {
        probs=if(s$Analyte=='CRP').95 else c(.025,.975))
 }
 near <- function(a,b) identical(is.na(a),is.na(b)) &&
-  all(abs(a-b)<=1e-8+1e-10*abs(b),na.rm=TRUE)
+  all(abs(a-b)<=1e-10,na.rm=TRUE)
 validate <- function(d) {
-  frozen <- bc_frozen(length(unique(d$setting))==1); cap <- bc_capacity(3)
-  old <- frozen$fit_anchored_ri(d$value,d$setting,d$anchor,transform='auto')
+  frozen <- bc_frozen(TRUE); cap <- bc_capacity(3)
+  baseline_seconds <- system.time(old <- frozen$fit_anchored_ri(d$value,d$setting,d$anchor,transform='auto'))[['elapsed']]
   now <- cap$fit_anchored_ri(d$value,d$setting,d$anchor,transform='auto')
   stopifnot(near(now$limits,old$limits),identical(now$components,old$components),
             identical(now$transform,old$transform),near(now$shift,old$shift),
@@ -62,15 +62,29 @@ validate <- function(d) {
     delta <- max(delta,a$objective_discrepancy)
   }
   guard <- bc_safeguard(now,d$value,d$anchor,d$probs)
+  cross <- NULL
   if(!is.null(d$s)) {
     row <- archived[[d$stage]]; row <- row[row$Index==d$s$Index,]
     expected <- if(length(d$probs)==1)row$URL else c(row$LRL,row$URL)
-    stopifnot(nrow(row)==1,near(guard$limits,expected))
+    stopifnot(nrow(row)==1)
+    width <- row$URL-row$LRL
+    stopifnot(is.finite(width),width>0)
+    differences <- abs(guard$limits-expected)
     c <- custom[[d$stage]]; c <- c[c$Index==d$s$Index&c$algo=='anchoredRI',]
-    stopifnot(nrow(c)==1,identical(now$transform,c$model),now$components==c$components,
-              near(now$shift,c$shift),near(guard$lrt_p,c$lrt_p))
+    stopifnot(nrow(c)==1)
+    cross <- data.frame(Index=d$s$Index,Analyte=d$s$Analyte,N=d$s$N,
+      local_transform=old$transform,archived_transform=c$model,
+      local_components=old$components,archived_components=c$components,
+      model_changed=old$transform!=c$model || old$components!=c$components,
+      archived_width=width,one_sided_span=length(d$probs)==1L,
+      max_absolute_difference=max(differences),
+      max_fraction_of_width=max(differences)/width,
+      outside_tolerance=any(differences>.001*width))
   }
-  list(key=d$key,baseline=now,safeguard=guard,max_loglik_discrepancy=delta)
+  # Candidate parameters are diagnostic additions from the exactly matching copy.
+  old$candidate_parameters <- now$candidate_parameters
+  list(key=d$key,baseline=old,safeguard=guard,baseline_seconds=baseline_seconds,
+       cross_machine=cross,max_loglik_discrepancy=delta)
 }
 validation_dir <- file.path(root,'validation'); fit_dir <- file.path(root,'fits')
 dir.create(validation_dir,showWarnings=FALSE); dir.create(fit_dir,showWarnings=FALSE)
@@ -113,6 +127,23 @@ for(begin in seq(1,length(keys),by=cfg$workers)) {
   batch <- keys[begin:min(length(keys),begin+cfg$workers-1)]
   outcome <- parallel::mclapply(batch,worker,mc.cores=cfg$workers,mc.set.seed=FALSE)
   if(file.exists(halt)||!all(vapply(outcome,isTRUE,logical(1)))) stop('Study halted; inspect HALT.txt')
+}
+if(phase=='validate') {
+  cross <- do.call(rbind,lapply(keys,function(key)
+    readRDS(file.path(validation_dir,paste0(key,'.rds')))$cross_machine))
+  stopifnot(nrow(cross)==4320)
+  write.csv(cross,file.path(root,'cross-machine-checks.csv'),row.names=FALSE)
+  write.csv(cross[cross$model_changed|cross$outside_tolerance,],
+            file.path(root,'cross-machine-exceptions.csv'),row.names=FALSE)
+  summary <- data.frame(datasets=nrow(cross),model_changes=sum(cross$model_changed),
+    outside=sum(cross$outside_tolerance),outside_fraction=mean(cross$outside_tolerance),
+    max_absolute_difference=max(cross$max_absolute_difference),
+    max_fraction_of_width=max(cross$max_fraction_of_width))
+  write.csv(summary,file.path(root,'cross-machine-summary.csv'),row.names=FALSE)
+  if(any(cross$model_changed)||mean(cross$outside_tolerance)>.01) {
+    writeLines('Cross-machine review gate triggered. See cross-machine-exceptions.csv.',halt)
+    stop('Pause for user review: model change or more than 1% outside tolerance')
+  }
 }
 write.csv(data.frame(phase=phase,start=as.character(start),finish=as.character(Sys.time()),
                     elapsed_seconds=as.numeric(difftime(Sys.time(),start,units='secs'))),

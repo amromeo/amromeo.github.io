@@ -17,7 +17,7 @@ Rscript tools/boxcox/run-study.R config.rds fit
 Rscript tools/boxcox/score-study.R config.rds
 ```
 
-Validation checks all 4,320 independent anchor hashes before fitting. Every routine vector must match RIbench's original hash. All 5,220 datasets must pass candidate and selected-fit equivalence before experimental fitting begins. Each RIbench baseline must also reproduce its archived limits, selected transform, shift, component count and LRT p-value.
+Validation checks all 4,320 independent anchor hashes before fitting. Every routine vector must match RIbench's original hash. All 5,220 datasets must pass candidate and selected-fit equivalence before experimental fitting begins. The same-machine check has absolute tolerance 1e-10 and requires identical selected transform and component count. Cross-machine comparisons use the approved 0.1%-of-archived-width tolerance and report every exception. Any selected model change or more than 1% outside that tolerance pauses the study for review. Frozen C2 is refitted locally and supplies the comparison baseline. Archived anchors-only and refineR remain unchanged. See the dated protocol amendment.
 
 A mismatch writes `HALT.txt`. Do not remove this file or loosen tolerances to continue. Investigate and record the cause. A completed validation writes `VALIDATED.txt`. Every dataset is checkpointed, so interrupted work can resume with identical source hashes. Run only one controller for a given output directory.
 
