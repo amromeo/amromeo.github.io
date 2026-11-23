@@ -1,8 +1,8 @@
 # Box-Cox shape and mixture capacity study
 
-The fitted Box-Cox arm (Arm A) stopped after 12 of 156 Hb datasets (7.7%) met the weak-identification rule. Its accuracy comparison is closed. Its code, fitted parameters and results are retained. The improved three-component baseline passed the round 3 Hb checks. Arm B must meet the same targets in a two-runtime replay. Accuracy testing of the eligible methods awaits review of that replay and Hb 142. [Round 3 report](reliability-v3/results/REPORT.md) · [Protocol](PROTOCOL.md)
+Arm A stopped after 12 of 156 Hb datasets (7.7%) met the prespecified weak-identification rule. Its fitted Box-Cox accuracy comparison is closed. Its code and reliability results remain available. Arm B passed the two-runtime check with 155/156 matching models and limit pairs and zero nesting violations. The improved baseline and Arm B accuracy comparison awaits review of Hb 142 and the Arm B results. [Hb 142 and Arm B report](post-round3/results/REPORT.md) · [Arm A results](reliability-v3/results/REPORT.md) · [Baseline comparator for anchorRefine](anchorRefine-comparator/README.md) · [Protocol](PROTOCOL.md)
 
-Implementation of the approved Task E protocol. The package code in `R/` is unchanged. The baseline remains `55eee86b3f4111197b0043cc062ef0b781dc2057` and the one-group adapter is copied from `f72ea14fc7978bf2478f54c87548cb6c127fa766`.
+Implementation of the approved Task E protocol. The package code in `R/` is unchanged. The original frozen baseline is `55eee86b3f4111197b0043cc062ef0b781dc2057` and the one-group adapter is copied from `f72ea14fc7978bf2478f54c87548cb6c127fa766`.
 
 Run from the package directory with RIbench 1.0.2 and the original study's R dependencies. `frozen/` contains verbatim sources. `capacity-fixed.R` and `capacity-shifted.R` add diagnostic returns and extend the existing initialization patterns to four and five components. Restricting them to three components must reproduce the frozen estimator.
 

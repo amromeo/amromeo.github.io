@@ -1,6 +1,6 @@
 # Task E implementation status
 
-Reliability round 3 is complete. The baseline reproduced the model and limits on 155 of 156 Hb datasets and had zero nesting violations in either runtime. Arm A reached the stopping rule for weak identification in 12 of 156 datasets. Arm B had zero nesting violations across 540 saved datasets. The accuracy comparison remains on hold. [Round 3 report](reliability-v3/results/REPORT.md) · [Previous replay](reliability-v2/results/REPORT.md) · [Original nesting audit](reliability-v2/saved-audit/REPORT.md)
+Arm A stopped under its prespecified weak-identification rule (12/156). At Hb 142, both runtimes recovered the better three-component log fit when given the local starting parameters. Arm B passed with 155/156 matching models, 155/156 limit pairs within tolerance and zero nesting violations. The improved baseline and Arm B await review before accuracy testing. [Review report](post-round3/results/REPORT.md) · [Comparator export](anchorRefine-comparator/README.md) · [Round 3 findings](reliability-v3/results/REPORT.md)
 
 ## Earlier validation runs
 
