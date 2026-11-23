@@ -20,6 +20,7 @@ if(runtime=='Actions') {
  if(!required)stop('C2 runtime mismatch before fitting')
 } else writeLines(versions,file.path(out,'runtime.txt'))
 sources <- c('tools/boxcox/models.R','tools/boxcox/inputs.R',
+ 'tools/boxcox/capacity-fixed.R','tools/boxcox/capacity-shifted.R',
  file.path('tools/boxcox/reliability-v2',c('fitter.R','likelihood.cpp','build.R','run-replay.R')))
 source_hash <- vapply(sources,function(f)digest::digest(file=f,algo='sha256'),character(1))
 write.csv(data.frame(file=names(source_hash),sha256=unname(source_hash)),file.path(out,'sources.csv'),row.names=FALSE)

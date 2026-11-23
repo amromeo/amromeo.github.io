@@ -56,6 +56,13 @@ v2_unpack <- function(d,f,k,v,cs) {
       lambda=if(v2_shape(f))v[last+1L] else if(f=='identity')1 else 0,
       shift=if(v2_shift(f))d$location+d$spread*tail(v,1L) else 0)
 }
+v2_original_scales <- function(p,d,f,analytic=FALSE) {
+ if(analytic)return(p)
+ scale <- v2_coords(d,f,p)[2]
+ if(f %in% c('identity','log'))p$sigma[1] <- scale*min(19.9,max(.06,p$sigma[1]/scale))
+ else p$sigma <- scale*pmin(4.9,pmax(.006,p$sigma/scale))
+ p
+}
 v2_grid <- function(d,f,k) {
  locations <- if(v2_shift(f))d$shifts else 0
  shapes <- if(v2_shape(f))c(-1,-.5,0,.5,1,2) else if(f=='identity')1 else 0
@@ -73,6 +80,7 @@ v2_grid <- function(d,f,k) {
     all <- c(y,a); mu <- mean(all); sigma <- sqrt(mean((all-mu)^2))
    }
    p <- list(mu=mu,sigma=sigma,w=matrix(1/k,k,d$g),lambda=lambda,shift=shift)
+   p <- v2_original_scales(p,d,f,k==1L&&fixed)
    starts[[length(starts)+1L]] <- list(p=p,label=if(k==1L&&fixed)'analytic MLE' else 'grid')
   }
  }
@@ -105,8 +113,20 @@ v2_duplicate <- function(prev) {
  }
  c(list(list(p=v2_split(p,widest),label='widest duplicate outside odds box',cs=prev$cs)),jobs)
 }
-v2_candidate <- function(d,f,k,index,models) {
+v2_candidate <- function(d,f,k,index,models,legacy=list()) {
  starts <- v2_grid(d,f,k)
+ # Reproduce the original Arm A fixed-model starting parameter vectors.
+ # Additional unchanged nested optima are entered separately below.
+ if(v2_shape(f)) for(tr in names(legacy)) {
+  old <- legacy[[tr]]
+  q <- old$candidate_parameters[[k]]
+  if(is.null(q))next
+  shift <- unname(old$candidate_shift[k])
+  if((!v2_shift(f)&&shift!=0)||(v2_shift(f)&&(shift<d$bounds[1]||shift>d$bounds[2])))next
+  p <- list(mu=q$mu-as.integer(tr=='identity'),sigma=q$sigma,w=q$w,
+            lambda=if(tr=='identity')1 else 0,shift=shift)
+  starts[[length(starts)+1L]] <- list(p=v2_original_scales(p,d,f),label=paste('original seed',tr))
+ }
  get_fit <- function(family,count=k) models[[paste(family,count)]]
  if(k>1L) starts <- c(starts,v2_duplicate(get_fit(f,k-1L)))
  use <- function(parent,label,translate=FALSE) {
@@ -173,10 +193,17 @@ v2_candidate <- function(d,f,k,index,models) {
 }
 v2_fit <- function(value,setting,anchor,index,k_baseline=3L,k_boxcox=3L) {
  d <- v2_data(value,setting,anchor); models <- list()
+ source_fit <- bc_capacity(3L)
+ families <- c('identity',if(d$positive)'log','shifted_log')
+ legacy <- list()
+ if(k_boxcox>0L) for(tr in families) {
+  legacy[[tr]] <- if(tr=='shifted_log')source_fit$.fit_anchored_shifted(value,setting,anchor) else
+    source_fit$.fit_anchored_fixed(value,setting,anchor,tr)
+ }
  for(k in seq_len(max(k_baseline,k_boxcox))) for(f in v2_families) {
   if((v2_shape(f)&&k>k_boxcox)||(!v2_shape(f)&&k>k_baseline))next
   if(!d$positive && f %in% c('log','boxcox_unshifted'))next
-  models[[paste(f,k)]] <- v2_candidate(d,f,k,index,models)
+  models[[paste(f,k)]] <- v2_candidate(d,f,k,index,models,legacy)
  }
  models
 }

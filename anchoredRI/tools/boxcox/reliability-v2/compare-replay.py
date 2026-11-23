@@ -11,7 +11,7 @@ def load(path, runtime):
     if not (path/"DONE.txt").is_file(): raise ValueError(f"{runtime} replay is incomplete")
     source={r["file"]:r["sha256"] for r in records(path/"sources.csv")}
     meta={int(r["Index"]):r for r in records(path/"datasets.csv")}
-    assert set(meta)==set(range(1,157)) and len(source)==6
+    assert set(meta)==set(range(1,157)) and len(source)==8
     result=defaultdict(lambda:defaultdict(dict))
     for r in records(path/"candidates.csv"):
         i=int(r["Index"]); assert r["runtime"]==runtime and r["key"]==f"r-{i}"

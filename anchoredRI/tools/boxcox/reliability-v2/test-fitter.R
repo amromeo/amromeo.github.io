@@ -37,3 +37,17 @@ xneg <- x-4; dn <- v2_data(xneg,rep('p',length(x)),a-4)
 id <- v2_candidate(dn,'identity',1,1,list())
 stopifnot(!dn$positive,is.finite(id$ll))
 cat('Passed native/R likelihood, gradient, analytic identity, negative values, multi-setting, nesting-start and 20-perturbation checks.\n')
+
+# Regression for the original interior SD starts and original fixed-fit seeds.
+d <- v2_data(x,rep('p',length(x)),a)
+p <- list(mu=c(0,1),sigma=c(1e-12,1e10),w=matrix(c(.5,.5),2L),lambda=.5,shift=0)
+for(f in c('boxcox_shifted','boxcox_unshifted','shifted_log')) {
+ cs <- v2_coords(d,f,p)
+ stopifnot(max(abs(v2_original_scales(p,d,f)$sigma/cs[2]-c(.006,4.9)))<1e-12)
+}
+for(f in c('identity','log'))stopifnot(abs(v2_original_scales(p,d,f)$sigma[1]/v2_coords(d,f,p)[2]-.06)<1e-12)
+for(k in 1:2) {
+ tags <- vapply(models[[paste('boxcox_unshifted',k)]]$starts,`[[`,'','label')
+ stopifnot(all(c('original seed identity','original seed log','fixed identity','fixed log') %in% tags))
+}
+cat('Passed legacy deterministic start and frozen seed checks.\n')
