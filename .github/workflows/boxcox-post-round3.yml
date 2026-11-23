@@ -1,0 +1,76 @@
+name: Task E Arm B reproducibility and Hb 142
+on:
+  push:
+    branches: [study/boxcox-c2-runtime]
+    paths:
+      - .github/workflows/boxcox-post-round3.yml
+      - anchoredRI/tools/boxcox/post-round3/release-sha.txt
+permissions:
+  contents: read
+  actions: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      OMP_NUM_THREADS: 1
+      OPENBLAS_NUM_THREADS: 1
+    steps:
+      - name: Verify archived runner image
+        run: test "$ImageVersion" = 20261116.202.1
+      - uses: actions/checkout@v4
+      - id: pin
+        run: |
+          ref=$(cat anchoredRI/tools/boxcox/post-round3/release-sha.txt)
+          [[ "$ref" =~ ^[a-f0-9]{40}$ ]]
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.pin.outputs.ref }}
+          path: study
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+      - uses: actions/checkout@v4
+        with:
+          ref: f72ea14fc7978bf2478f54c87548cb6c127fa766
+          path: c2-runtime
+      - working-directory: c2-runtime/anchoredRI
+        run: Rscript tools/ribench/install.R
+      - name: Retrieve C2 routine inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: ribench-data-small
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-data
+      - name: Retrieve C2 anchor hashes and environment
+        uses: actions/download-artifact@v4
+        with:
+          name: ribench-scored-independent
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-fits
+      - name: Retrieve saved round 3 baseline candidates
+        uses: actions/download-artifact@v4
+        with:
+          name: boxcox-round3-actions
+          run-id: 45180631883
+          github-token: ${{ github.token }}
+          path: round3
+      - name: Fit Arm B and run Hb 142 cross-starts
+        working-directory: study/anchoredRI
+        run: |
+          set -eu
+          r=tools/boxcox/reliability-v3
+          Rscript "$r/build-production.R" "$RUNNER_TEMP/frozen.so"
+          Rscript "$r/test.R" "$RUNNER_TEMP/frozen.so"
+          Rscript tools/boxcox/post-round3/replay.R Actions ../../original-data ../../original-fits ../../round3/phase1 ../../post-round3 4 "$RUNNER_TEMP/frozen.so"
+      - name: Save fits and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: boxcox-post-round3-armB-Hb142
+          path: post-round3/
+          if-no-files-found: error
+          retention-days: 60
