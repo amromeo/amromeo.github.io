@@ -1,0 +1,56 @@
+     DistributionType Subcategory        anchoredRI       anchorsOnly
+1              normal   PercCases  29.7222222222222                30
+2              normal     Overall 0.498609830739139 0.234277888138632
+3              normal    lowPlowN               NaN               NaN
+4              normal   lowPhighN 0.288276309452271 0.230686649623931
+5              normal   highPlowN               NaN               NaN
+6              normal  highPhighN 0.705048286816992 0.237869126653332
+7              skewed   PercCases  29.8611111111111                30
+8              skewed     Overall 0.289680653489912 0.265799411794013
+9              skewed    lowPlowN               NaN               NaN
+10             skewed   lowPhighN 0.062792808955222 0.251088944995039
+11             skewed   highPlowN               NaN               NaN
+12             skewed  highPhighN 0.518688945169785 0.280509878592986
+13      heavilySkewed   PercCases  28.5416666666667                30
+14      heavilySkewed     Overall 0.257685166774445 0.365721091921968
+15      heavilySkewed    lowPlowN               NaN               NaN
+16      heavilySkewed   lowPhighN 0.233831608197579 0.349709773687168
+17      heavilySkewed   highPlowN               NaN               NaN
+18      heavilySkewed  highPhighN 0.279643816492401 0.381732410156768
+19            shifted   PercCases  9.09722222222222                10
+20            shifted     Overall 0.518713782014523 0.364016608013838
+21            shifted    lowPlowN               NaN               NaN
+22            shifted   lowPhighN 0.461768693191721 0.358510702185369
+23            shifted   highPlowN               NaN               NaN
+24            shifted  highPhighN 0.586098803788171 0.369522513842306
+25            Overall             0.365591283960867 0.296141178357767
+26        FailureRate                             0                 0
+27 ImplausibleResults              2.77777777777778                 0
+              refineR
+1                  30
+2   0.152352701254782
+3                 NaN
+4  0.0528747330374238
+5                 NaN
+6   0.251830669472141
+7    29.8611111111111
+8   0.255903091815042
+9                 NaN
+10 0.0570493071706679
+11                NaN
+12  0.456615323044878
+13                 30
+14  0.170244009706958
+15                NaN
+16 0.0512989507554101
+17                NaN
+18  0.289189068658506
+19                 10
+20  0.546704094671498
+21                NaN
+22  0.462396554912626
+23                NaN
+24  0.631011634430369
+25   0.22818184857346
+26                  0
+27  0.138888888888889

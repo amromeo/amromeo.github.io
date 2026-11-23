@@ -1,0 +1,17 @@
+"distribution","pathology","comparator","n","complete","mean_difference","anchored_wins","ties","comparator_wins"
+"normal","low (<=20%)","anchorsOnly",216,216,0.822963002822207,125,0,91
+"normal","high (>20%)","anchorsOnly",216,216,0.46717916016366,66,0,150
+"skewed","low (<=20%)","anchorsOnly",216,216,-0.188296136039817,202,0,14
+"skewed","high (>20%)","anchorsOnly",216,216,0.286199434673083,120,0,96
+"heavilySkewed","low (<=20%)","anchorsOnly",216,216,1.62601140090303,148,0,68
+"heavilySkewed","high (>20%)","anchorsOnly",216,216,0.0925649949413456,129,0,87
+"shifted","low (<=20%)","anchorsOnly",72,72,0.20332122904743,28,0,44
+"shifted","high (>20%)","anchorsOnly",72,72,3.69870879722142,34,0,38
+"normal","low (<=20%)","refineR",216,216,1.00077491940871,21,0,195
+"normal","high (>20%)","refineR",216,216,0.453217617344851,44,0,172
+"skewed","low (<=20%)","refineR",216,216,0.00574350178455415,139,0,77
+"skewed","high (>20%)","refineR",216,216,-0.432834125571321,124,0,92
+"heavilySkewed","low (<=20%)","refineR",216,216,1.92442222383479,67,0,149
+"heavilySkewed","high (>20%)","refineR",216,216,0.185108336439608,117,0,99
+"shifted","low (<=20%)","refineR",72,72,0.0994353763201735,46,0,26
+"shifted","high (>20%)","refineR",72,72,3.43721967663336,54,0,18
