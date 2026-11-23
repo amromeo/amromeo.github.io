@@ -1,6 +1,6 @@
 # Task E implementation status
 
-The accuracy comparison is on hold. The 156-dataset multistart v2.1 replay finished. The baseline missed the zero-nesting requirement, and Arm A missed the model and endpoint agreement targets. [Reliability results](reliability-v2/results/REPORT.md) [Nesting audit](reliability-v2/saved-audit/REPORT.md) · [Original cross-machine validation](results/validation/README.md)
+Reliability round 3 is complete. The baseline reproduced the model and limits on 155 of 156 Hb datasets and had zero nesting violations in either runtime. Arm A reached the stopping rule for weak identification in 12 of 156 datasets. Arm B had zero nesting violations across 540 saved datasets. The accuracy comparison remains on hold. [Round 3 report](reliability-v3/results/REPORT.md) · [Previous replay](reliability-v2/results/REPORT.md) · [Original nesting audit](reliability-v2/saved-audit/REPORT.md)
 
 ## Earlier validation runs
 

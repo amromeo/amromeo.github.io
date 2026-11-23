@@ -1,6 +1,6 @@
 # Box-Cox shape and mixture capacity study
 
-The accuracy benchmark is on hold under the 23 November reliability amendment. The commands below describe the original run. The separate multistart v2 study uses exactly the 156 Hb replay datasets. [Protocol](PROTOCOL.md) · [Saved-fit audit](reliability-v2/saved-audit/REPORT.md) · [Completed reliability replay](reliability-v2/results/REPORT.md)
+The accuracy benchmark is on hold. The rounding-based fitter met the baseline reproducibility targets in 156 Hb datasets. Fitted-shape Arm A reached its stopping rule, and the five-component Arm B passed the local nesting audit. The commands below describe the original study. [Round 3 report](reliability-v3/results/REPORT.md) · [Protocol](PROTOCOL.md) · [Earlier reliability replay](reliability-v2/results/REPORT.md)
 
 Implementation of the approved Task E protocol. The package code in `R/` is unchanged. The baseline remains `55eee86b3f4111197b0043cc062ef0b781dc2057` and the one-group adapter is copied from `f72ea14fc7978bf2478f54c87548cb6c127fa766`.
 

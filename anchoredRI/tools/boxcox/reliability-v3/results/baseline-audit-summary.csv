@@ -1,0 +1,3 @@
+runtime,datasets,candidates,checked,excluded,unavailable,violations,zero_vectors,zero_vectors_in_fitted_range,max_zero_loglik_difference,max_zero_floor_difference,min_sd_to_floor,min_sd_in_measurement_units
+local,156,1404,1206,198,0,0,468,270,0.0,0.0,0.999999999999999,1.0
+Actions,156,1404,1206,198,0,0,468,270,0.0,0.0,1.0,1.0

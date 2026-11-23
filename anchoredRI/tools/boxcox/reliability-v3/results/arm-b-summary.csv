@@ -1,0 +1,4 @@
+group,datasets,candidates,old_flagged,new_flagged,comparisons,violations,unavailable,excluded,changed,zero_vectors,max_zero_loglik_difference,max_zero_floor_difference,min_sd_to_floor,min_sd_in_measurement_units
+"N <= 5,000",396,5940,251,0,5742,0,0,990,132,1980,0.0,0.0,0.999999999999999,0.9999999999999989
+"N = 50,000",144,2155,82,0,2384,0,0,60,69,715,0.0,0.0,1.0,1.0
+All,540,8095,333,0,8126,0,0,1050,201,2695,0.0,0.0,0.999999999999999,0.9999999999999989
