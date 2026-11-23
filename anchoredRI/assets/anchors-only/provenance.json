@@ -1,0 +1,14 @@
+{
+  "input_archive_sha256": "ec67505dcf58086b319d215d78aca6ed5bc32eb59de55b67fc4e11368eb1d6de",
+  "estimator_rows": 1800,
+  "paired_datasets": 900,
+  "scenarios": 45,
+  "unique_anchor_samples": 60,
+  "source_sha256": {
+    "tools/anchors-only/run.R": "103c5e687a9a0c146ce321263b578823db4d8617c53a1c2983f0fab12b0f292e",
+    "tools/anchors-only/summarize.py": "28e97a2a2197019f716c31e3a0c26f57bfa470ff4203836333ec4cf22641cf92",
+    "tools/anchors-only/test.R": "f66d3464bb31cd5c27fe7ad6d547c17198a17002ba3d78d9429564ac602f771d",
+    "tools/anchors-only/estimators.R": "262ef504c59f9adf13268fba7a7b4327f62266b1eb7600e134b04cc5c2187647",
+    "tools/anchors-only/PROTOCOL.md": "c21693e7274ae485861121f7463fad93db032bef37c96c8e74d022646fca2395"
+  }
+}
