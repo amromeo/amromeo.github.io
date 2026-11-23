@@ -94,10 +94,13 @@ for (j in seq_along(files)) {
     rr[[length(rr)+1L]]<-record(method,a$lower,a$upper,technical=!stress_valid(c(a$lower,a$upper)))
   }
   rows<-do.call(rbind,rr);diagnostics[[j]]<-rows
-  for(a in pair)if(a$convergence_code %in% c(1L,52L)) {
+  for(a in pair) {
     m<-z$models[[paste(a$transform,a$components)]];winning<-m$starts[[m$origin]]
+    line_search<-grepl("line[ -]?search|lnsrch",winning$message,ignore.case=TRUE)
+    iteration_limit<-a$convergence_code==1L || grepl("iterat.*limit|limit.*iterat",winning$message,ignore.case=TRUE)
+    if(!iteration_limit && !line_search && a$convergence_code!=52L)next
     exit_details[[length(exit_details)+1L]]<-data.frame(dataset_id=key,stage=meta$stage,method=a$method,
-       transform=m$transform,components=m$k,code=m$code,origin=winning$label,message=winning$message,
+       transform=m$transform,components=m$k,code=m$code,origin=winning$label,message=winning$message,iteration_limit=iteration_limit,line_search=line_search,
        initial_retained=m$initial_retained,initial_ll=winning$initial,final_ll=winning$final,
        retained_ll=m$ll,declined=a$declined,reported=a$report_status=="reported")
   }
