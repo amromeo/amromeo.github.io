@@ -1,0 +1,397 @@
+key,cohort,pairs,violations,unavailable,excluded,max_loglik_loss,saved_winner,winner_using_nested_bounds,incomplete_seed_inventory
+r-1,replay 1-156,10,1,2,5,12.139327742946762,identity:K2,identity:K2,0
+r-2,replay 1-156,12,2,0,5,7.795298034297048,shifted_log:K3,shifted_log:K3,0
+r-3,replay 1-156,11,1,1,5,4.555584430361932,identity:K3,identity:K3,0
+r-4,replay 1-156,11,1,1,5,1.0598417837311445,identity:K2,identity:K2,0
+r-5,replay 1-156,12,0,0,5,0,identity:K3,identity:K3,0
+r-6,replay 1-156,15,1,2,0,0.7984021652368938,log:K2,log:K2,0
+r-7,replay 1-156,12,0,0,5,0,identity:K4,identity:K4,0
+r-8,replay 1-156,17,1,0,0,3.2690136571222865,log:K3,log:K3,0
+r-9,replay 1-156,17,2,0,0,4.511260363291967,identity:K4,identity:K4,0
+r-10,replay 1-156,17,2,0,0,3.197370768134988,identity:K4,identity:K4,0
+r-11,replay 1-156,17,2,0,0,7.333114180441953,identity:K4,identity:K4,0
+r-12,replay 1-156,15,1,2,0,0.001253084687050432,identity:K4,identity:K4,0
+r-13,replay 1-156,15,1,2,0,3.5848097285875156,identity:K4,identity:K4,0
+r-14,replay 1-156,15,0,2,0,0,identity:K3,identity:K3,0
+r-15,replay 1-156,14,1,3,0,3.781006682751922,identity:K4,identity:K4,0
+r-16,replay 1-156,16,1,1,0,30.19898739028622,identity:K4,identity:K4,0
+r-17,replay 1-156,12,2,0,5,23.946526446372218,shifted_log:K3,shifted_log:K3,0
+r-18,replay 1-156,12,2,0,5,4.6041446534320585,shifted_log:K3,shifted_log:K3,0
+r-19,replay 1-156,11,0,1,5,0,identity:K2,identity:K2,0
+r-20,replay 1-156,11,0,1,5,0,log:K2,log:K2,0
+r-21,replay 1-156,12,1,0,5,3.266832128601891,identity:K3,identity:K3,0
+r-22,replay 1-156,15,1,2,0,0.3644034393921629,identity:K3,identity:K3,0
+r-23,replay 1-156,12,0,0,5,0,identity:K4,identity:K4,0
+r-24,replay 1-156,12,0,5,0,0,identity:K4,identity:K4,0
+r-25,replay 1-156,17,2,0,0,7.378402561422263,identity:K4,identity:K4,0
+r-26,replay 1-156,17,2,0,0,9.190862718470271,identity:K4,identity:K4,0
+r-27,replay 1-156,17,2,0,0,9.137901052052712,identity:K4,identity:K4,0
+r-28,replay 1-156,13,0,4,0,0,identity:K4,identity:K4,0
+r-29,replay 1-156,17,2,0,0,6.6171096506423055,identity:K4,identity:K4,0
+r-30,replay 1-156,16,2,1,0,3.2322392784221847,identity:K4,identity:K4,0
+r-31,replay 1-156,17,0,0,0,0,identity:K4,identity:K4,0
+r-32,replay 1-156,14,0,3,0,0,identity:K4,identity:K4,0
+r-33,replay 1-156,10,1,2,5,5.66600612025195,identity:K2,identity:K2,0
+r-34,replay 1-156,12,1,0,5,23.677358004171992,shifted_log:K2,shifted_log:K2,0
+r-35,replay 1-156,11,2,1,5,10.930885127826969,identity:K3,identity:K3,0
+r-36,replay 1-156,12,1,0,5,3.218480818691205,identity:K3,identity:K3,0
+r-37,replay 1-156,12,1,0,5,4.790321734612007,identity:K3,identity:K3,0
+r-38,replay 1-156,12,0,0,5,0,identity:K3,identity:K3,0
+r-39,replay 1-156,12,1,0,5,20.827875234316707,identity:K4,identity:K4,0
+r-40,replay 1-156,11,0,6,0,0,log:K3,log:K3,0
+r-41,replay 1-156,11,0,1,5,0,identity:K3,identity:K3,0
+r-42,replay 1-156,13,0,4,0,0,identity:K4,identity:K4,0
+r-43,replay 1-156,17,1,0,0,4.840232985167404,identity:K2,identity:K2,0
+r-44,replay 1-156,17,2,0,0,3.6022346580125486,identity:K4,identity:K4,0
+r-45,replay 1-156,17,2,0,0,4.82444534283195,identity:K4,identity:K4,0
+r-46,replay 1-156,17,0,0,0,0,identity:K4,identity:K4,0
+r-47,replay 1-156,10,0,7,0,0,identity:K4,identity:K4,0
+r-48,replay 1-156,15,0,2,0,0,identity:K4,identity:K4,0
+r-49,replay 1-156,12,1,0,5,13.972913129996869,shifted_log:K3,shifted_log:K3,0
+r-50,replay 1-156,9,0,3,5,0,identity:K2,identity:K2,0
+r-51,replay 1-156,12,1,0,5,4.746041045651964,shifted_log:K3,shifted_log:K3,0
+r-52,replay 1-156,11,0,1,5,0,log:K2,log:K2,0
+r-53,replay 1-156,11,0,1,5,0,log:K2,log:K2,0
+r-54,replay 1-156,17,2,0,0,1.0372944267367075,identity:K3,identity:K3,0
+r-55,replay 1-156,11,1,1,5,0.9441610024121019,identity:K4,identity:K4,0
+r-56,replay 1-156,17,2,0,0,7.662422010307182,log:K3,log:K3,0
+r-57,replay 1-156,17,2,0,0,10.461752562991933,identity:K4,identity:K4,0
+r-58,replay 1-156,17,0,0,0,0,identity:K4,identity:K4,0
+r-59,replay 1-156,17,2,0,0,5.4540862114527044,identity:K4,identity:K4,0
+r-60,replay 1-156,14,1,3,0,3.3867433502718995,identity:K4,identity:K4,0
+r-61,replay 1-156,17,2,0,0,5.1382308690122045,identity:K4,identity:K4,0
+r-62,replay 1-156,14,1,3,0,1.3840243427575842,log:K3,log:K3,0
+r-63,replay 1-156,17,2,0,0,62.52012924059727,identity:K4,identity:K4,0
+r-64,replay 1-156,17,2,0,0,27.780616194421327,identity:K4,identity:K4,0
+r-65,replay 1-156,11,1,1,5,3.4752510627370157,identity:K2,identity:K2,0
+r-66,replay 1-156,12,0,0,5,0,identity:K2,identity:K2,0
+r-67,replay 1-156,12,0,0,5,0,shifted_log:K3,shifted_log:K3,0
+r-68,replay 1-156,11,1,1,5,3.896278338141201,identity:K3,identity:K3,0
+r-69,replay 1-156,12,1,0,5,51.93688261811167,log:K3,log:K3,0
+r-70,replay 1-156,17,2,0,0,10.309849883212337,identity:K3,identity:K3,0
+r-71,replay 1-156,11,1,1,5,3.2618751626318954,identity:K3,identity:K3,0
+r-72,replay 1-156,17,2,0,0,6.5194273951078685,identity:K5,identity:K5,0
+r-73,replay 1-156,12,1,0,5,1.4117365701868039,identity:K4,identity:K4,0
+r-74,replay 1-156,17,2,0,0,9.753943179985981,log:K4,log:K4,0
+r-75,replay 1-156,17,2,0,0,5.4518911425520855,identity:K4,identity:K4,0
+r-76,replay 1-156,15,1,2,0,3.6970070448974184,identity:K4,identity:K4,0
+r-77,replay 1-156,17,2,0,0,11.349307234992011,identity:K4,identity:K4,0
+r-78,replay 1-156,17,3,0,0,42.102494841987664,identity:K4,identity:K4,0
+r-79,replay 1-156,17,2,0,0,6.287035441747321,identity:K4,identity:K4,0
+r-80,replay 1-156,17,3,0,0,12.98548288065058,identity:K4,identity:K4,0
+r-81,replay 1-156,12,0,0,5,0,identity:K2,identity:K2,0
+r-82,replay 1-156,13,1,4,0,1.2481992027267097,identity:K2,identity:K2,0
+r-83,replay 1-156,11,0,1,5,0,identity:K2,identity:K2,0
+r-84,replay 1-156,12,0,0,5,0,log:K2,log:K2,0
+r-85,replay 1-156,12,0,0,5,0,log:K2,log:K2,0
+r-86,replay 1-156,12,0,0,5,0,identity:K3,identity:K3,0
+r-87,replay 1-156,12,2,0,5,1.046146565056688,identity:K3,identity:K3,0
+r-88,replay 1-156,12,0,0,5,0,log:K2,log:K2,0
+r-89,replay 1-156,12,1,0,5,4.9376575063267865,identity:K4,identity:K4,0
+r-90,replay 1-156,15,1,2,0,0.42073680364046595,identity:K3,identity:K3,0
+r-91,replay 1-156,17,2,0,0,4.7584129255774315,identity:K4,identity:K4,0
+r-92,replay 1-156,17,0,0,0,0,identity:K4,identity:K4,0
+r-93,replay 1-156,17,3,0,0,18.788752854822178,log:K3,log:K3,0
+r-94,replay 1-156,14,1,3,0,1.8262269383917555,identity:K4,identity:K4,0
+r-95,replay 1-156,17,1,0,0,4.638007760552227,identity:K4,identity:K4,0
+r-96,replay 1-156,17,2,0,0,11.029075908659706,identity:K4,identity:K4,0
+r-97,replay 1-156,12,2,0,5,12.292836344007128,shifted_log:K3,shifted_log:K3,0
+r-98,replay 1-156,11,2,1,5,5.229781036731993,identity:K2,identity:K2,0
+r-99,replay 1-156,12,0,0,5,0,log:K2,log:K2,0
+r-100,replay 1-156,12,1,0,5,0.12373166935117297,log:K3,log:K3,0
+r-101,replay 1-156,12,1,0,5,11.196020586811983,log:K3,log:K3,0
+r-102,replay 1-156,15,1,2,0,1.404254664331802,identity:K3,identity:K3,0
+r-103,replay 1-156,12,1,0,5,24.011156091502016,identity:K4,identity:K4,0
+r-104,replay 1-156,17,2,0,0,6.6856914472821245,identity:K4,identity:K4,0
+r-105,replay 1-156,17,1,0,0,2.8724734712673126,log:K3,log:K3,0
+r-106,replay 1-156,15,2,2,0,5.862027160136222,identity:K4,identity:K4,0
+r-107,replay 1-156,17,1,0,0,2.4085130860371464,log:K3,log:K3,0
+r-108,replay 1-156,17,5,0,0,8.76481621551693,identity:K4,identity:K4,0
+r-109,replay 1-156,17,2,0,0,3.3413962544073,identity:K4,identity:K4,0
+r-110,replay 1-156,16,1,1,0,1.6384814087168706,identity:K4,identity:K4,0
+r-111,replay 1-156,16,3,1,0,7.522124608312424,identity:K4,identity:K4,0
+r-112,replay 1-156,17,2,0,0,8.586911220326328,identity:K4,identity:K4,0
+r-113,replay 1-156,11,2,1,5,51.24182532320674,log:K2,log:K2,0
+r-114,replay 1-156,12,2,0,5,11.17046032596204,identity:K2,identity:K2,0
+r-115,replay 1-156,9,2,3,5,13.353586458311838,identity:K3,identity:K3,0
+r-116,replay 1-156,9,0,3,5,0,identity:K3,identity:K3,0
+r-117,replay 1-156,12,0,0,5,0,log:K3,log:K3,0
+r-118,replay 1-156,14,0,3,0,0,identity:K3,identity:K3,0
+r-119,replay 1-156,11,0,1,5,0,identity:K3,identity:K3,0
+r-120,replay 1-156,15,0,2,0,0,log:K2,log:K2,0
+r-121,replay 1-156,12,1,0,5,4.555714446706816,identity:K4,identity:K4,0
+r-122,replay 1-156,15,2,2,0,4.607685315050276,identity:K4,identity:K4,0
+r-123,replay 1-156,17,3,0,0,14.736614608872515,identity:K4,identity:K4,0
+r-124,replay 1-156,15,2,2,0,4.294025094411609,identity:K4,identity:K4,0
+r-125,replay 1-156,17,1,0,0,2.3013214561374298,identity:K3,identity:K3,0
+r-126,replay 1-156,17,2,0,0,6.002439286192839,identity:K4,identity:K4,0
+r-127,replay 1-156,17,2,0,0,2.9200777316123094,identity:K4,identity:K4,0
+r-128,replay 1-156,14,2,3,0,2.5645286855801714,log:K3,log:K3,0
+r-129,replay 1-156,12,2,0,5,0.8690312302669554,identity:K2,identity:K2,0
+r-130,replay 1-156,10,0,2,5,0,shifted_log:K2,shifted_log:K2,0
+r-131,replay 1-156,11,1,1,5,3.347516303861994,identity:K1,identity:K1,0
+r-132,replay 1-156,9,1,3,5,1.3431978852563589,identity:K3,identity:K3,0
+r-133,replay 1-156,12,1,0,5,3.3326711479219284,identity:K3,identity:K3,0
+r-134,replay 1-156,10,0,2,5,0,identity:K3,identity:K3,0
+r-135,replay 1-156,11,0,1,5,0,identity:K2,identity:K2,0
+r-136,replay 1-156,17,4,0,0,4.462598478012296,log:K3,log:K3,0
+r-137,replay 1-156,11,1,1,5,4.9997229707819315,identity:K2,identity:K2,0
+r-138,replay 1-156,17,2,0,0,5.923764905719963,log:K2,log:K2,0
+r-139,replay 1-156,11,0,1,5,0,identity:K1,identity:K1,0
+r-140,replay 1-156,17,3,0,0,8.03255785871761,identity:K4,identity:K4,0
+r-141,replay 1-156,15,2,2,0,12.18417058823752,identity:K3,identity:K3,0
+r-142,replay 1-156,15,0,2,0,0,identity:K4,identity:K4,0
+r-143,replay 1-156,17,2,0,0,13.274899992097744,identity:K4,identity:K4,0
+r-144,replay 1-156,17,3,0,0,18.384594388704954,identity:K4,identity:K4,0
+r-145,replay 1-156,11,2,1,5,5.407397146751464,identity:K2,identity:K2,0
+r-146,replay 1-156,11,1,1,5,1.3695170006012631,identity:K2,identity:K2,0
+r-147,replay 1-156,14,0,3,0,0,identity:K3,identity:K3,0
+r-148,replay 1-156,16,0,1,0,0,identity:K3,identity:K3,0
+r-149,replay 1-156,12,0,5,0,0,log:K5,log:K5,0
+r-150,replay 1-156,16,0,1,0,0,shifted_log:K4,shifted_log:K4,0
+r-151,replay 1-156,9,0,3,5,0,identity:K4,identity:K4,0
+r-152,replay 1-156,17,2,0,0,46.381444989166994,log:K5,log:K5,0
+r-153,replay 1-156,17,1,0,0,1.7133201208162063,log:K4,log:K4,0
+r-154,replay 1-156,16,0,1,0,0,identity:K4,identity:K4,0
+r-155,replay 1-156,16,1,1,0,0.8488072951167851,identity:K4,identity:K4,0
+r-156,replay 1-156,13,0,4,0,0,identity:K4,identity:K4,0
+r-157,other,11,0,6,0,0,identity:K4,identity:K4,0
+r-158,other,11,1,6,0,141.99992361691693,identity:K4,identity:K4,0
+r-159,other,14,2,3,0,419.5078675253171,identity:K4,identity:K4,0
+r-160,other,14,2,3,0,153.3398519657021,identity:K4,identity:K4,0
+r-161,other,11,2,1,5,74.2921367436511,log:K3,log:K3,0
+r-162,other,9,1,3,5,5.51999052460269,identity:K2,identity:K2,0
+r-163,other,10,2,2,5,25.927195767751982,identity:K3,identity:K3,0
+r-164,other,11,0,6,0,0,identity:K4,identity:K4,0
+r-165,other,12,1,0,5,0.0005553963019337971,log:K4,log:K4,0
+r-166,other,16,1,1,0,20.78936029156648,shifted_log:K5,shifted_log:K5,0
+r-167,other,14,1,3,0,0.018607037816764205,identity:K4,identity:K4,0
+r-168,other,14,2,3,0,78.68062666851984,identity:K4,identity:K4,0
+r-169,other,17,0,0,0,0,log:K4,log:K4,0
+r-170,other,16,1,1,0,2.50165709355133,identity:K4,identity:K4,0
+r-171,other,11,0,6,0,0,identity:K4,identity:K4,0
+r-172,other,16,0,1,0,0,identity:K4,identity:K4,0
+r-173,other,17,1,0,0,118.52127626366928,identity:K4,identity:K4,0
+r-174,other,16,2,1,0,5.835631748566811,identity:K4,identity:K4,0
+r-175,other,14,1,3,0,11.303722196516901,identity:K4,identity:K4,0
+r-176,other,11,2,6,0,150.3799225689654,log:K4,log:K4,0
+r-177,other,12,2,0,5,0.0008257486015281756,identity:K2,identity:K2,0
+r-178,other,11,0,1,5,0,shifted_log:K3,shifted_log:K3,0
+r-179,other,12,1,0,5,7.137132834051954,log:K4,log:K4,0
+r-180,other,11,1,1,5,5.047928528428201,identity:K3,identity:K3,0
+r-181,other,10,0,2,5,0,identity:K4,identity:K4,0
+r-182,other,17,0,0,0,0,identity:K3,identity:K3,0
+r-183,other,10,0,2,5,0,log:K4,log:K4,0
+r-184,other,16,0,1,0,0,identity:K4,identity:K4,0
+r-185,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-186,other,17,2,0,0,19.324345477565657,identity:K4,identity:K4,0
+r-187,other,16,1,1,0,7.051695005666261,identity:K4,identity:K4,0
+r-188,other,17,4,0,0,51.162244185417876,identity:K4,identity:K4,0
+r-189,other,16,2,1,0,6.755912404318224,identity:K4,identity:K4,0
+r-190,other,11,0,6,0,0,identity:K4,identity:K4,0
+r-191,other,14,2,3,0,9.350140609618393,log:K4,log:K4,0
+r-192,other,17,4,0,0,40.98532769171834,identity:K4,identity:K4,0
+r-193,other,12,2,0,5,30.483298728351656,shifted_log:K3,shifted_log:K3,0
+r-194,other,16,1,1,0,0.2868319850176704,shifted_log:K2,shifted_log:K2,0
+r-195,other,12,1,0,5,43.95879939590213,shifted_log:K4,shifted_log:K4,0
+r-196,other,10,0,2,5,0,identity:K3,identity:K3,0
+r-197,other,11,2,1,5,75.9464292653538,identity:K4,identity:K4,0
+r-198,other,17,1,0,0,0.0031150823524512816,identity:K4,identity:K4,0
+r-199,other,12,0,0,5,0,log:K5,log:K5,0
+r-200,other,15,1,2,0,57.84888866411893,identity:K4,identity:K4,0
+r-201,other,16,2,1,0,74.54909729036808,identity:K4,identity:K4,0
+r-202,other,15,2,2,0,25.78681260920348,identity:K4,identity:K4,0
+r-203,other,14,1,3,0,119.40014630651785,identity:K4,identity:K4,0
+r-204,other,17,1,0,0,7.349585141519128,identity:K4,identity:K4,0
+r-205,other,14,1,3,0,5.642412985866031,log:K4,log:K4,0
+r-206,other,16,2,1,0,7.755718336919017,identity:K4,identity:K4,0
+r-207,other,10,0,7,0,0,log:K4,log:K4,0
+r-208,other,16,1,1,0,4.930544468266817,identity:K4,identity:K4,0
+r-209,other,13,0,4,0,0,identity:K2,identity:K2,0
+r-210,other,11,1,1,5,13.433119848201386,identity:K2,identity:K2,0
+r-211,other,9,2,3,5,15.330161264901108,shifted_log:K3,shifted_log:K3,0
+r-212,other,14,2,3,0,31.118022417527754,identity:K3,identity:K3,0
+r-213,other,14,0,3,0,0,identity:K3,identity:K3,0
+r-214,other,17,4,0,0,76.74720212855027,identity:K4,identity:K4,0
+r-215,other,14,1,3,0,0.32380784091765236,log:K4,log:K4,0
+r-216,other,16,2,1,0,43.311066575102814,identity:K4,identity:K4,0
+r-217,other,13,0,4,0,0,identity:K4,identity:K4,0
+r-218,other,16,2,1,0,62.35857086416763,identity:K4,identity:K4,0
+r-219,other,13,0,4,0,0,identity:K4,identity:K4,0
+r-220,other,17,2,0,0,2.9821217162661924,identity:K4,identity:K4,0
+r-221,other,14,1,3,0,6.37728513431648,identity:K4,identity:K4,0
+r-222,other,13,1,4,0,138.7168410935028,identity:K4,identity:K4,0
+r-223,other,13,0,4,0,0,log:K4,log:K4,0
+r-224,other,17,2,0,0,106.46871953526716,identity:K4,identity:K4,0
+r-225,other,11,2,1,5,16.806196406201707,identity:K2,identity:K2,0
+r-226,other,6,0,6,5,0,identity:K2,identity:K2,0
+r-227,other,14,0,3,0,0,identity:K3,identity:K3,0
+r-228,other,11,1,1,5,0.0005020893786422675,identity:K3,identity:K3,0
+r-229,other,10,1,2,5,5.276787229151523,log:K3,log:K3,0
+r-230,other,16,2,1,0,4.0587010588151315,identity:K3,identity:K3,0
+r-231,other,10,0,2,5,0,identity:K4,identity:K4,0
+r-232,other,17,3,0,0,20.52462377765187,identity:K4,identity:K4,0
+r-233,other,12,1,0,5,0.0028496384038589895,identity:K4,identity:K4,0
+r-234,other,14,0,3,0,0,identity:K4,identity:K4,0
+r-235,other,13,1,4,0,16.226749891966392,identity:K4,identity:K4,0
+r-236,other,17,2,0,0,12.658967048217164,identity:K4,identity:K4,0
+r-237,other,13,1,4,0,20.829301524901894,identity:K4,identity:K4,0
+r-238,other,16,3,1,0,22.164246719015864,log:K4,log:K4,0
+r-239,other,14,1,3,0,0.01863925746692985,identity:K4,identity:K4,0
+r-240,other,14,2,3,0,105.63805538620363,identity:K4,identity:K4,0
+r-241,other,13,1,4,0,67.15934772915261,identity:K2,identity:K2,0
+r-242,other,10,1,2,5,42.04276996515273,identity:K2,identity:K2,0
+r-243,other,11,2,1,5,50.14324897215283,log:K3,log:K3,0
+r-244,other,14,0,3,0,0,identity:K3,identity:K3,0
+r-245,other,9,0,3,5,0,shifted_log:K3,shifted_log:K3,0
+r-246,other,16,0,1,0,0,identity:K3,identity:K3,0
+r-247,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-248,other,14,1,3,0,5.673988337153787,identity:K4,identity:K4,0
+r-249,other,17,4,0,0,87.81572493796739,identity:K4,identity:K4,0
+r-250,other,17,2,0,0,12.62699646035253,identity:K4,identity:K4,0
+r-251,other,13,0,4,0,0,identity:K4,identity:K4,0
+r-252,other,17,3,0,0,39.61472306720316,identity:K4,identity:K4,0
+r-253,other,14,1,3,0,17.433515508266282,shifted_log:K5,shifted_log:K5,0
+r-254,other,16,1,1,0,33.43039775586658,log:K5,log:K5,0
+r-255,other,14,0,3,0,0,identity:K4,identity:K4,0
+r-256,other,14,0,3,0,0,identity:K4,identity:K4,0
+r-257,other,10,0,2,5,0,identity:K2,identity:K2,0
+r-258,other,10,2,2,5,10.003981975351053,identity:K2,identity:K2,0
+r-259,other,8,0,4,5,0,identity:K3,identity:K3,0
+r-260,other,11,0,1,5,0,shifted_log:K4,shifted_log:K4,0
+r-261,other,11,0,1,5,0,shifted_log:K3,shifted_log:K3,0
+r-262,other,14,2,3,0,9.908855949166536,log:K3,log:K3,0
+r-263,other,10,0,2,5,0,identity:K4,identity:K4,0
+r-264,other,17,1,0,0,0.3157058295164461,identity:K4,identity:K4,0
+r-265,other,13,1,4,0,12.065532240518223,log:K4,log:K4,0
+r-266,other,11,0,6,0,0,identity:K4,identity:K4,0
+r-267,other,14,0,3,0,0,identity:K4,identity:K4,0
+r-268,other,17,2,0,0,18.33908747411806,log:K4,log:K4,0
+r-269,other,15,0,2,0,0,identity:K4,identity:K4,0
+r-270,other,14,2,3,0,2.8155864212185406,identity:K4,identity:K4,0
+r-271,other,13,1,4,0,5.130143229318492,identity:K3,identity:K3,0
+r-272,other,15,2,2,0,23.679712925253625,identity:K4,identity:K4,0
+r-273,other,10,2,2,5,2.764138793101665,identity:K2,identity:K2,0
+r-274,other,12,1,0,5,8.67636448855228,shifted_log:K3,shifted_log:K3,0
+r-275,other,11,0,1,5,0,log:K3,log:K3,0
+r-276,other,9,2,3,5,37.85712818577849,log:K3,log:K3,0
+r-277,other,9,1,3,5,5.3137390747997415,identity:K3,identity:K3,0
+r-278,other,13,0,4,0,0,log:K3,log:K3,0
+r-279,other,10,1,2,5,3.050981503101866,identity:K3,identity:K3,0
+r-280,other,16,2,1,0,2.1617423118659644,log:K3,log:K3,0
+r-281,other,11,1,1,5,8.801395658752881,identity:K4,identity:K4,0
+r-282,other,16,2,1,0,5.22687638120442,identity:K4,identity:K4,0
+r-283,other,12,1,0,5,0.7356000548006705,log:K4,log:K4,0
+r-284,other,15,1,2,0,2.735046503801641,identity:K4,identity:K4,0
+r-285,other,17,3,0,0,39.998714846567964,identity:K4,identity:K4,0
+r-286,other,16,2,1,0,40.596636708269216,identity:K4,identity:K4,0
+r-287,other,14,1,3,0,16.548880279968216,log:K5,log:K5,0
+r-288,other,16,3,1,0,7.290210680668679,identity:K3,identity:K3,0
+r-577,other,10,2,2,5,8.84927342124206,identity:K2,identity:K2,0
+r-578,other,12,1,0,5,11.015824112616883,shifted_log:K3,shifted_log:K3,0
+r-579,other,10,0,2,5,0,shifted_log:K3,shifted_log:K3,0
+r-580,other,10,0,2,5,0,identity:K2,identity:K2,0
+r-581,other,12,1,0,5,7.017400356301891,shifted_log:K4,shifted_log:K4,0
+r-582,other,12,0,0,5,0,log:K2,log:K2,0
+r-583,other,12,1,0,5,5.020308088543345,log:K4,log:K4,0
+r-584,other,11,0,1,5,0,identity:K4,identity:K4,0
+r-585,other,12,1,0,5,40.76627595663689,identity:K4,identity:K4,0
+r-586,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-587,other,11,0,1,5,0,identity:K4,identity:K4,0
+r-588,other,15,1,2,0,6.239952784701387,identity:K4,identity:K4,0
+r-589,other,10,0,2,5,0,identity:K4,identity:K4,0
+r-590,other,16,2,1,0,8.500405112979877,identity:K4,identity:K4,0
+r-591,other,17,2,0,0,10.432880893959805,identity:K4,identity:K4,0
+r-592,other,13,1,4,0,10.984086001562105,identity:K4,identity:K4,0
+r-593,other,12,2,0,5,9.148128892536874,shifted_log:K3,shifted_log:K3,0
+r-594,other,12,1,0,5,1.651581740956999,log:K2,log:K2,0
+r-595,other,12,0,0,5,0,shifted_log:K3,shifted_log:K3,0
+r-596,other,10,0,2,5,0,identity:K3,identity:K3,0
+r-597,other,11,2,1,5,2.520365067426951,identity:K3,identity:K3,0
+r-598,other,10,1,2,5,14.476414473101272,identity:K3,identity:K3,0
+r-599,other,12,1,0,5,0.5146895773623896,shifted_log:K3,shifted_log:K3,0
+r-600,other,11,0,1,5,0,identity:K3,identity:K3,0
+r-601,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-602,other,10,0,2,5,0,identity:K4,identity:K4,0
+r-603,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-604,other,11,1,1,5,64.52484361776666,log:K4,log:K4,0
+r-605,other,9,0,3,5,0,identity:K4,identity:K4,0
+r-606,other,13,0,4,0,0,identity:K3,identity:K3,0
+r-607,other,17,2,0,0,2.579652145259793,identity:K4,identity:K4,0
+r-608,other,11,0,6,0,0,identity:K4,identity:K4,0
+r-609,other,12,1,0,5,4.546691063651906,shifted_log:K3,shifted_log:K3,0
+r-610,other,12,1,0,5,34.03198017496186,identity:K2,identity:K2,0
+r-611,other,11,0,6,0,0,shifted_log:K2,shifted_log:K2,0
+r-612,other,10,0,2,5,0,log:K2,log:K2,0
+r-613,other,11,2,1,5,8.689655564376949,log:K3,log:K3,0
+r-614,other,11,1,1,5,0.003105488136156964,identity:K3,identity:K3,0
+r-615,other,12,2,0,5,10.939096544007327,identity:K4,identity:K4,0
+r-616,other,12,0,0,5,0,identity:K3,identity:K3,0
+r-617,other,11,0,1,5,0,identity:K4,identity:K4,0
+r-618,other,11,0,1,5,0,identity:K5,identity:K5,0
+r-619,other,11,1,1,5,0.023431765254883885,identity:K4,identity:K4,0
+r-620,other,11,1,1,5,6.066158511779136,identity:K4,identity:K4,0
+r-621,other,10,1,2,5,0.8853568011568882,identity:K4,identity:K4,0
+r-622,other,13,0,4,0,0,identity:K4,identity:K4,0
+r-623,other,10,0,2,5,0,identity:K4,identity:K4,0
+r-624,other,16,2,1,0,3.3671247194380953,identity:K4,identity:K4,0
+r-625,other,10,3,2,5,0.8677916875819847,identity:K2,identity:K2,0
+r-626,other,10,1,2,5,86.9756336610319,identity:K2,identity:K2,0
+r-627,other,12,0,0,5,0,shifted_log:K2,shifted_log:K2,0
+r-628,other,11,3,1,5,1.7629831201860497,log:K2,log:K2,0
+r-629,other,12,1,0,5,18.678178192386895,identity:K3,identity:K3,0
+r-630,other,11,0,1,5,0,shifted_log:K3,shifted_log:K3,0
+r-631,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-632,other,11,0,1,5,0,shifted_log:K4,shifted_log:K4,0
+r-633,other,11,0,1,5,0,identity:K3,identity:K3,0
+r-634,other,11,0,1,5,0,identity:K4,identity:K4,0
+r-635,other,12,1,0,5,7.992964162135394,identity:K4,identity:K4,0
+r-636,other,17,1,0,0,6.243379082896382,identity:K4,identity:K4,0
+r-637,other,11,1,1,5,2.349318573635628e-05,identity:K4,identity:K4,0
+r-638,other,17,2,0,0,7.817971625218888,identity:K4,identity:K4,0
+r-639,other,17,2,0,0,10.615182319007285,identity:K4,identity:K4,0
+r-640,other,14,1,3,0,5.300648554079032,log:K4,log:K4,0
+r-641,other,10,1,2,5,14.47559951718199,identity:K2,identity:K2,0
+r-642,other,11,0,1,5,0,log:K1,log:K1,0
+r-643,other,12,2,0,5,6.098140376796891,identity:K3,identity:K3,0
+r-644,other,9,1,3,5,5.696373585391257,identity:K3,identity:K3,0
+r-645,other,12,0,0,5,0,log:K3,log:K3,0
+r-646,other,10,0,2,5,0,identity:K3,identity:K3,0
+r-647,other,11,0,1,5,0,identity:K4,identity:K4,0
+r-648,other,12,1,0,5,1.0622021944311086,shifted_log:K3,shifted_log:K3,0
+r-649,other,12,1,0,5,3.7763726776233284,identity:K4,identity:K4,0
+r-650,other,11,0,1,5,0,identity:K4,identity:K4,0
+r-651,other,12,1,0,5,6.783019077768358,identity:K4,identity:K4,0
+r-652,other,11,0,1,5,0,identity:K4,identity:K4,0
+r-653,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-654,other,13,0,4,0,0,identity:K3,identity:K3,0
+r-655,other,12,1,0,5,2.7593937112348783,identity:K4,identity:K4,0
+r-656,other,12,1,5,0,0.0007765490397559915,identity:K4,identity:K4,0
+r-657,other,12,1,0,5,10.598682328426776,shifted_log:K2,shifted_log:K2,0
+r-658,other,12,0,0,5,0,shifted_log:K2,shifted_log:K2,0
+r-659,other,12,1,0,5,5.880671002686881,shifted_log:K3,shifted_log:K3,0
+r-660,other,11,1,1,5,19.599249319961245,identity:K3,identity:K3,0
+r-661,other,12,0,0,5,0,identity:K3,identity:K3,0
+r-662,other,10,0,2,5,0,identity:K3,identity:K3,0
+r-663,other,12,2,0,5,7.19614718867183,identity:K3,identity:K3,0
+r-664,other,11,0,1,5,0,identity:K3,identity:K3,0
+r-665,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-666,other,10,0,2,5,0,identity:K4,identity:K4,0
+r-667,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-668,other,9,0,3,5,0,identity:K4,identity:K4,0
+r-669,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-670,other,15,1,2,0,5.147340355143882,log:K3,log:K3,0
+r-671,other,11,0,1,5,0,log:K4,log:K4,0
+r-672,other,13,0,4,0,0,identity:K4,identity:K4,0
+r-673,other,12,1,0,5,3.958920606276706,shifted_log:K3,shifted_log:K3,0
+r-674,other,9,1,3,5,2.678302981226807,identity:K2,identity:K2,0
+r-675,other,10,1,2,5,2.136070800196876,identity:K3,identity:K3,0
+r-676,other,11,0,1,5,0,identity:K2,identity:K2,0
+r-677,other,10,0,2,5,0,identity:K4,identity:K4,0
+r-678,other,11,0,1,5,0,identity:K3,identity:K3,0
+r-679,other,12,1,0,5,2.160750906598423,identity:K4,identity:K4,0
+r-680,other,12,0,0,5,0,identity:K3,identity:K3,0
+r-681,other,12,0,0,5,0,log:K4,log:K4,0
+r-682,other,9,0,3,5,0,log:K4,log:K4,0
+r-683,other,12,0,0,5,0,identity:K4,identity:K4,0
+r-684,other,9,0,3,5,0,identity:K4,identity:K4,0

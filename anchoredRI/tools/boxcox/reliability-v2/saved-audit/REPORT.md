@@ -13,12 +13,14 @@ The frozen baseline had at least one likelihood inversion in 299 of 5,220 datase
 | Arm A, other saved N = 50,000 fits | 144 | 76 (52.78%) | 11 |
 | Arm B, all saved fits before the hold | 540 | 333 (61.67%) | 0 |
 
+Fourteen Hb datasets were flagged in both runtimes. Across the two repeats, 48 distinct Hb datasets had at least one inversion.
+
 For the last column, each larger candidate receives at least the best known nested likelihood, including bounds propagated through adjacent component counts, and keeps its own parameter penalty. The winner changed in 15 of the 384 additional local Arm A fits. These are lower-bound calculations. The actual BIC winner after a correct fit cannot be recovered from the saved candidates. The improved fitter provides an observed new choice on the 156 paired datasets.
 
 The comparisons use statistical nesting, the allowed shift interval, the counts of retained observations and a floating-point allowance. Some historical numerical bounds on SDs and weight ratios differ between candidate optimizations. A flagged inversion identifies a problem with the attained fit or those bounds. The original RDS files do not contain a feasible parameter witness for every losing candidate. A shift-versus-zero comparison is excluded when zero falls outside its search interval. Identity can be embedded at lambda one by translating component means.
 
 The Actions Arm A checkpoints retained the fixed-model starting parameters. We evaluated the likelihood at those saved parameters on the same verified routine and anchor vectors. The Actions fixed-model seed inventory is incomplete for 29 of 156 datasets. We count only comparisons with both likelihoods available when estimating inversion rates. The original C2 archive kept the selected model. A separate archived-image preflight saved all candidates for Hb 100 and 148.
 
-[Dataset counts](violation-summary.csv) · [Counts by nesting relationship](by-comparison.csv) · [Dataset flags and BIC selections](datasets-audited.csv.gz)
+[Dataset counts](violation-summary.csv) · [Counts by nesting relationship](by-comparison.csv) · [All dataset decisions](fit-decisions)
 
-The [pair-level tables](pairs) give both likelihoods, the signed difference, the floating-point allowance and the status of every comparison.
+The [list of every inversion](violations.csv) gives both likelihoods, the amount the larger fit lost and the floating-point allowance. The analysis script also emits every pair checked, including unavailable comparisons and structural exclusions.

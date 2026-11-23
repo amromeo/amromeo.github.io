@@ -1,6 +1,6 @@
 # Task E implementation status
 
-**Current status.** The full audit is running with the approved 5% model-change rule. The two-dataset replay on the C2 image is complete. It reproduced the original winner for Hb 100. For Hb 148 it selected identity, while the original C2 run selected shifted-log. [Candidate BIC tables and endpoint comparisons](validation/HB-BIC.md)
+The accuracy comparison is on hold. The study completed all 5,220 frozen-baseline checks, the 4,320-dataset cross-machine audit and the original 156-dataset Arm A replay. [Nesting audit](reliability-v2/saved-audit/REPORT.md) · [Original cross-machine validation](results/validation/README.md)
 
 ## Earlier validation runs
 

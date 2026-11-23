@@ -1,0 +1,397 @@
+key,cohort,pairs,violations,unavailable,excluded,max_loglik_loss,saved_winner,winner_using_nested_bounds,incomplete_seed_inventory
+r-1,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-2,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-3,replay 1-156,16,1,0,6,0.2965388652646652,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-4,replay 1-156,16,0,0,6,0,boxcox_shifted:K2,boxcox_shifted:K2,0
+r-5,replay 1-156,16,1,0,6,12.409253668419751,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-6,replay 1-156,22,0,0,0,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-7,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-8,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-9,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-10,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-11,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-12,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-13,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-14,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-15,replay 1-156,22,1,0,0,0.05341167333745034,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-16,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-17,replay 1-156,16,1,0,6,1.718335726291798,boxcox_shifted:K2,boxcox_shifted:K2,0
+r-18,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-19,replay 1-156,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-20,replay 1-156,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-21,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-22,replay 1-156,22,1,0,0,0.33056975035719915,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-23,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-24,replay 1-156,22,1,0,0,0.38160896882709494,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-25,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-26,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-27,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-28,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-29,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-30,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-31,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-32,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-33,replay 1-156,16,2,0,6,2.381551733689548,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-34,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-35,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-36,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-37,replay 1-156,16,1,0,6,0.0008273423497939802,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-38,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-39,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-40,replay 1-156,21,0,1,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-41,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-42,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-43,replay 1-156,22,0,0,0,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-44,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-45,replay 1-156,22,1,0,0,0.2451170882623046,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-46,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-47,replay 1-156,21,0,1,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-48,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-49,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-50,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-51,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-52,replay 1-156,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-53,replay 1-156,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-54,replay 1-156,22,0,0,0,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-55,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-56,replay 1-156,22,0,0,0,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-57,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-58,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-59,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-60,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-61,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-62,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-63,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-64,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-65,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-66,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-67,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-68,replay 1-156,16,1,0,6,1.2950901670558324,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-69,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-70,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-71,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-72,replay 1-156,22,0,0,0,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-73,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-74,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-75,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-76,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-77,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-78,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-79,replay 1-156,22,1,0,0,0.5150593583125556,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-80,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-81,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-82,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-83,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-84,replay 1-156,16,1,0,6,1.3895719454203572,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-85,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-86,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-87,replay 1-156,16,1,0,6,8.748016226444634,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-88,replay 1-156,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-89,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-90,replay 1-156,22,1,0,0,0.003729384170128469,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-91,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-92,replay 1-156,22,1,0,0,0.0003281670769865741,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-93,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-94,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-95,replay 1-156,22,1,0,0,0.004372158572095941,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-96,replay 1-156,22,1,0,0,0.2688656489403911,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-97,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-98,replay 1-156,16,1,0,6,0.1383809333847239,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-99,replay 1-156,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-100,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-101,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-102,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-103,replay 1-156,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-104,replay 1-156,22,0,0,0,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-105,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-106,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-107,replay 1-156,22,1,0,0,0.015090987487383245,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-108,replay 1-156,22,1,0,0,0.0012227180818626948,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-109,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-110,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-111,replay 1-156,22,1,0,0,0.002550232077282999,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-112,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-113,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-114,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-115,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-116,replay 1-156,16,1,0,6,2.4512637510506465,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-117,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-118,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-119,replay 1-156,16,1,0,6,0.1533418148048895,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-120,replay 1-156,22,0,0,0,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-121,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-122,replay 1-156,22,0,0,0,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-123,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-124,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-125,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-126,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-127,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-128,replay 1-156,22,1,0,0,0.11443627109019872,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-129,replay 1-156,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-130,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-131,replay 1-156,16,0,0,6,0,boxcox_unshifted:K1,boxcox_unshifted:K1,0
+r-132,replay 1-156,16,1,0,6,0.20437851972565113,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-133,replay 1-156,16,1,0,6,6.780105016184734,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-134,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-135,replay 1-156,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-136,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-137,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-138,replay 1-156,22,0,0,0,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-139,replay 1-156,16,0,0,6,0,boxcox_unshifted:K1,boxcox_unshifted:K1,0
+r-140,replay 1-156,22,1,0,0,0.10003491947236398,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-141,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-142,replay 1-156,22,1,0,0,0.0015856035925025935,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-143,replay 1-156,22,1,0,0,0.1376012121477288,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-144,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-145,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-146,replay 1-156,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-147,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-148,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-149,replay 1-156,22,1,0,0,0.0036712280179926893,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-150,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-151,replay 1-156,16,2,0,6,16.309576506017038,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-152,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-153,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-154,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-155,replay 1-156,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-156,replay 1-156,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-157,other,22,1,0,0,2.0488954835163895,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-158,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-159,other,22,2,0,0,7.325660446265829,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-160,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-161,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-162,other,16,1,0,6,0.07569286845227907,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-163,other,16,1,0,6,1.4084770384670264,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-164,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-165,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-166,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-167,other,22,1,0,0,0.5431421949178912,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-168,other,22,1,0,0,0.0764792126174143,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-169,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-170,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-171,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-172,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-173,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-174,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-175,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-176,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-177,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-178,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-179,other,16,1,0,6,0.26140155921802943,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-180,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-181,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-182,other,22,1,0,0,2.2095187188187992,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-183,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-184,other,22,1,0,0,0.13820391516674135,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-185,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-186,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-187,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-188,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-189,other,22,2,0,0,2.3538248295662925,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-190,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-191,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-192,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-193,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-194,other,22,1,0,0,0.6871657520669032,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-195,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-196,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-197,other,16,1,0,6,9.303586903864925,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-198,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-199,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-200,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-201,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-202,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-203,other,22,1,0,0,0.01148392981485813,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-204,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-205,other,22,1,0,0,0.32486970741592813,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-206,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-207,other,22,1,0,0,3.0821478963189293,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-208,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-209,other,22,2,0,0,27.689573704667055,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-210,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-211,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-212,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-213,other,22,5,0,0,10.65980409576514,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-214,other,22,1,0,0,0.12769756661873544,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-215,other,22,3,0,0,3.108423623516501,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-216,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-217,other,22,1,0,0,0.4048686488658859,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-218,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-219,other,22,1,0,0,0.008825552866255748,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-220,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-221,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-222,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-223,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-224,other,22,1,0,0,0.1516042222683609,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-225,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-226,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-227,other,22,1,0,0,39.45805997701791,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-228,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-229,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-230,other,22,1,0,0,2.6352205882685666,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-231,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-232,other,22,3,0,0,2.3167674773831095,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-233,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-234,other,22,2,0,0,4.718267039119382,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-235,other,22,1,0,0,55.77415407461922,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-236,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-237,other,22,1,0,0,0.5790643209693371,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-238,other,22,1,0,0,7.320594822967905,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-239,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-240,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-241,other,22,1,0,0,1.3101034429173524,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-242,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-243,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-244,other,22,1,0,0,0.6497161741590389,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-245,other,16,1,0,6,0.5799730933686078,boxcox_unshifted:K3,boxcox_shifted:K3,0
+r-246,other,22,1,0,0,14.723492138666188,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-247,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-248,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-249,other,22,1,0,0,0.30824941096761904,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-250,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-251,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-252,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-253,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-254,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-255,other,22,2,0,0,4.838177532066766,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-256,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-257,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-258,other,16,1,0,6,0.9639816474345935,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-259,other,16,1,0,6,0.43692201698468125,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-260,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-261,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-262,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-263,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-264,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-265,other,22,2,0,0,3.003725178168679,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-266,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-267,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-268,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-269,other,22,2,0,0,1.8330817845162528,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-270,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-271,other,22,3,0,0,3.593543959384988,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-272,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-273,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-274,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-275,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-276,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-277,other,16,1,0,6,0.5734148791161715,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-278,other,22,1,0,0,0.12464718421870202,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-279,other,16,1,0,6,6.992243102515204,boxcox_shifted:K3,boxcox_unshifted:K3,0
+r-280,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-281,other,16,2,0,6,1.9930837094343588,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-282,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-283,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-284,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-285,other,22,2,0,0,20.01058330986598,boxcox_shifted:K3,boxcox_unshifted:K3,0
+r-286,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-287,other,22,1,0,0,2.2377834484177583,boxcox_shifted:K3,boxcox_unshifted:K3,0
+r-288,other,22,1,0,0,0.44629401536622026,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-577,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-578,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-579,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-580,other,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-581,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-582,other,16,0,0,6,0,boxcox_shifted:K2,boxcox_shifted:K2,0
+r-583,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-584,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-585,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-586,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-587,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-588,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-589,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-590,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-591,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-592,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-593,other,16,1,0,6,3.0172646487518477,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-594,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-595,other,16,1,0,6,3.7662614236322725,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-596,other,16,1,0,6,8.694880424010762,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-597,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-598,other,16,1,0,6,4.692893608200848,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-599,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-600,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-601,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-602,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-603,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-604,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-605,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-606,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-607,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-608,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-609,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-610,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-611,other,21,0,1,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-612,other,16,0,0,6,0,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-613,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-614,other,16,2,0,6,11.932119328305816,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-615,other,16,1,0,6,4.555405641545519,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-616,other,16,1,0,6,0.4356902230477431,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-617,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-618,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-619,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-620,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-621,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-622,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-623,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-624,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-625,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-626,other,16,1,0,6,0.5480150024944805,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-627,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-628,other,16,0,0,6,0,boxcox_shifted:K2,boxcox_shifted:K2,0
+r-629,other,16,1,0,6,4.061941155059571,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-630,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-631,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-632,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-633,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-634,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-635,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-636,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-637,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-638,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-639,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-640,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-641,other,16,1,0,6,0.6677285463695171,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-642,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-643,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-644,other,16,2,0,6,4.9750813595758245,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-645,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-646,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-647,other,16,1,0,6,4.6078745476525,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-648,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-649,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-650,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-651,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-652,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-653,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-654,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-655,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-656,other,22,0,0,0,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-657,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-658,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-659,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-660,other,16,1,0,6,10.709953644090774,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-661,other,16,1,0,6,15.525035575489596,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-662,other,16,1,0,6,4.344329177525765,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-663,other,16,1,0,6,3.374878357214584,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-664,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-665,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-666,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-667,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-668,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-669,other,16,1,0,6,1.198763870841617,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-670,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-671,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-672,other,22,0,0,0,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-673,other,16,1,0,6,0.8978959152068455,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-674,other,16,1,0,6,0.7394146317819832,boxcox_unshifted:K2,boxcox_unshifted:K2,0
+r-675,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-676,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-677,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-678,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-679,other,16,0,0,6,0,boxcox_shifted:K2,boxcox_shifted:K2,0
+r-680,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-681,other,16,0,0,6,0,boxcox_shifted:K3,boxcox_shifted:K3,0
+r-682,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-683,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
+r-684,other,16,0,0,6,0,boxcox_unshifted:K3,boxcox_unshifted:K3,0
