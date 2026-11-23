@@ -1,0 +1,153 @@
+name: Task E small-N and grid accuracy
+on:
+  push:
+    branches: [study/boxcox-accuracy-ci]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  primary:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+    env:
+      OMP_NUM_THREADS: 1
+      OPENBLAS_NUM_THREADS: 1
+      BATCH: ${{ matrix.shard }}
+      PHASE: primary
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 3c921dfaa29f64df3f7ea82e6bf5634be20e8943
+          path: study
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+      - uses: actions/checkout@v4
+        with:
+          ref: f72ea14fc7978bf2478f54c87548cb6c127fa766
+          path: c2-runtime
+      - working-directory: c2-runtime/anchoredRI
+        run: Rscript tools/ribench/install.R
+      - name: Retrieve C2 routine inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: ribench-data-small
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-data
+      - name: Retrieve C2 anchor hashes and environment
+        uses: actions/download-artifact@v4
+        with:
+          name: ribench-scored-independent
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-fits
+      - working-directory: study/anchoredRI
+        run: |
+          export CI_FILES="$GITHUB_WORKSPACE/anchoredRI/tools/boxcox/accuracy/ci"
+          out="$GITHUB_WORKSPACE/results/$PHASE-$BATCH"
+          mkdir -p "$out"
+          Rscript tools/boxcox/reliability-v3/build-production.R "$RUNNER_TEMP/frozen.so"
+          Rscript -e 'saveRDS(list(small_data=normalizePath("../../original-data"), small_archive=normalizePath("../../original-fits")),"config.rds")'
+          echo "$ImageOS $ImageVersion" > "$out/runtime.txt"
+          Rscript -e 'library(RIbench);sessionInfo();write.csv(installed.packages()[,c("Package","Version")],commandArgs(TRUE)[1])' "$out/libraries.csv" >> "$out/runtime.txt"
+          cp tools/boxcox/reliability-v3/results/source-hashes.csv "$out/"
+          sha256sum tools/boxcox/accuracy/fit.R tools/stress-design.R >> "$out/runtime.txt"
+          Rscript "$CI_FILES/batch.R" config.rds "$out" "$RUNNER_TEMP/empty-cache" 4 "$RUNNER_TEMP/frozen.so"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: accuracy-primary-${{ matrix.shard }}-${{ github.run_attempt }}
+          path: results/
+          retention-days: 60
+  gate:
+    needs: primary
+    runs-on: ubuntu-24.04
+    outputs:
+      refit: ${{ steps.audit.outputs.refit }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: accuracy-primary-*
+          path: checkpoints
+          merge-multiple: true
+      - id: audit
+        run: |
+          python - <<'PYTHON'
+          import csv,glob,os
+          def rows(p):
+              with open(p) as f: return list(csv.DictReader(f))
+          expected=rows('anchoredRI/tools/boxcox/accuracy/ci/audit.csv')
+          actual=[r for p in glob.glob('checkpoints/*/audit-result.csv') for r in rows(p)]
+          key=lambda r:(r['key'],r['cap'])
+          assert len(actual)==100 and sorted(map(key,expected))==sorted(map(key,actual))
+          refit=any(r['pass']!='TRUE' for r in actual)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f: print('refit='+str(refit).lower(),file=f)
+          PYTHON
+  fallback:
+    needs: gate
+    if: needs.gate.outputs.refit == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+    env:
+      OMP_NUM_THREADS: 1
+      OPENBLAS_NUM_THREADS: 1
+      BATCH: ${{ matrix.shard }}
+      PHASE: fallback
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 3c921dfaa29f64df3f7ea82e6bf5634be20e8943
+          path: study
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+      - uses: actions/checkout@v4
+        with:
+          ref: f72ea14fc7978bf2478f54c87548cb6c127fa766
+          path: c2-runtime
+      - working-directory: c2-runtime/anchoredRI
+        run: Rscript tools/ribench/install.R
+      - name: Retrieve C2 routine inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: ribench-data-small
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-data
+      - name: Retrieve C2 anchor hashes and environment
+        uses: actions/download-artifact@v4
+        with:
+          name: ribench-scored-independent
+          run-id: 45096614442
+          github-token: ${{ github.token }}
+          path: original-fits
+      - working-directory: study/anchoredRI
+        run: |
+          export CI_FILES="$GITHUB_WORKSPACE/anchoredRI/tools/boxcox/accuracy/ci"
+          out="$GITHUB_WORKSPACE/results/$PHASE-$BATCH"
+          mkdir -p "$out"
+          Rscript tools/boxcox/reliability-v3/build-production.R "$RUNNER_TEMP/frozen.so"
+          Rscript -e 'saveRDS(list(small_data=normalizePath("../../original-data"), small_archive=normalizePath("../../original-fits")),"config.rds")'
+          echo "$ImageOS $ImageVersion" > "$out/runtime.txt"
+          Rscript -e 'library(RIbench);sessionInfo();write.csv(installed.packages()[,c("Package","Version")],commandArgs(TRUE)[1])' "$out/libraries.csv" >> "$out/runtime.txt"
+          cp tools/boxcox/reliability-v3/results/source-hashes.csv "$out/"
+          sha256sum tools/boxcox/accuracy/fit.R tools/stress-design.R >> "$out/runtime.txt"
+          Rscript "$CI_FILES/batch.R" config.rds "$out" "$RUNNER_TEMP/empty-cache" 4 "$RUNNER_TEMP/frozen.so"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: accuracy-fallback-${{ matrix.shard }}-${{ github.run_attempt }}
+          path: results/
+          retention-days: 60
