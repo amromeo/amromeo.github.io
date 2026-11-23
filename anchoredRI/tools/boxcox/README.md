@@ -1,6 +1,6 @@
 # Box-Cox shape and mixture capacity study
 
-The accuracy benchmark is on hold. The rounding-based fitter met the baseline reproducibility targets in 156 Hb datasets. Fitted-shape Arm A reached its stopping rule, and the five-component Arm B passed the local nesting audit. The commands below describe the original study. [Round 3 report](reliability-v3/results/REPORT.md) · [Protocol](PROTOCOL.md) · [Earlier reliability replay](reliability-v2/results/REPORT.md)
+The fitted Box-Cox arm (Arm A) stopped after 12 of 156 Hb datasets (7.7%) met the weak-identification rule. Its accuracy comparison is closed. Its code, fitted parameters and results are retained. The improved three-component baseline passed the round 3 Hb checks. Arm B must meet the same targets in a two-runtime replay. Accuracy testing of the eligible methods awaits review of that replay and Hb 142. [Round 3 report](reliability-v3/results/REPORT.md) · [Protocol](PROTOCOL.md)
 
 Implementation of the approved Task E protocol. The package code in `R/` is unchanged. The baseline remains `55eee86b3f4111197b0043cc062ef0b781dc2057` and the one-group adapter is copied from `f72ea14fc7978bf2478f54c87548cb6c127fa766`.
 
