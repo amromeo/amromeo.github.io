@@ -1,0 +1,3 @@
+"Index","original_transform","original_k","replay_transform","replay_k","original_lower","original_upper","replay_lower","replay_upper","max_difference"
+100,"identity",3,"identity",3,11.961508978977,16.0549545080765,11.9614529742556,16.0549585493653,5.60047214541726e-05
+148,"shifted_log",3,"identity",3,12.1394276757771,16.1260853247943,12.0760218569159,15.9582871253376,0.167798199456675

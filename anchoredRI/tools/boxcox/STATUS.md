@@ -1,6 +1,8 @@
 # Task E implementation status
 
-**Current status.** Validation resumed after approval of the 5% model-change rule. The earlier pauses below record the history of the audit.
+**Current status.** The full audit is running with the approved 5% model-change rule. The two-dataset replay on the C2 image is complete. It reproduced the original winner for Hb 100. For Hb 148 it selected identity, while the original C2 run selected shifted-log. [Candidate BIC tables and endpoint comparisons](validation/HB-BIC.md)
+
+## Earlier validation runs
 
 Implementation started after user approval on 22 November 2026. No package files under `R/` were changed.
 
