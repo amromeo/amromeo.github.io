@@ -1,0 +1,10 @@
+source('tools/boxcox/native-scores.R')
+values <- c(1,3,5,7,NA_real_)
+native <- ifelse(values>5,NA_real_,values)
+scores <- bc_cutoff_scores(values,native)
+stopifnot(scores$native_n==3L,scores$native==3,scores$all_attempt==3.8)
+arm <- list(capped_mean=scores$native,all_attempt_capped=scores$all_attempt,missing=1L)
+stopifnot(!bc_error_criterion(arm,3.5),bc_error_criterion(arm,3.8))
+arm$missing <- 0L
+stopifnot(bc_error_criterion(arm,3),!bc_error_criterion(arm,2.9))
+cat('Native cutoff and missing-fit score checks passed.\n')

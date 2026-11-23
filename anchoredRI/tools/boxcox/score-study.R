@@ -2,6 +2,7 @@ library(RIbench)
 source('tools/boxcox/models.R')
 source('tools/boxcox/candidates.R')
 source('tools/boxcox/export-candidates.R')
+source('tools/boxcox/native-scores.R')
 source('tools/stress-design.R')
 cfg <- readRDS(commandArgs(TRUE)[1]); root <- cfg$output
 stopifnot(file.exists(file.path(root,'FITTED.txt')),!file.exists(file.path(root,'HALT.txt')))
@@ -80,11 +81,12 @@ for(stage in c('small','large')) {
       technical <- if('technical' %in% names(q))sum(q$technical) else 0L
       if(filter=='after')q <- q[q$reported,]
       err <- q$zzDevAbs_Ov; missing <- !is.finite(err)
+      cutoff <- bc_cutoff_scores(err,q$zzDevAbsCutoff_Ov)
       summaries[[length(summaries)+1]] <- data.frame(stage=stage,group=group,method=method,filter=filter,
         attempts=total,reported=reported,declined=declines,technical_withheld=technical,scored=sum(!missing),missing=sum(missing),
         decline_or_withhold_rate=1-reported/total,mean_abs_z=mean(err,na.rm=TRUE),
-        capped_mean=mean(q$zzDevAbsCutoff_Ov,na.rm=TRUE),
-        all_attempt_capped=mean(ifelse(missing,5,q$zzDevAbsCutoff_Ov)),
+        capped_mean=cutoff$native,capped_n=cutoff$native_n,
+        all_attempt_capped=cutoff$all_attempt,
         implausible=sum(err>5,na.rm=TRUE),implausible_or_missing=sum(missing|err>5),
         fit_seconds=sum(q$Runtime,na.rm=TRUE))
     }
@@ -132,9 +134,9 @@ verdicts <- lapply(c('armA','armB'),function(arm) {
   select <- function(stage,method)summary[summary$stage==stage&summary$group=='all'&
     summary$method==method&summary$filter=='before',]
   small <- select('small',arm); large <- select('large',arm)
-  data.frame(arm=arm,large_error_pass=large$all_attempt_capped<=select('large','refineR')$capped_mean,
+  data.frame(arm=arm,large_error_pass=bc_error_criterion(large,select('large','refineR')$capped_mean),
     large_implausible_pass=large$implausible_or_missing<=14,
-    small_error_pass=small$all_attempt_capped<=select('small','anchoredRI')$capped_mean)
+    small_error_pass=bc_error_criterion(small,select('small','anchoredRI')$capped_mean))
 })
 verdicts <- do.call(rbind,verdicts)
 write.csv(verdicts,file.path(root,'success-criteria.csv'),row.names=FALSE)
@@ -189,15 +191,15 @@ write.csv(regression,file.path(root,'simulation-paired.csv'),row.names=FALSE)
 text <- c('# Task E results', '',
   'The baseline is anchoredRI at commit 55eee86b3f4111197b0043cc062ef0b781dc2057 with the frozen C2 adapter. The local refit used one routine group for RIbench and two groups for the simulation grid.', '',
   'All 5,220 same-machine input and equivalence checks passed, and the amended cross-machine review gate passed, before either experimental arm ran. Native RIbench scoring uses the same 2,880 small-N and 1,440 N=50,000 datasets and independent anchor seeds as C2.', '',
-  '| Stage | Subset | Method | Safeguard | Scored | Mean absolute z | Capped mean | Reported / attempted |',
+  '| Stage | Subset | Method | Safeguard | Scored | Mean absolute z | Native capped mean (n) | Reported / attempted |',
   '|---|---|---|---|---:|---:|---:|---:|')
 for(i in which(summary$group %in% c('all','lambda=0.432'))) {
   r <- summary[i,]
-  text <- c(text,sprintf('| %s | %s | %s | %s | %d | %.4f | %.4f | %d / %d |',
-    r$stage,r$group,r$method,r$filter,r$scored,r$mean_abs_z,r$capped_mean,r$reported,r$attempts))
+  text <- c(text,sprintf('| %s | %s | %s | %s | %d | %.4f | %.4f (%d) | %d / %d |',
+    r$stage,r$group,r$method,r$filter,r$scored,r$mean_abs_z,r$capped_mean,r$capped_n,r$reported,r$attempts))
 }
 text <- c(text,'','## Prespecified success criteria','',
-  'Success is judged before the safeguard. Missing fits receive a capped error of 5 and count toward the 1% implausible-result threshold. Each arm must meet all three criteria.','',
+  'Success is judged before the safeguard. RIbench excludes valid datasets with mean absolute z above 5 from its native cutoff mean. The uncapped mean and implausible counts retain them. If any fit is missing, the arm must also meet the error threshold over all attempts, with missing fits and errors over 5 assigned 5. Missing fits also count toward the 1% threshold. Each arm must meet all three criteria.','',
   '| Arm | N = 50,000 capped error at or below refineR | N = 50,000 implausible or missing (maximum 14/1,440) | Small-N capped error at or below local anchoredRI |',
   '|---|---|---|---|')
 for(i in seq_len(nrow(verdicts))) {
