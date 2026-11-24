@@ -1,0 +1,47 @@
+{
+  "run": "45298562883",
+  "source": "6c57171c51185efb9f688fd3c8b0d5ea3f57ddc5",
+  "fitter": "ec3dd35197759424d32a6a341320173e5db08c89",
+  "archive_run": "45101564181",
+  "datasets": 1440,
+  "comparator_rows": 5220,
+  "previous_large_rows": 144,
+  "images": {
+    "20261116.133.1": 1080,
+    "20261116.376.1": 360
+  },
+  "criteria": [
+    {
+      "method": "anchoredRI",
+      "attempted": "1440",
+      "native_capped": "0.361760784615392",
+      "native_n": "1403",
+      "refineR_threshold": "0.22818184857346",
+      "missing": "0",
+      "all_attempt_capped": "0.480937764455135",
+      "technical": "0",
+      "implausible": "37",
+      "implausible_or_failed": "37",
+      "max_implausible": "14",
+      "score_pass": "FALSE",
+      "count_pass": "FALSE",
+      "passed": "FALSE"
+    },
+    {
+      "method": "armB",
+      "attempted": "1440",
+      "native_capped": "0.374364297749307",
+      "native_n": "1439",
+      "refineR_threshold": "0.22818184857346",
+      "missing": "0",
+      "all_attempt_capped": "0.377576544764759",
+      "technical": "0",
+      "implausible": "1",
+      "implausible_or_failed": "1",
+      "max_implausible": "14",
+      "score_pass": "FALSE",
+      "count_pass": "TRUE",
+      "passed": "FALSE"
+    }
+  ]
+}

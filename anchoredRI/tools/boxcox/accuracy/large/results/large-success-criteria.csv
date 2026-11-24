@@ -1,0 +1,3 @@
+"method","attempted","native_capped","native_n","refineR_threshold","missing","all_attempt_capped","technical","implausible","implausible_or_failed","max_implausible","score_pass","count_pass","passed"
+"anchoredRI",1440,0.361760784615392,1403,0.22818184857346,0,0.480937764455135,0,37,37,14,FALSE,FALSE,FALSE
+"armB",1440,0.374364297749307,1439,0.22818184857346,0,0.377576544764759,0,1,1,14,FALSE,TRUE,FALSE
