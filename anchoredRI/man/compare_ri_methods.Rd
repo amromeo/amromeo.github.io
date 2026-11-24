@@ -20,7 +20,7 @@ summarize_ri_benchmark(results)
   \item{results}{A data frame returned by \code{benchmark_setting_ri}.}
 }
 \description{Compare fitted reference limits on the same routine data. The comparators include setting-specific and pooled two-component fits and, when screened data exist, a BIC-selected anchored model, the anchored model restricted to two components, and screened-only Gaussian limits. Published \pkg{refineR} is invoked with zero bootstrap replicates for its point estimates.}
-\value{\code{compare_ri_methods} returns a row per method with lower and upper limits, component count, bound status and enrichment gap where applicable. \code{benchmark_setting_ri} adds scenario, replicate and signed endpoint errors (estimate minus truth). \code{summarize_ri_benchmark} returns mean absolute lower and upper error and the mean of each draw's larger absolute endpoint error.}
+\value{\code{compare_ri_methods} returns a row per method with lower and upper limits, component count, bound status and enrichment gap where applicable. \code{benchmark_setting_ri} adds scenario, replicate and signed endpoint errors (estimate minus truth). \code{summarize_ri_benchmark} returns mean absolute lower and upper error and the mean of each draw's larger absolute endpoint error among finite reported intervals. It retains fully withheld methods with missing error summaries and includes attempted and reported counts.}
 \references{Ammer T, Schuetzenmeister A, Prokosch HU, Rauh M, Rank CM, Zierk J (2021). refineR: A Novel Algorithm for Reference Interval Estimation from Real-World Data. \emph{Scientific Reports} 11, 16039. \doi{10.1038/s41598-021-95301-2}.}
 \examples{
 d <- simulate_ri_study(n_clinic = 100, n_ward = 300)
