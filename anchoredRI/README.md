@@ -4,7 +4,7 @@ An R research package for asking whether a small group of independently screened
 
 **Fully AI-developed.** A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and wrote the method implementation, simulation experiments, tests, package documentation and website. The package uses maximum likelihood with an R interface and a compiled C++ fitter. Clinical performance has yet to be established.
 
-[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Original prepared-cohort results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [Download anchoredRI 0.3.0](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.3.0.tar.gz) · [Previous versions and installation](https://amromeo.github.io/anchoredRI/stress.html#install)
+[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Original prepared-cohort results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [Download anchoredRI 0.3.1](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.3.1.tar.gz) · [Previous versions and installation](https://amromeo.github.io/anchoredRI/stress.html#install)
 
 ## Fitting and reporting a reference interval
 

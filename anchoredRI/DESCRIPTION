@@ -1,7 +1,7 @@
 Package: anchoredRI
 Type: Package
 Title: Estimate Reference Intervals Using Clinically Screened Observations
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(
     person("Amrom", "Obstfeld", role = "cre",
     email = "13033252+amromeo@users.noreply.github.com",
