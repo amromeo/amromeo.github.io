@@ -33,7 +33,8 @@
         any(dispersion < minimum * (1 - 1e-11))) return()
     at_bound <- any(abs(par - bounds$lo) < 1e-5 | abs(par - bounds$hi) < 1e-5) ||
       any(abs(dispersion - minimum) <= 1e-8 * pmax(1, minimum))
-    best <<- list(ll = ll, par = par, box = bounds, p = p, at_bound = at_bound)
+    best <<- list(ll = ll, par = par, box = bounds, p = p, at_bound = at_bound,
+                  optimizer_code = z[[4L]], optimizer_message = z[[5L]])
   }
   for (start in starts) {
     par <- .pack_mixture(d, family, start$p, coords)
@@ -56,10 +57,31 @@
   best
 }
 
+.ri_optimizer_status <- function(code, detail) {
+  if (code == 0L) return("converged")
+  if (code == 1L || grepl("iterat.*limit|limit.*iterat", detail, ignore.case = TRUE))
+    return("iteration_limit")
+  if (grepl("line[ -]?search|lnsrch", detail, ignore.case = TRUE)) return("line_search_failure")
+  "other_exit"
+}
+
+.rank_ri_candidates <- function(choices) {
+  finite <- which(is.finite(choices$bic_original))
+  if (!length(finite)) stop("No candidate has a finite BIC.")
+  family_order <- match(choices$transform[finite], c("identity", "log", "shifted_log"))
+  ranked <- finite[order(choices$bic_original[finite], family_order, choices$components[finite])]
+  runner_up <- choices[ranked[2L], , drop = FALSE]
+  rownames(runner_up) <- NULL
+  runner_up$bic_gap <- runner_up$bic_original - choices$bic_original[ranked[1L]]
+  list(winner = ranked[1L], runner_up = runner_up)
+}
+
 .mixture_results <- function(models, d, transform, unit, fit_seed) {
-  # Family order, then component count, breaks exact BIC ties as in Task E.
-  scores <- vapply(models, function(m) m$bic, numeric(1))
-  selected <- models[[which.min(scores)]]
+  choices <- do.call(rbind, lapply(unname(models), function(m)
+    data.frame(transform = m$transform, components = m$k, shift = unname(m$p$shift),
+               bic_original = m$bic, at_bound = m$at_bound)))
+  ranking <- .rank_ri_candidates(choices)
+  selected <- models[[ranking$winner]]
   family <- selected$transform
   k <- selected$k
   candidates <- Filter(function(m) m$transform == family, models)
@@ -82,16 +104,15 @@
                  bic = bics - correction, bic_original = bics, selected_bic = unname(bics[k]),
                  candidate_limits = limits, candidate_at_bound = at_bound, candidate_shift = shifts,
                  transform = family, shift = unname(p$shift), at_bound = selected$at_bound,
+                 optimizer_status = .ri_optimizer_status(selected$optimizer_code, selected$optimizer_message),
+                 optimizer_code = selected$optimizer_code, optimizer_message = selected$optimizer_message,
+                 runner_up = ranking$runner_up,
                  shift_bounds = if (family == "shifted_log") d$bounds else NULL,
                  requested_transform = transform, rounding_unit = unit, fit_seed = fit_seed,
                  reference = list(mu = unname(p$mu[1] + as.integer(family == "identity")),
                                   sigma = unname(p$sigma[1])))
   if (family == "shifted_log") result$shift_at_bound <- any(abs(p$shift - d$bounds) / d$spread < 1e-5)
-  if (transform == "auto") {
-    result$selection <- do.call(rbind, lapply(unname(models), function(m)
-      data.frame(transform = m$transform, components = m$k, shift = unname(m$p$shift),
-                 bic_original = m$bic, at_bound = m$at_bound)))
-  }
+  if (transform == "auto") result$selection <- choices
   result
 }
 

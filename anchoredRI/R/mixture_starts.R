@@ -8,7 +8,17 @@
 .measurement_unit <- function(x, unit) {
   on_grid <- function(step) {
     scaled <- x / step
-    all(is.finite(scaled)) && max(abs(scaled - round(scaled))) < 1e-6
+    if (any(!is.finite(scaled))) return(FALSE)
+    nearest <- round(scaled)
+    on_step <- x == nearest * step
+    # Decimal grid points such as 0.05 are integer multiples of 1/20.
+    # At large indices division can recover the stored value more accurately.
+    divisor <- round(1 / step)
+    if (step < 1 && is.finite(divisor) && abs(step * divisor - 1) <= .Machine$double.eps)
+      on_step <- on_step | x == nearest / divisor
+    # A tiny nonzero observation must not pass as zero on a coarser inferred grid.
+    tolerance <- if (is.null(unit)) pmin(1e-6, 8 * .Machine$double.eps * abs(scaled)) else 1e-6
+    all(on_step | abs(scaled - nearest) < tolerance)
   }
   if (!is.null(unit)) {
     if (!is.numeric(unit) || length(unit) != 1L || !is.finite(unit) || unit < 0 ||
@@ -16,7 +26,8 @@
       stop("rounding_unit must be zero or a positive reporting increment shared by all results.")
     return(as.double(unit))
   }
-  for (step in 10^-(0:8)) if (on_grid(step)) return(step)
+  steps <- as.vector(outer(c(5, 2.5, 2, 1), 10^(3:-8)))
+  for (step in steps) if (on_grid(step)) return(step)
   0
 }
 

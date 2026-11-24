@@ -28,9 +28,9 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
     set.seed(seeds[b])
     rows <- unlist(lapply(groups,function(g)g[sample.int(length(g),length(g),replace=TRUE)]),use.names=FALSE)
     a <- sample(anchor,length(anchor),replace=TRUE)
-    f <- tryCatch(fit_anchored_ri(value[rows],setting[rows],a,transform,shift_bounds,
-                                  safeguard, probs, rounding_unit = point$rounding_unit,
-                                  fit_seed = fit_seed), error=identity)
+    # Every draw uses the same routine sample size and reporting increment.
+    f <- tryCatch(.fit_anchored_interval(value[rows], setting[rows], a, transform, shift_bounds,
+                                         safeguard, probs, point$rounding_unit, fit_seed), error=identity)
     fit_error <- inherits(f,"error")
     invalid <- !fit_error && f$status=="reported" &&
       (any(!is.finite(f$limits)) || (length(probs)==2L && f$limits[1]>=f$limits[2]))
@@ -46,6 +46,13 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
       transform=if(failed)NA_character_ else f$transform,
       shift=if(failed)NA_real_ else f$shift,
       components=if(failed)NA_integer_ else f$components,
+      optimizer_status=if(failed)NA_character_ else f$optimizer_status,
+      optimizer_code=if(failed)NA_integer_ else f$optimizer_code,
+      optimizer_message=if(failed)NA_character_ else f$optimizer_message,
+      runner_up_transform=if(failed)NA_character_ else f$runner_up$transform,
+      runner_up_components=if(failed)NA_integer_ else f$runner_up$components,
+      runner_up_bic=if(failed)NA_real_ else f$runner_up$bic_original,
+      bic_gap=if(failed)NA_real_ else f$runner_up$bic_gap,
       at_bound=if(failed)NA else f$at_bound,
       lrt_statistic=if(failed)NA_real_ else f$safeguard$lrt_statistic,
       lrt_p=if(failed)NA_real_ else f$safeguard$lrt_p,
@@ -68,6 +75,10 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
   diagnostics <- lapply(draws,function(x)x$diagnostics)
   draws <- do.call(rbind,lapply(draws,function(x)x$row))
   ok <- draws$status=="ok"
+  limited <- sum(ok & draws$optimizer_status == "iteration_limit", na.rm = TRUE)
+  if (limited > 0L)
+    warning(sprintf("The optimizer reached its iteration limit in %d reported bootstrap %s.",
+                    limited, if (limited == 1L) "draw" else "draws"), call. = FALSE)
   limit_names <- .ri_limit_names(probs)
   ci <- matrix(NA_real_,length(probs),2,dimnames=list(limit_names,c("low","high")))
   if (point$status=="reported" && sum(ok)>=max(2L,ceiling(.8*n_boot)))
@@ -76,6 +87,9 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
   else if(point$status=="reported")
     warning("Fewer than 80% of bootstrap draws were accepted; confidence limits are unavailable.")
   list(fit=point,limits=point$limits,probs=point$probs,ci=ci,confidence=conf,bootstrap=draws,
+       rounding_unit=point$rounding_unit, optimizer_status=point$optimizer_status,
+       optimizer_code=point$optimizer_code, optimizer_message=point$optimizer_message,
+       runner_up=point$runner_up,
        status=point$status,declined=point$declined,reason=point$reason,
        recommendation=point$recommendation,safeguard=point$safeguard,
        diagnostics=list(point=point$diagnostics,bootstrap=diagnostics),

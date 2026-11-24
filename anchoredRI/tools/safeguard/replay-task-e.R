@@ -28,8 +28,9 @@ lg <- read.csv(file.path(large, "armB-fits.csv"))
 stopifnot(all(lg$method == "armB"), all(lg$max_components == 5))
 lg$stage <- "50000"
 lg$reported <- lg$report_status == "reported"
+lg$code <- lg$convergence_code
 cols <- c("dataset_id", "stage", "transform", "components", "shift", "lower", "upper",
-          "lrt_p", "lower_flag", "declined", "technical", "reported")
+          "lrt_p", "lower_flag", "declined", "technical", "reported", "code")
 expected <- rbind(ds[cols], lg[cols])
 meta <- read.csv(file.path(study_tools, "anchorRefine-comparator/anchoredRI-comparator.csv"))
 stopifnot(nrow(expected) == 5220L, !anyDuplicated(expected$dataset_id),
@@ -43,6 +44,21 @@ stopifnot(all(expected$transform == ref$transform), all(expected$shift == ref$sh
 index <- setNames(seq_along(ids), ids)
 results <- vector("list", length(ids))
 apply_safeguard <- getFromNamespace(".apply_ri_safeguard", "anchoredRI")
+infer_unit <- getFromNamespace(".measurement_unit", "anchoredRI")
+rank_models <- getFromNamespace(".rank_ri_candidates", "anchoredRI")
+
+candidate_cols <- c("dataset_id", "transform", "k", "bic", "code")
+choices <- rbind(read_parts(file.path(small, "candidates"))[candidate_cols],
+                 read.csv(file.path(large, "candidates.csv"))[candidate_cols])
+names(choices) <- c("dataset_id", "transform", "components", "bic_original", "code")
+by_id <- split(choices, choices$dataset_id)
+gap_cols <- c("dataset_id", "method", "second", "second_k", "bic_gap")
+gaps <- rbind(read_parts(file.path(small, "runner-up-gaps"))[gap_cols],
+              read.csv(file.path(large, "runner-up-gaps.csv"))[gap_cols])
+gaps <- gaps[gaps$method == "armB", ]
+stopifnot(setequal(ids, names(by_id)), !anyDuplicated(gaps$dataset_id), setequal(ids, gaps$dataset_id))
+gaps <- gaps[match(ids, gaps$dataset_id), ]
+
 replay <- function(id, value, anchor, probs) {
   i <- unname(index[[id]])
   row <- expected[i, ]
@@ -53,8 +69,16 @@ replay <- function(id, value, anchor, probs) {
             min(value) == meta$routine_min[i])
   y <- p$transformed_mean + qnorm(c(.025, .975)) * p$transformed_sd
   central <- if (p$transform == "identity") y else p$shift + exp(y)
+  unit <- infer_unit(unique(c(value, anchor)), NULL)
+  candidates <- by_id[[id]]
+  ranking <- rank_models(candidates)
+  winner <- candidates[ranking$winner, ]
+  second <- ranking$runner_up
+  # The archive stores decimal text for candidate BICs. Allow roundoff in their difference.
+  gap_tolerance <- 128 * .Machine$double.eps * max(1, abs(winner$bic_original), abs(second$bic_original))
   fit <- list(limits = setNames(central, c("lower", "upper")), transform = p$transform,
-              shift = p$shift, components = row$components,
+              shift = p$shift, components = row$components, rounding_unit = unit, runner_up = second,
+              optimizer_code = winner$code,
               reference = list(mu = p$transformed_mean, sigma = p$transformed_sd))
   result <- apply_safeguard(fit, value, anchor, probs = probs)
   check <- result$safeguard
@@ -66,6 +90,11 @@ replay <- function(id, value, anchor, probs) {
   raw <- if (length(probs) == 1L) row$upper else c(row$lower, row$upper)
   close <- function(x, y) isTRUE(all.equal(unname(x), unname(y), tolerance = 1e-10))
   matches <- c(
+    rounding_unit = result$rounding_unit == meta$rounding_step[i],
+    winner = identical(winner$transform, row$transform) && winner$components == row$components,
+    optimizer_code = identical(result$optimizer_code, row$code),
+    runner_up = identical(second$transform, gaps$second[i]) && second$components == gaps$second_k[i],
+    bic_gap = abs(second$bic_gap - gaps$bic_gap[i]) <= gap_tolerance,
     lrt = identical(check$lrt_flag, lrt),
     lower = identical(check$lower_flag, row$lower_flag),
     skipped = identical(check$lower_check_skipped, length(probs) == 1L),
@@ -105,3 +134,4 @@ stopifnot(identical(as.integer(counts$fits), c(2880L, 900L, 1440L)),
           identical(as.integer(counts$declined), c(99L, 91L, 305L)))
 print(counts, row.names = FALSE)
 cat("All 5,220 Arm B decisions matched, including both flags, one-sided skips and reporting status.\n")
+cat("All 5,220 rounding units, model rankings, BIC gaps and winning optimizer codes matched Task E.\n")

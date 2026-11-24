@@ -51,6 +51,8 @@ for (key in keys) {
   models <- r3_baseline(data, seed, digits, 5L)
   table <- v2_table(models, probs)
   winner <- table[table$selected, ]
+  order_by_bic <- order(table$bic, match(table$transform, c("identity", "log", "shifted_log")), table$k)
+  second <- table[order_by_bic[2L], ]
   old <- models[[paste(winner$transform, winner$k)]]
   p <- old$p
   if (old$transform == "identity") p$mu <- p$mu + 1
@@ -59,11 +61,23 @@ for (key in keys) {
   archived <- bc_safeguard(list(transform = old$transform, components = old$k,
        shift = p$shift, candidate_parameters = candidate), d$value, d$anchor, probs)
   before <- .Random.seed
-  new <- fit_anchored_ri(d$value, d$setting, d$anchor, fit_seed = seed, probs = probs)
+  fit_warnings <- character()
+  new <- withCallingHandlers(fit_anchored_ri(d$value, d$setting, d$anchor, fit_seed = seed, probs = probs),
+    warning = function(w) {
+      fit_warnings <<- c(fit_warnings, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    })
   close <- function(x, y) max(abs(as.numeric(x) - as.numeric(y))) <= 1e-10
   stopifnot(identical(before, .Random.seed), new$requested_transform == "auto",
             new$rounding_unit == row$rounding_step, identical(new$transform, winner$transform),
             new$components == winner$k, close(new$weights, p$w), close(new$shift, p$shift),
+            identical(new$runner_up$transform, second$transform), new$runner_up$components == second$k,
+            close(new$runner_up$bic_original, second$bic),
+            close(new$runner_up$bic_gap, second$bic - winner$bic),
+            identical(new$optimizer_code, old$code),
+            identical(new$optimizer_message, old$starts[[old$origin]]$message),
+            identical(any(grepl("reached its iteration limit", fit_warnings)),
+                      new$status == "reported" && old$code == 1L),
             identical(new$selection$transform, table$transform),
             identical(new$selection$components, table$k),
             close(new$selection$bic_original, table$bic),

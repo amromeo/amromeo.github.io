@@ -1,7 +1,9 @@
 # anchoredRI 0.3.0
 
-- The point fit and bootstrap now default to Task E Arm B. Original-scale BIC selects among one to five components across eligible normal, lognormal and shifted-lognormal families. Set `rounding_unit` to the known assay increment and `fit_seed` to reproduce the multistart search.
-- On RIbench before the safeguard, Arm B had the lowest score tested at N ≤ 5,000 (0.2224 vs 0.3696 for refineR). At N = 50,000, refineR scored 0.2282 and Arm B scored 0.3744. Use refineR or anchorRefine for datasets this large. Arm B had one implausible fit in 1,440 and selected five components in 941 (65.3%).
+- The point fit and bootstrap now default to Task E Arm B. Original-scale BIC selects among one to five components across eligible normal, lognormal and shifted-lognormal families.
+- Both functions return the assay rounding unit. If you omit it, a message gives the coarsest shared step of the form {1, 2, 2.5, 5} × 10^k for integer k from −8 through 3, or zero if no step fits.
+- Results include the winning optimizer’s exit status, code and message, and the runner-up model and its BIC gap. A reported fit that reaches the iteration limit gives a warning and retains its interval. The fit seed and computing environment can occasionally affect model selection. The README describes how the same seed selected different models for calcium dataset 870 in two environments.
+- On RIbench before the safeguard, Arm B had the lowest score tested at N ≤ 5,000 (0.2224 vs 0.3696 for refineR). At N = 50,000, refineR scored 0.2282 and Arm B scored 0.3744. Arm B had one implausible fit in 1,440 and selected five components in 941 (65.3%). Every call with more than 5,000 routine results now identifies the untested range between 5,000 and 50,000 and suggests refineR or anchorRefine.
 
 - Added default-on Step B LRT and observed-minimum checks for point and bootstrap fits, with `safeguard = FALSE` for research use.
 - Withhold flagged intervals, retain anchoredRI and anchors-only estimates as diagnostics, record both reasons when applicable, and give the screened-patient recommendations. Add the indirect-method suggestion for at least 50,000 routine results.

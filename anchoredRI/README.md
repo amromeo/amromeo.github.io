@@ -10,11 +10,15 @@ An R research package for asking whether a small group of independently screened
 
 The point estimate and bootstrap use Task E Arm B. The fitter considers one through five components for each eligible family (normal, lognormal and shifted lognormal) and selects the lowest BIC on the measurement scale. Every fit runs the two safeguards below. The default interval covers the central 95% of the screened component. Use `probs = .95` for a one-sided upper limit.
 
-Supply the assay’s reporting increment with `rounding_unit` when known. The fitter uses it as a minimum component SD in measurement units. The default infers the coarsest shared decimal increment from 1 through 0.00000001. If none fits, or if you specify `rounding_unit = 0` for continuous inputs, only the other SD constraints apply. The bootstrap uses the same increment for every resample. The multistart search is reproducible with `fit_seed` (default 1). The separate bootstrap `seed` controls patient resampling.
+Supply the assay’s reporting increment with `rounding_unit` when known. It sets a minimum component SD in measurement units. If you omit it, the fitter finds the largest step of the form {1, 2, 2.5, 5} × 10^k, for integer k from −8 through 3, that divides every routine and screened value. For example, results reported to the nearest 0.5 can give an inferred unit of 0.5. The fitter sends a message with the inferred unit and always returns the unit used in `rounding_unit`. A value of zero means that only the other SD constraints apply. You can supply zero for continuous data, and the fitter uses zero if no shared step fits. All bootstrap draws use the point fit’s unit.
+
+`runner_up` identifies the alternative model with the next-lowest original-scale BIC. Its `bic_gap` is the runner-up BIC minus the winning BIC. Zero indicates a tie. The fit also returns the winning optimizer’s `optimizer_status`, numeric `optimizer_code`, and original `optimizer_message`. A reported fit that reached the iteration limit produces a warning and retains its interval. Line-search failures have their own status. Bootstrap output includes these diagnostics for the point fit and records the optimizer exit and runner-up for each fitted draw.
+
+`fit_seed` (default 1) controls the optimizer starts. The bootstrap `seed` controls patient resampling. A change in fit seed or computing environment can occasionally change the selected model and the reporting decision. On RIbench calcium dataset 870, the same fit seed selected five normal components in the archived run and four shifted-lognormal components in the local run. Both safeguards flagged the archived fit. The local fit passed both. [Validation and reproduction](tools/safeguard/REPORT.md)
 
 ### RIbench accuracy by routine sample size
 
-With 40 independently screened anchors, anchoredRI had the lowest error of the methods Task E tested at N = 1,000 and 5,000. At N = 50,000, refineR was more accurate. For datasets of that size or larger, use refineR or anchorRefine. Task E measured refineR directly. [anchorRefine](https://github.com/amromeo/anchorRefine)
+With 40 independently screened anchors, anchoredRI had the lowest error of the methods Task E tested at N = 1,000 and 5,000. RIbench accuracy between 5,000 and 50,000 routine results has not been tested. At N = 50,000, refineR was more accurate. For datasets that large, use refineR or anchorRefine. For every fit with more than 5,000 routine results, the package sends a message about this limitation whether it reports or withholds the interval. Task E measured refineR directly. [anchorRefine](https://github.com/amromeo/anchorRefine)
 
 | Routine results per dataset | Datasets | anchoredRI (Arm B) | refineR |
 | ---: | ---: | ---: | ---: |
@@ -36,7 +40,7 @@ Researchers can set `safeguard = FALSE` to return the fitted limits. The package
 
 Heavily mixed routine data with many mildly abnormal patients, including ICU-only populations, can produce wrong reference intervals that pass both checks. Passing the safeguard does not establish clinical validity.
 
-The safeguard reproduced all 5,220 archived Arm B reporting decisions. On seven fresh fits, the package and the original Task E fitter agreed on the same R runtime. Calcium dataset 870 was reported locally and declined in the archived run because the two runtimes selected different models. [Validation and reproduction](tools/safeguard/REPORT.md)
+The safeguard reproduced all 5,220 archived Arm B reporting decisions. On seven datasets refitted on the same runtime, the package and the original Task E fitter chose the same models and made the same decisions. [Validation and reproduction](tools/safeguard/REPORT.md)
 
 ## Earlier results with version 0.2
 
