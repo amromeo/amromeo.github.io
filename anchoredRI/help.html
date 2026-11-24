@@ -26,11 +26,12 @@
   <main id="help" class="help-page">
     <div class="help-intro">
       <h1>Help and definitions</h1>
-      <p class="lede">What the patient groups, model labels and error summaries mean in this simulator.</p>
+      <p class="lede">How to read a fit from anchoredRI 0.3.0 and the results from the original simulations.</p>
       <p>The <a href="index.html">prepared-cohort comparison</a> uses 5,000 routine patients, 200 bootstrap resamples, medianBS refineR estimates and nonparametric 120/400-person direct estimates. Its first run has one dataset per profile. <a href="BENCHMARK.md">Read the protocol and metrics</a>.</p><p>Definitions of the clinic/ward mixtures refer to the <a href="stress.html">earlier clinic/ward stress tests</a>. Those examples use synthetic aPTT-like results in seconds. The two main terminology changes are <a href="#disease">“affected” → analyte-altering disease</a> and <a href="#limit-error">“mean worst error” → average larger limit error</a>.</p>
     </div>
     <div class="help-layout">
       <nav class="help-contents" aria-label="Help topics">
+        <a href="#current-package">Current package and safeguard</a>
         <a href="#prepared-cohort">Prepared-cohort comparison</a>
         <a href="#patient-groups">Patients and screening</a>
         <a href="#sample-size">Comparing sample sizes</a>
@@ -42,6 +43,28 @@
         <a href="#fitting-limits">Fitting warnings</a>
       </nav>
       <div class="help-content">
+        <section class="help-section" id="current-package" aria-labelledby="current-title">
+          <h2 id="current-title">Reading an anchoredRI 0.3.0 fit</h2>
+          <dl class="glossary">
+            <dt id="safeguard">Safeguard</dt>
+            <dd>After fitting the reference group, the package checks whether it agrees with the screened patients and whether a two-sided lower limit falls below every routine result. These checks run by default for the point fit and for each bootstrap fit. <code>fit$status</code> gives the reporting decision. A fit can pass both checks and still have inaccurate limits when the reference and disease groups overlap heavily.</dd>
+            <dt id="lrt-reason">“routine data disagree with the screened sample”</dt>
+            <dd>The likelihood-ratio test (LRT) asks how well the screened results fit the reference group estimated from the routine and screened data together. It compares that fit with one that estimates the mean and SD from the screened patients alone, using the same transformation and offset. A p-value below 0.01 triggers this reason. The LRT also applies to one-sided limits.</dd>
+            <dt id="lower-limit-reason">“estimated lower limit is below every observed result”</dt>
+            <dd>The estimated lower limit of a two-sided interval is strictly below the smallest routine measurement. Equality passes this check. The package skips this check for one-sided requests.</dd>
+            <dt id="declined">Declined interval and next steps</dt>
+            <dd>If either check flags, <code>fit$status</code> is <code>"declined"</code>, the reported limits are missing, and <code>fit$reason</code> lists each reason. Both the anchoredRI estimate and the screened-only estimate are available for inspection under <code>fit$diagnostics</code>. For a reportable interval, obtain at least 120 screened patients for a direct estimate, or verify a suitable published interval with 20 screened patients. If a check cannot be evaluated, the status is <code>"withheld"</code>.</dd>
+            <dt id="rounding-unit">Rounding unit</dt>
+            <dd>The reporting increment of the assay, such as 0.5 for results reported to the nearest half-unit. Supply it as <code>fit_anchored_ri(value, setting, anchor, rounding_unit = 0.5)</code>. If you omit it, the fitter finds the coarsest shared step of the form {1, 2, 2.5, 5} × 10<sup>k</sup>, with integer <i>k</i> from −8 to 3, that fits all routine and screened values. A message gives the inferred unit. <code>fit$rounding_unit</code> always gives the unit used. Zero means no rounding step was found or you supplied zero for continuous data.</dd>
+            <dt id="runner-up">Runner-up model and BIC gap</dt>
+            <dd>The model with the lowest BIC wins. <code>fit$runner_up</code> gives the next model’s transformation and component count. Its <code>bic_gap</code> is the runner-up BIC minus the winning BIC. A small gap means the models scored similarly. Zero means they tied. The fit seed or computing environment can occasionally change which model wins. <a href="https://github.com/amromeo/amromeo.github.io/blob/315660030dd25910e45f36fb9bee0784efcaf9dc/anchoredRI/tools/safeguard/REPORT.md">Calcium dataset 870 in the validation report</a></dd>
+            <dt id="iteration-limit">Iteration-limit warning</dt>
+            <dd>The optimizer used all its allowed iterations for the winning fit. <code>fit$optimizer_status</code> records the exit. If the interval passes the safeguard, the package returns it with a warning. An iteration limit alone does not trigger a decline.</dd>
+            <dt id="size-message">Size message</dt>
+            <dd>The package gives this message whenever there are more than 5,000 routine results, whether it reports or withholds the interval. RIbench accuracy between 5,000 and 50,000 results has not been tested. At 50,000, refineR was more accurate. For datasets this large, use refineR. anchorRefine, which adds screened patients to refineR, is still in development. <a href="robustness.html#package-update">Scores and decline rates</a> · <a href="https://github.com/amromeo/anchorRefine">anchorRefine repository (work in progress)</a></dd>
+          </dl>
+        </section>
+
         <section class="help-section" id="prepared-cohort" aria-labelledby="prepared-title">
           <h2 id="prepared-title">The prepared-cohort comparison</h2>
           <dl class="glossary">
@@ -58,7 +81,7 @@
             <dt id="offset">Estimated offset / shifted lognormal</dt>
             <dd>A skewed distribution can start away from zero. For example, taking the log of a result minus 10 may fit its shape better than taking the log of the result itself. anchoredRI 0.2 estimates that offset from routine and screened observations while fitting the mixture. It is never given the simulation's true offset. The fitted offset is a statistical parameter, not necessarily a biological minimum.</dd>
             <dt>Automatic family selection</dt>
-            <dd>The updated model compares normal, lognormal and shifted-lognormal fits, each with one to three components. The score rewards fit and penalizes extra parameters. It uses densities on the original measurement scale so the comparison is fair. Every bootstrap repeats this choice; the page reports how often each family was selected.</dd>
+            <dd>The version 0.2 model in the prepared-cohort comparison fits normal, lognormal and shifted-lognormal mixtures, each with one to three components. The score rewards fit and penalizes extra parameters. It uses densities on the original measurement scale so the comparison is fair. Every bootstrap repeats this choice; the page reports how often each family was selected.</dd>
             <dt>A one-component fit</dt>
             <dd>The model treats the routine cohort and screened sample as one reference distribution. That can be appropriate for an essentially unaffected population. When disease overlaps the reference population, a single flexible curve can also absorb the disease results and distort the reference limits. In the shifted overlap validation scenario, the updated model chose one component in 11 of 20 datasets. Numerical convergence did not identify that problem.</dd>
             <dt>Monte Carlo standard error</dt>
@@ -186,7 +209,7 @@
             <dt>refineR · outpatients</dt>
             <dd>The same published algorithm fitted to clinic results alone. This uses 250 results in the 1,000-result design and 1,000 results in the 4,000-result design.</dd>
             <dt>anchoredRI</dt>
-            <dd>All routine results plus the clinically screened results. The reference distribution is identified using the screened patients. The model considers one, two and three components and selects one using BIC.</dd>
+            <dd>All routine results plus the clinically screened results. The reference distribution is identified using the screened patients. The version 0.1 model in this experiment considers one, two and three components and selects one using BIC.</dd>
             <dt>Screened alone · selected size</dt>
             <dd>Uses just the screened results. The limits are the screened sample mean plus or minus approximately 1.96 times its standard deviation, assuming a Gaussian reference distribution. <a href="#sample-size">Read why the size of the screened sample matters</a>.</dd>
             <dt>Screened alone · 120 / Screened alone · 400</dt>
@@ -214,7 +237,7 @@
             <dt id="likelihood">Likelihood / fitting / maximum likelihood</dt>
             <dd>Likelihood measures how well a proposed set of distributions accounts for the observed values under the model. Fitting adjusts the component centers, spreads and proportions to find values with high likelihood. Each screened result contributes to the designated reference component.</dd>
             <dt id="bic">Bayesian information criterion (BIC)</dt>
-            <dd>A score that balances fit to the observed data against the number of fitted parameters. anchoredRI selects the lowest BIC among its one-, two- and three-component models. Automatic selection also compares distribution families and penalizes the extra offset parameter. This score is a practical selection rule; a low score does not prove the model is correct.</dd>
+            <dd>A score that balances fit to the observed data against the number of fitted parameters. Version 0.3.0 selects the lowest BIC among models with one to five components. The original website experiments allowed up to three. Automatic selection also compares distribution families and penalizes the extra offset parameter. This score is a practical selection rule; a low score does not prove the model is correct.</dd>
             <dt id="tails">Tails / one-sided and two-sided disease effects</dt>
             <dd>The tails are the lower and upper ends of a distribution. An upward disease shift generates higher results on average. A downward shift generates lower results on average. The scenario with shifts in both directions uses two disease-associated distributions on the ward.</dd>
             <dt id="transform">Identity scale / log transformation / shifted log</dt>
@@ -228,9 +251,9 @@
           <h2 id="warnings-title">Fitting warnings and interpretation</h2>
           <dl class="glossary">
             <dt>Parameter bounds / numerical fitting limits</dt>
-            <dd>The optimizer is given allowable ranges for component means, spreads and proportions to regularize the fit. The warning appears when a fitted parameter reaches one of those bounds. “anchoredRI (6/12)” means this occurred in six of the twelve displayed fits. The fitted result warrants inspection because an imposed constraint may influence it.</dd>
+            <dd>The optimizer is given allowable ranges for component means, spreads and proportions to regularize the fit. The original clinic/ward page flags fits in which a parameter reaches one of those bounds. “anchoredRI (6/12)” means this occurred in six of the twelve displayed fits. The fitted result warrants inspection because an imposed constraint may influence it.</dd>
             <dt>Optimizer / convergence / starting points</dt>
-            <dd>The optimizer is the numerical procedure that adjusts the model parameters. Convergence means it met its numerical stopping rule. The fitter tries several starting points and chooses a converged fit with the highest likelihood. Clinical interpretation still depends on whether the model describes the intended population.</dd>
+            <dd>The optimizer is the numerical procedure that adjusts the model parameters. Convergence means it met its numerical stopping rule. Version 0.3.0 tries several starting points for each candidate model and records how the winning fit ended. A reported fit can carry an <a href="#iteration-limit">iteration-limit warning</a>. Clinical interpretation still depends on whether the model describes the intended population.</dd>
             <dt>Simulation evidence / clinical validation</dt>
             <dd>The comparisons show how the methods behave under the stated assumptions. Reference labels are perfect, and both services share the same reference distribution. The shifted example falls outside the original anchoredRI family; the updated family can represent it. Clinical validation would require independent reference individuals and assessment of both estimated limits in the intended patient population.</dd>
           </dl>
@@ -240,6 +263,6 @@
       </div>
     </div>
   </main>
-  <footer><span>anchoredRI 0.2.0</span><span>Fully AI-developed · Research software</span></footer>
+  <footer><span>anchoredRI 0.3.0</span><span>Fully AI-developed · Research software</span></footer>
 </body>
 </html>

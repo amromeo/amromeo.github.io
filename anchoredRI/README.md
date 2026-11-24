@@ -4,7 +4,7 @@ An R research package for asking whether a small group of independently screened
 
 **Fully AI-developed.** A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and wrote the method implementation, simulation experiments, tests, package documentation and website. The package uses maximum likelihood with an R interface and a compiled C++ fitter. Clinical performance has yet to be established.
 
-[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Current results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [Version 0.2 source archive](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.2.0.tar.gz)
+[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Original prepared-cohort results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [Download anchoredRI 0.3.0](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.3.0.tar.gz) · [Previous versions and installation](https://amromeo.github.io/anchoredRI/stress.html#install)
 
 ## Fitting and reporting a reference interval
 
@@ -18,7 +18,7 @@ Supply the assay’s reporting increment with `rounding_unit` when known. It set
 
 ### RIbench accuracy by routine sample size
 
-With 40 independently screened anchors, anchoredRI had the lowest error of the methods Task E tested at N = 1,000 and 5,000. RIbench accuracy between 5,000 and 50,000 routine results has not been tested. At N = 50,000, refineR was more accurate. For datasets that large, use refineR or anchorRefine. For every fit with more than 5,000 routine results, the package sends a message about this limitation whether it reports or withholds the interval. Task E measured refineR directly. [anchorRefine](https://github.com/amromeo/anchorRefine)
+With 40 independently screened anchors, anchoredRI had the lowest error of the methods Task E tested at N = 1,000 and 5,000. RIbench accuracy between 5,000 and 50,000 routine results has not been tested. At N = 50,000, refineR was more accurate. For datasets this large, use refineR. anchorRefine, which adds screened patients to refineR, is still in development. For every fit with more than 5,000 routine results, the package sends a message about this limitation whether it reports or withholds the interval. Task E compared anchoredRI with refineR directly; anchorRefine was not part of that comparison. [anchorRefine repository (work in progress)](https://github.com/amromeo/anchorRefine)
 
 | Routine results per dataset | Datasets | anchoredRI (Arm B) | refineR |
 | ---: | ---: | ---: | ---: |
@@ -26,13 +26,13 @@ With 40 independently screened anchors, anchoredRI had the lowest error of the m
 | 5,000 | 1,440 | 0.2114 | 0.3082 |
 | 50,000 | 1,440 | 0.3744 | 0.2282 |
 
-The scores are mean absolute endpoint z deviations before the safeguard. Lower scores indicate better accuracy. RIbench excludes dataset errors above 5 from this mean. Across both smaller sizes the scores were 0.2224 for anchoredRI and 0.3696 for refineR. At N = 50,000, Arm B had one implausible fit and selected five components in 941/1,440 fits (65.3%). The safeguard declined 305 fits and released 1,135. The score of 0.1307 among released fits applies to those 1,135 only. [Small-N results](https://github.com/amromeo/amromeo.github.io/tree/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/results/REPORT.md) · [Large-N results](https://github.com/amromeo/amromeo.github.io/tree/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/large/results/REPORT.md)
+The scores are mean absolute endpoint z deviations before the safeguard. Lower scores indicate better accuracy. RIbench excludes dataset errors above 5 from this mean. Across both smaller sizes the scores were 0.2224 for anchoredRI and 0.3696 for refineR. At N = 50,000, Arm B had one implausible fit and selected five components in 941/1,440 fits (65.3%). The safeguard declined 305 fits and released 1,135. The score of 0.1307 among released fits applies to those 1,135 only. [Small-N results](https://github.com/amromeo/amromeo.github.io/blob/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/results/REPORT.md) · [Large-N results](https://github.com/amromeo/amromeo.github.io/blob/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/large/results/REPORT.md)
 
 ## Safeguard
 
 Version 0.3 adds `safeguard = TRUE` to `fit_anchored_ri()` and `bootstrap_anchored_ri()`. After the selected point fit and every bootstrap fit, two checks decide whether an interval can be reported. The Step B likelihood-ratio test compares the anchors under component 1 with their own normal MLE on the selected transform and fixed offset. A nominal chi-squared p-value with 2 df below 0.01 declines the interval. A lower limit strictly below the smallest routine value also declines it. The lower-limit check is skipped for one-sided limits.
 
-A declined result has missing reported limits and a recorded reason. The reason is “routine data disagree with the screened sample” for the LRT flag or “estimated lower limit is below every observed result” for the lower-limit flag. Both reasons are retained if both checks flag. The fitted anchoredRI interval and the anchors-only interval remain available under `diagnostics$anchored` and `diagnostics$anchors_only`. Read `status`, `reason`, `recommendation`, and `safeguard` for the reporting decision. The anchors-only interval is never substituted into `limits`. A declined result recommends at least 120 screened patients or verifying a suitable published interval with 20 screened patients. For at least 50,000 routine results, it recommends refineR or anchorRefine.
+A declined result has missing reported limits and a recorded reason. The reason is “routine data disagree with the screened sample” for the LRT flag or “estimated lower limit is below every observed result” for the lower-limit flag. Both reasons are retained if both checks flag. The fitted anchoredRI interval and the anchors-only interval remain available under `diagnostics$anchored` and `diagnostics$anchors_only`. Read `status`, `reason`, `recommendation`, and `safeguard` for the reporting decision. The anchors-only interval is never substituted into `limits`. A declined result recommends at least 120 screened patients or verifying a suitable published interval with 20 screened patients. For 50,000 or more routine results, the recommendation also includes the [large-dataset advice](#ribench-accuracy-by-routine-sample-size).
 
 Bootstrap output distinguishes declined fits from numerical failures and retains both checks for every draw. A declined point fit withholds the reported interval and confidence intervals. For an accepted point fit, confidence intervals use accepted, finite bootstrap draws and require at least 80% of requested draws. Report the accepted and declined counts and identify these as intervals conditional on passing the safeguard.
 
@@ -54,15 +54,15 @@ Across the 20 fresh datasets matching that shifted scenario, mean endpoint perce
 
 ## Install from GitHub
 
-To install the proposed version from the review branch in R 4.1 or later, run
+To install the current version from the main branch in R 4.1 or later, run
 
 ```r
 install.packages("remotes")  # once
 remotes::install_github("amromeo/amromeo.github.io", subdir = "anchoredRI",
-                        ref = "proposal/arm-b-safeguard")
+                        ref = "main")
 ```
 
-Building this branch from source requires a C++17 compiler and R’s package build tools. Install the checkout before sourcing its R files directly. To run the published comparator, install `refineR` with `install.packages("refineR")`.
+Building the package from source requires a C++17 compiler and R’s package build tools. Install the checkout before sourcing its R files directly. To run the published comparator, install `refineR` with `install.packages("refineR")`.
 
 ## Primary comparison: refineR as intended
 
@@ -80,7 +80,7 @@ Rscript tools/build-offset-benchmark.R 6 200
 Rscript tools/validate-offset.R 2 20
 ```
 
-Read [BENCHMARK.md](BENCHMARK.md) for the prespecified distributions, metrics and sources. The [2023 practical guide](https://doi.org/10.1093/jalm/jfac101) and [package vignette](https://cloud.r-project.org/web/packages/refineR/vignettes/refineR_package.html) define the workflow. The original clinic/ward experiment below remains a stress test: its default pooled disease fraction is 61.25%, and the outpatient subset has only 250 observations.
+Read [BENCHMARK.md](BENCHMARK.md) for the prespecified distributions, metrics and sources. The [2023 practical guide](https://pubmed.ncbi.nlm.nih.gov/36610416/) and [package vignette](https://cloud.r-project.org/web/packages/refineR/vignettes/refineR_package.html) define the workflow. The original clinic/ward experiment below remains a stress test: its default pooled disease fraction is 61.25%, and the outpatient subset has only 250 observations.
 
 ### Apply the workflow to a prepared partition
 
@@ -165,6 +165,6 @@ The appropriate number of screened observations still needs to be established fo
 
 ## Credit and license
 
-We acknowledge Tatjana Ammer and colleagues for the published **refineR** method. The released R package by Matthias Beck, Tatjana Ammer, Christopher M. Rank and André Schützenmeister supplies the two baseline estimates. anchoredRI is an independent research project. [Ammer et al., *Scientific Reports* (2021)](https://doi.org/10.1038/s41598-021-95301-2) · [refineR on CRAN](https://cran.r-project.org/package=refineR)
+We acknowledge Tatjana Ammer and colleagues for the published **refineR** method. The released R package by Matthias Beck, Tatjana Ammer, Christopher M. Rank and André Schützenmeister supplies the two baseline estimates. anchoredRI is an independent research project. [Ammer et al., *Scientific Reports* (2021)](https://pubmed.ncbi.nlm.nih.gov/34362961/) · [refineR on CRAN](https://cran.r-project.org/package=refineR)
 
 Package code, simulations and website materials are licensed under the [GNU General Public License, version 3](LICENSE). The Hedvig Letters Serif font is distributed under its [SIL Open Font License](assets/FONT-LICENSE.txt).
