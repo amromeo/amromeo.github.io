@@ -23,3 +23,4 @@ Imports: stats, utils, parallel
 Suggests: refineR (>= 2.0.0)
 URL: https://amromeo.github.io/anchoredRI/,
     https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI
+SystemRequirements: C++17
