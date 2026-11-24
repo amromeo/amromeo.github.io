@@ -16,9 +16,10 @@
   </div></header>
   <main id="top">
     <div class="hero">
-      <div class="hero-copy"><p class="kicker">Pediatric reference intervals <span> / </span> R package 0.1.0</p>
+      <div class="hero-copy"><p class="kicker">Pediatric reference intervals <span> / </span> Original experiment · anchoredRI 0.1.0</p>
       <h1>Hospital mixture stress tests</h1>
-      <p class="lede">These earlier experiments include small samples and heavily affected hospital mixtures. The default pooled cohort is 61.25% affected, outside refineR’s majority-non-pathological assumption. <a href="index.html">Use the prepared-cohort comparison for the authors’ recommended workflow.</a></p></div>
+      <p class="lede">These earlier experiments include small samples and heavily affected hospital mixtures. The default pooled cohort is 61.25% affected, outside refineR’s majority-non-pathological assumption. <a href="index.html">Use the prepared-cohort comparison for the authors’ recommended workflow.</a></p>
+      <p class="archive-note">The controls display saved results from anchoredRI 0.1.0. These fits predate the safeguard. <a href="robustness.html#package-update">Read the 0.3.0 update and RIbench results.</a></p></div>
       <div class="truth-card"><span class="card-label">Known reference interval</span><p>24.12 <span>–</span> 35.88 <small>s</small></p>
         <div class="truth-ruler" aria-hidden="true"><i></i></div>
         <span>Central 95% of the simulated reference population</span></div>
@@ -72,7 +73,7 @@
           <p>Outpatients may contain a higher proportion of reference individuals. Filtering to clinic results can help, but it also reduces the number of observations. The demo fits the released <strong>refineR 2.0.0</strong> to both cohorts with its default model and zero bootstrap replicates for the point estimates.</p>
           <p>“Screened alone” uses the average and standard deviation of the chart-reviewed results to estimate the reference limits. The additional rows compare other ways of fitting the same data. <a href="help.html#methods">Read the definition of each method</a>.</p>
         </article>
-        <article><h3>How this project was developed</h3>
+        <article id="development"><h3>How this project was developed</h3>
           <p><strong>This project was fully AI-developed.</strong> A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and implemented the statistical prototype, simulations, R package, tests, documentation and website. The code uses conventional statistics and runs locally in R.</p>
           <p>The first prototype identified a reference group from differences between settings. In simulations, that assumption struggled when disease prevalence was equal in both settings or disease shifted results toward both lower and higher values. The next version added independent screened observations and allowed an additional component.</p>
         </article>
@@ -85,21 +86,28 @@
         <p>Reference-group aPTT-like results follow a normal distribution with mean 30 s and SD 3 s. Values are rounded to 0.1 s. The known reference limits are calculated before rounding. In the first scenario, the disease-associated distribution has mean 42 s and SD 4 s. In the other three scenarios, the distribution shifted upward has mean 36 s and SD 4.5 s. In the scenario with shifts in both directions, 55% of ward patients assigned to the disease group have a result from a distribution with mean 24 s and SD 2.5 s.</p>
         <p>The screening option that also requires a result within 26–34 s starts with reference-group patients, then excludes those whose results fall outside that narrower range. This can bias the screened sample. For the same rule and dataset, each smaller screened cohort is included in the larger cohorts, up to 400 patients. Selecting zero screened patients leaves the routine-only methods and the fixed 120- and 400-patient screened-only comparisons available.</p>
         <p>The 1,000-result design includes 250 clinic results. The refineR package flags input sizes below 1,000 for cautious interpretation. The additional two-component comparison fits the reference label with screened data at the same model size as the routine-only setting model.</p>
-        <p><a href="tools/build-demo.R">R script for every plotted result</a> · <a href="assets/versions.txt">Software versions</a></p>
+        <p><a href="https://github.com/amromeo/amromeo.github.io/blob/55eee86b3f4111197b0043cc062ef0b781dc2057/anchoredRI/tools/build-demo.R">R script for every plotted result</a> · <a href="assets/versions.txt">Software versions</a></p>
       </div></details>
     </section>
     <section id="install" class="installation" aria-labelledby="install-title">
-      <div><p class="kicker">R package</p><h2 id="install-title">Install anchoredRI</h2><p>The model uses base R and its standard packages. Install <code>refineR</code> to reproduce the comparisons. The current package is 0.2.0; this page retains the original stress-test results.</p><a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Browse the package source ↗</a> · <a href="downloads/anchoredRI_0.2.0.tar.gz" download>Download 0.2.0</a></div>
-      <div class="code-box"><div><span>R console</span><button id="copy" type="button">Copy code</button></div><pre><code id="install-code">install.packages(c("remotes", "refineR"))
+      <div><p class="kicker">R package</p><h2 id="install-title">Install anchoredRI 0.3.0</h2>
+        <p>The current package uses up to five components and applies the safeguard by default. Building from source requires R 4.1 or later and a C++17 compiler. Install <code>refineR</code> separately to run the comparator.</p>
+        <p><a href="downloads/anchoredRI_0.3.0.tar.gz" download>Download the 0.3.0 source package</a> · <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Package source</a></p>
+        <p>Previous versions · <a href="downloads/anchoredRI_0.2.0.tar.gz" download>0.2.0</a> · <a href="downloads/anchoredRI_0.1.0.tar.gz" download>0.1.0</a></p></div>
+      <div class="code-box"><div><span>R console</span><button id="copy" type="button">Copy code</button></div><pre><code id="install-code">install.packages("remotes")
 remotes::install_github(
-  "amromeo/amromeo.github.io", subdir = "anchoredRI"
+  "amromeo/amromeo.github.io", ref = "main",
+  subdir = "anchoredRI"
 )
 
 library(anchoredRI)
 d &lt;- simulate_ri_study(n_anchor = 40)
-fit_anchored_ri(d$routine$value, d$routine$setting,
-                d$anchor)$limits</code></pre><span class="sr-only" role="status" id="copy-status"></span></div>
+fit &lt;- fit_anchored_ri(d$routine$value,
+                       d$routine$setting, d$anchor)
+fit$status
+fit$reason
+fit$limits</code></pre><span class="sr-only" role="status" id="copy-status"></span></div>
     </section>
-    <section class="credits" aria-labelledby="credit-title"><h3 id="credit-title">Credit and license</h3><p>The published refineR method by Tatjana Ammer and colleagues inspired this investigation. Its independently released R package by Matthias Beck, Tatjana Ammer, Christopher M. Rank and André Schützenmeister supplies both refineR comparisons. This project has no affiliation with the refineR authors.</p><p><a href="https://doi.org/10.1038/s41598-021-95301-2">Original paper</a> · <a href="https://cran.r-project.org/package=refineR">refineR on CRAN</a> · <a href="LICENSE">GNU GPL v3.0</a></p></section>
-  </main><footer><span>anchoredRI 0.1.0</span><span>Fully AI-developed · Research software</span></footer>
+    <section class="credits" aria-labelledby="credit-title"><h3 id="credit-title">Credit and license</h3><p>The published refineR method by Tatjana Ammer and colleagues inspired this investigation. Its independently released R package by Matthias Beck, Tatjana Ammer, Christopher M. Rank and André Schützenmeister supplies both refineR comparisons. This project has no affiliation with the refineR authors.</p><p><a href="https://pubmed.ncbi.nlm.nih.gov/34362961/">Original paper</a> · <a href="https://cran.r-project.org/package=refineR">refineR on CRAN</a> · <a href="LICENSE">GNU GPL v3.0</a></p></section>
+  </main><footer><span>Original results · anchoredRI 0.1.0</span><span>Fully AI-developed · Research software</span></footer>
 </body></html>
