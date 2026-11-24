@@ -67,6 +67,11 @@ summarize_ri_benchmark <- function(results) {
                              lower_mae = abs(results$lower_error),
                              upper_mae = abs(results$upper_error))
   summary_data$worst_limit_mae <- pmax(summary_data$lower_mae, summary_data$upper_mae)
-  aggregate(cbind(lower_mae, upper_mae, worst_limit_mae) ~ scenario + method,
-            data = summary_data, FUN = mean)
+  out <- aggregate(cbind(lower_mae, upper_mae, worst_limit_mae) ~ scenario + method,
+            data = summary_data, na.action = stats::na.pass,
+            FUN = function(x) if(any(is.finite(x)))mean(x[is.finite(x)])else NA_real_)
+  counts <- data.frame(scenario=results$scenario,method=results$method,
+    attempted=1L,reported=as.integer(is.finite(results$lower)&is.finite(results$upper)))
+  counts <- aggregate(cbind(attempted,reported) ~ scenario + method,data=counts,FUN=sum)
+  merge(out,counts,by=c("scenario","method"),sort=FALSE)
 }
