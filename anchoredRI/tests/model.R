@@ -1,5 +1,5 @@
 library(anchoredRI)
-# Freeze the pre-safeguard numerical assertions. Safeguard behavior has its own tests.
+# Exercise raw model diagnostics. The reporting contract is tested in safeguard.R.
 fit_anchored_ri <- function(...) anchoredRI::fit_anchored_ri(..., safeguard=FALSE)
 bootstrap_anchored_ri <- function(...) anchoredRI::bootstrap_anchored_ri(..., safeguard=FALSE)
 
@@ -20,9 +20,18 @@ stopifnot(max(abs(fit$limits - d$truth)) < 3,
           isTRUE(all.equal(colSums(fit$weights), c(clinic = 1, ward = 1))),
           identical(unname(fit$limits), unname(fit$candidate_limits[fit$components, ])))
 on_log <- fit_anchored_ri(exp(x$value/10), x$setting, exp(d$anchor/10), "log")
-stopifnot(isTRUE(all.equal(unname(on_log$limits), unname(exp(fit$limits/10)), tolerance = 1e-4)))
+# The single normal component has an analytic fit. The two families have
+# different physical SD floors and multistart paths for higher component counts.
+identity_fit <- fit_anchored_ri(x$value, x$setting, d$anchor, "identity")
+stopifnot(fit$requested_transform == "auto", fit$rounding_unit == .1,
+          isTRUE(all.equal(on_log$candidate_limits["1", ],
+                           exp(identity_fit$candidate_limits["1", ] / 10), tolerance = 1e-7)),
+          max(abs(on_log$limits - exp(on_log$reference$mu +
+                    qnorm(c(.025, .975)) * on_log$reference$sigma))) < 1e-10)
 fails <- function(expr) inherits(try(force(expr), silent = TRUE), "try-error")
 stopifnot(fails(fit_anchored_ri(x$value, rep(c("a","b","c"), length.out=nrow(x)), d$anchor)),
+          fails(fit_anchored_ri(x$value, x$setting, d$anchor, fit_seed = -1L)),
+          fails(fit_anchored_ri(x$value, x$setting, d$anchor, rounding_unit = 1)),
           fails(fit_anchored_ri(x$value, x$setting, numeric())),
           fails(fit_anchored_ri(x$value, x$setting, -d$anchor, "log")),
           fails(simulate_ri_case(1.5, 1)), fails(simulate_ri_study(n_anchor = -1)))

@@ -14,9 +14,11 @@
   if (shifted && d$zero)
     starts[[length(starts)+1L]] <- list(p = models[[paste("log", k)]]$p)
 
+  # Historical drivers can source the R files after installing this checkout.
+  native_fit <- get("C_anchored_fit_start", envir = asNamespace("anchoredRI"), inherits = FALSE)
   best <- NULL
   consider <- function(start, bounds) {
-    z <- .Call(C_anchored_fit_start, d$x, d$counts, d$anchors, spec, as.double(start),
+    z <- .Call(native_fit, d$x, d$counts, d$anchors, spec, as.double(start),
                as.double(bounds$lo), as.double(bounds$hi), as.double(rules), 1000L, 1L)
     use_start <- is.finite(z[[2]]) && (!is.finite(z[[3]]) || z[[2]] > z[[3]])
     ll <- if (use_start) z[[2]] else z[[3]]

@@ -27,7 +27,8 @@ stopifnot(off$status=='reported',!off$safeguard$enabled,!off$declined,
   is.na(off$safeguard$lrt_p),is.na(off$safeguard$lower_flag))
 large <- apply(raw(4),rep(x,length.out=50000),a)
 small <- apply(raw(4),rep(x,length.out=49999),a)
-stopifnot(grepl('refineR',large$recommendation),!grepl('refineR',small$recommendation))
+stopifnot(grepl('refineR',large$recommendation),grepl('anchorRefine',large$recommendation),
+          !grepl('refineR',small$recommendation))
 unavailable <- apply(raw(0),x,rep(0,40))
 stopifnot(unavailable$status=='withheld',unavailable$technical_withholding,all(is.na(unavailable$limits)))
 # Strict inequalities and one-sided skip, including lower one-sided requests.

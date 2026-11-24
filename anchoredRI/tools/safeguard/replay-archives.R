@@ -1,7 +1,9 @@
-# Run from anchoredRI/ with the package source loaded, without refitting.
+# Run from anchoredRI/ with the proposed package installed. This replays saved fits.
 # Rscript tools/safeguard/replay-archives.R config.rds
 library(RIbench)
-for(f in list.files('R',full.names=TRUE))source(f)
+.ri_checks <- getFromNamespace(".ri_checks", "anchoredRI")
+.ri_flags <- getFromNamespace(".ri_flags", "anchoredRI")
+.ri_reporting_decision <- getFromNamespace(".ri_reporting_decision", "anchoredRI")
 source('tools/stress-design.R')
 cfg <- readRDS(commandArgs(TRUE)[1])
 dir.create(cfg$output,recursive=TRUE,showWarnings=FALSE)

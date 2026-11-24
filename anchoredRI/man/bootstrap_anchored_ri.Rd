@@ -5,9 +5,12 @@
 bootstrap_anchored_ri(value, setting, anchor,
   transform = c("auto", "identity", "log", "shifted_log"),
   n_boot = 200L, conf = .95, seed = 123L, workers = 1L,
-  shift_bounds = NULL, safeguard = TRUE, probs = c(.025, .975))
+  shift_bounds = NULL, safeguard = TRUE, probs = c(.025, .975),
+  rounding_unit = NULL, fit_seed = 1L)
 }
 \arguments{
+  \item{rounding_unit}{Assay reporting increment in measurement units. If NULL, infer the coarsest shared decimal unit from 1 to 1e-8. If none fits or if zero is supplied, only the other component SD bounds apply. A positive supplied increment must be consistent with all routine and screened values. Bootstrap draws use the point fit's increment.}
+  \item{fit_seed}{Nonnegative integer for the multistart fits, default 1. The bootstrap resampling seed is separate.}
   \item{safeguard}{Logical. Default TRUE applies the anchor likelihood-ratio and observed-minimum checks. FALSE returns raw estimates for research use and records that the checks are disabled.}
   \item{probs}{One probability for a one-sided limit or two increasing probabilities for an interval. Defaults to c(.025, .975). The observed-minimum check is skipped for one-sided requests.}
 
@@ -22,7 +25,7 @@ bootstrap_anchored_ri(value, setting, anchor,
   \item{shift_bounds}{Optional fixed offset bounds passed to every fit. If NULL, the data-derived bounds are recalculated within each resample.}
 }
 \description{Resamples routine observations within each setting and screened observations independently. Every resample repeats component selection, family selection when requested, and offset estimation.}
-\details{With the safeguard enabled, decline when the nominal anchor likelihood-ratio test has p < 0.01 (chi-squared, 2 df) or when a two-sided lower limit is strictly below every routine result. The likelihood test holds the selected transform and offset fixed. Unavailable check statistics cause technical withholding. Reported limits are missing when withheld; raw anchored and anchors-only estimates remain under \code{diagnostics}, never as substitute reported intervals. The output includes \code{status}, \code{reason}, \code{recommendation}, \code{probs}, and \code{safeguard} with both flags, LRT statistic and p-value. A declined result recommends at least 120 screened patients or verification of a suitable published interval with 20. For at least 50,000 routine values it also suggests an established indirect method such as refineR.
+\details{With the safeguard enabled, decline when the nominal anchor likelihood-ratio test has p < 0.01 (chi-squared, 2 df) or when a two-sided lower limit is strictly below every routine result. The likelihood test holds the selected transform and offset fixed. Unavailable check statistics cause technical withholding. Reported limits are missing when withheld; raw anchored and anchors-only estimates remain under \code{diagnostics}, never as substitute reported intervals. The output includes \code{status}, \code{reason}, \code{recommendation}, \code{probs}, and \code{safeguard} with both flags, LRT statistic and p-value. A declined result recommends at least 120 screened patients or verification of a suitable published interval with 20. For at least 50,000 routine values, use refineR or anchorRefine.
 
 Heavily mixed populations containing many mildly abnormal patients, including ICU-only populations, can produce wrong intervals that pass both checks.
 

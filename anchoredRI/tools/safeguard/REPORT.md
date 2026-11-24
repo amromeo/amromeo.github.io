@@ -1,33 +1,48 @@
-# Task F safeguard validation
+# Verification of Arm B with the Task F safeguard
 
-The package now applies the Step B likelihood-ratio test and observed-minimum check by default. The implementation is on `study/safeguard`, based on main `55eee86b3f4111197b0043cc062ef0b781dc2057`. The optimization algorithm is unchanged. One-group support uses the already tested C2 adaptation.
+The proposed package selects up to five components with the Task E fitter. After the point fit and every bootstrap fit, Task F checks for disagreement with the screened sample (likelihood-ratio p < 0.01) and for a two-sided lower limit below the smallest routine result.
 
-## Archived decisions
+## Replay of Task E decisions
 
-All 5,220 archived decisions reproduced exactly using the package's check and reporting functions. These checks replay the saved fits rather than refitting them on a different numerical runtime.
+All 5,220 archived Arm B fits gave the same reporting decision in the installed package as in Task E. Each dataset was matched by ID. The replay verified the hashes of the routine and anchor vectors and used the archived reference-component mean, SD, transform and offset to calculate the LRT and the requested limits. It checked both flags, the one-sided skip, technical withholding, the reasons, and whether the package released or withheld the limits. The LRT was recalculated for all 432 one-sided CRP fits.
 
-| Dataset | Fits | LRT flags | Lower-limit flags | Either flag | Both flags |
-|---|---:|---:|---:|---:|---:|
-| B2 confirmation, replicates 21–40 | 900 | 91 | 0 | 91 | 0 |
-| Independent-anchor RIbench, N <= 5,000 | 2,880 | 533 | 9 | 533 | 9 |
-| Independent-anchor RIbench, N = 50,000 | 1,440 | 402 | 21 | 402 | 21 |
+| Task E datasets | Fits | LRT flags | Lower-limit flags | Both flags | Declined | Reported |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| RIbench, N = 1,000 or 5,000 | 2,880 | 99 | 0 | 0 | 99 | 2,781 |
+| Simulation grid, replicates 1–20 | 900 | 91 | 0 | 0 | 91 | 809 |
+| RIbench, N = 50,000 | 1,440 | 305 | 1 | 1 | 305 | 1,135 |
 
-B2's committed rule a at threshold 0.80 declined 122/900. Its LRT-alone comparator declined 91/900, including 86/312 datasets with error >10% and 5/453 with error <5%. Task F implements the LRT plus observed-minimum rule, not B2's separation statistic. The lower-limit check adds no B2 declines in this confirmation set.
+The comparison uses the published Task E results at commit `8bcd49c`. It replays the selected fits without rerunning the optimizer. [Small-N and grid archive](https://github.com/amromeo/amromeo.github.io/tree/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/results) · [Large-N archive](https://github.com/amromeo/amromeo.github.io/tree/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/large/results)
 
-For small-N RIbench, the combined rule flags all 23 fits whose mean absolute z deviation exceeds 5 and 224/1,952 whose mean absolute z deviation is below 0.25. For the alternative endpoint definition, it flags 32/33 fits with either endpoint |z| >5. Those definitions are deliberately kept separate.
+## Refitting against the Task E source
 
-CRP is one-sided. Its archive contains only the reported upper endpoint, so the full reference-component parameters cannot be recovered. For CRP the package calculates the p-value from the archived LRT statistic and applies the one-sided reporting rule. For the remaining RIbench fits and every B2 fit, the package recomputes the LRT from the saved central limits and regenerated original anchors. All flags agree with the archives. Public-function tests independently check LRT computation and the one-sided skip on complete fits.
+On seven existing datasets, the public `fit_anchored_ri()` and the original Task E fitter agreed on the same R 4.5.0 runtime. Both chose the same transform and component count and returned the same safeguard flags. All candidate BICs, the selected weights and offset, diagnostic endpoints, and LRT statistic agreed to an absolute tolerance of 1e-10. The test used Task E's original multistart seed for each input and let the package infer the measurement increment.
 
-## Package behavior
+Six of the seven local decisions also matched the archived GitHub Actions decisions. The exception was calcium index 870. The archived fit selected five normal components and triggered both flags. Both local implementations selected four shifted-log components and reported the interval. Applying the package safeguard to the archived calcium fit reproduced its decline. A fresh numerical fit on a different runtime can therefore change which interval reaches the safeguard and whether it is reported. The seven datasets are a software check, not an estimate of the frequency of this difference.
 
-Tests cover each decline reason, simultaneous flags, both diagnostic estimates, no anchors-only substitution, technical withholding, the strict lower-limit inequality, one-sided requests, the research override, and the refineR recommendation beginning at 50,000 routine results. Bootstrap tests cover every draw's checks and diagnostics, accepted-draw confidence intervals, count accounting, random-state restoration and agreement between sequential and parallel execution.
+## Original Task F regressions
 
-`successful` counts accepted bootstrap draws. `failed` counts numerical failures. `declined_draws` and `withheld_draws` are separate. An accepted point fit needs at least 80% accepted bootstrap draws for confidence intervals. A declined point fit reports neither the reference interval nor its confidence intervals. These intervals are conditional on passing the safeguard.
+The original Task F branch passed its package tests and its three comparisons against frozen main on this runtime. After the rebase, the package also reproduced the historical Task F archive decisions below. Those decisions came from the earlier fitter. Task F used the Step B LRT, while B2's separate rule using a separation statistic declined 122/900.
 
-The safeguard can miss wrong intervals in heavily mixed populations with many mildly abnormal patients, including ICU-only populations. A passing result does not establish clinical validity.
+| Historical fits | Fits | LRT flags | Lower-limit flags | Declined |
+| --- | ---: | ---: | ---: | ---: |
+| B2 confirmation, replicates 21–40 | 900 | 91 | 0 | 91 |
+| Independent-anchor RIbench, N ≤ 5,000 | 2,880 | 533 | 9 | 533 |
+| Independent-anchor RIbench, N = 50,000 | 1,440 | 402 | 21 | 402 |
 
-## Reproduction
+Among B2 confirmation datasets, the LRT flagged 86/312 with error above 10% and 5/453 with error below 5%. On historical small-N RIbench it flagged all 23 fits with mean absolute z deviation above 5, 224/1,952 below 0.25 and 32/33 with either endpoint more than 5 z units from truth. For CRP in these older archives, only the upper limit and LRT statistic were available. The historical replay used the saved statistic for CRP and recalculated it from central limits and original anchors for the remaining fits.
 
-R 4.5.0 completed `R CMD check --no-manual` with all package tests passing. The three two-setting parity tests (identity, log and shifted-log) had zero difference in their limits. Run the package tests after installation. `test-parity.R` compares research-mode fits against frozen main source on the same runtime. `replay-archives.R` accepts an RDS configuration with paths named `b2`, `small`, `large`, `small_diagnostics`, `large_diagnostics`, and `output`. It expects the original C2 small-N artifact, the completed 50,000 artifact, the B2 confirmation output, and Task D's lower-limit diagnostics. RIbench 1.0.2 is required only for this archive replay, not for package use.
+## Package tests and reproduction
 
-The branch includes the aggregate decline counts. Running the replay also writes a local CSV with one decision per dataset.
+`R CMD check --no-manual` runs the model, offset and safeguard tests. The rebased tests cover the five-component candidates, gradients, one- and two-setting fits, one-sided limits, both decline reasons, technical withholding, the research override, and the large-sample recommendation. Bootstrap tests cover withheld point estimates, per-draw decisions and diagnostics, conditional confidence intervals, accepted-draw counts, and reproducibility with sequential and parallel workers.
+
+Install the proposed package and run the following from its `anchoredRI/` directory. Set `task_e` to the archived Task E package source (the `anchoredRI/` directory), `small_data` to the RIbench directory containing its `Data/` tree, and `large_inputs` to the 24 archived Task E input shards. The archive tests use RIbench 1.0.2, data.table and digest. The historical replay uses the same configuration fields as the original Task F script: `b2`, `small`, `large`, `small_diagnostics`, `large_diagnostics`, and `output`.
+
+```sh
+Rscript tools/safeguard/replay-task-e.R "$task_e" "$small_data" "$large_inputs"
+(cd "$task_e" && Rscript tools/boxcox/reliability-v3/build.R "$study_so")
+Rscript tools/safeguard/test-parity.R "$task_e" "$small_data" "$study_so" "$large_inputs"
+Rscript tools/safeguard/replay-archives.R "$task_f_config"
+```
+
+Use an absolute output filename for `study_so` and an existing Task F configuration RDS for `task_f_config`.

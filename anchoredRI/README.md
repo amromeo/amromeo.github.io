@@ -2,15 +2,33 @@
 
 An R research package for asking whether a small group of independently screened children can improve a reference interval estimated from mixed outpatient and ward results. The main function estimates the central 95% interval for one analyte, assay method and comparable age group. All published experiments use synthetic data.
 
-**Fully AI-developed.** A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and wrote the method implementation, simulation experiments, tests, package documentation and website. The estimator uses conventional maximum likelihood in R. Clinical performance has yet to be established.
+**Fully AI-developed.** A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and wrote the method implementation, simulation experiments, tests, package documentation and website. The package uses maximum likelihood with an R interface and a compiled C++ fitter. Clinical performance has yet to be established.
 
-[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Current results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [R source archive](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.2.0.tar.gz)
+[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Current results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [Version 0.2 source archive](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.2.0.tar.gz)
+
+## Fitting and reporting a reference interval
+
+The point estimate and bootstrap use Task E Arm B. The fitter considers one through five components for each eligible family (normal, lognormal and shifted lognormal) and selects the lowest BIC on the measurement scale. Every fit runs the two safeguards below. The default interval covers the central 95% of the screened component. Use `probs = .95` for a one-sided upper limit.
+
+Supply the assay’s reporting increment with `rounding_unit` when known. The fitter uses it as a minimum component SD in measurement units. The default infers the coarsest shared decimal increment from 1 through 0.00000001. If none fits, or if you specify `rounding_unit = 0` for continuous inputs, only the other SD constraints apply. The bootstrap uses the same increment for every resample. The multistart search is reproducible with `fit_seed` (default 1). The separate bootstrap `seed` controls patient resampling.
+
+### RIbench accuracy by routine sample size
+
+With 40 independently screened anchors, anchoredRI had the lowest error of the methods Task E tested at N = 1,000 and 5,000. At N = 50,000, refineR was more accurate. For datasets of that size or larger, use refineR or anchorRefine. Task E measured refineR directly. [anchorRefine](https://github.com/amromeo/anchorRefine)
+
+| Routine results per dataset | Datasets | anchoredRI (Arm B) | refineR |
+| ---: | ---: | ---: | ---: |
+| 1,000 | 1,440 | 0.2334 | 0.4318 |
+| 5,000 | 1,440 | 0.2114 | 0.3082 |
+| 50,000 | 1,440 | 0.3744 | 0.2282 |
+
+The scores are mean absolute endpoint z deviations before the safeguard. Lower scores indicate better accuracy. RIbench excludes dataset errors above 5 from this mean. Across both smaller sizes the scores were 0.2224 for anchoredRI and 0.3696 for refineR. At N = 50,000, Arm B had one implausible fit and selected five components in 941/1,440 fits (65.3%). The safeguard declined 305 fits and released 1,135. The score of 0.1307 among released fits applies to those 1,135 only. [Small-N results](https://github.com/amromeo/amromeo.github.io/tree/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/results/REPORT.md) · [Large-N results](https://github.com/amromeo/amromeo.github.io/tree/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/large/results/REPORT.md)
 
 ## Safeguard
 
 Version 0.3 adds `safeguard = TRUE` to `fit_anchored_ri()` and `bootstrap_anchored_ri()`. After the selected point fit and every bootstrap fit, two checks decide whether an interval can be reported. The Step B likelihood-ratio test compares the anchors under component 1 with their own normal MLE on the selected transform and fixed offset. A nominal chi-squared p-value with 2 df below 0.01 declines the interval. A lower limit strictly below the smallest routine value also declines it. The lower-limit check is skipped for one-sided limits.
 
-A declined result has missing reported limits and a recorded reason. The reason is “routine data disagree with the screened sample” for the LRT flag or “estimated lower limit is below every observed result” for the lower-limit flag. Both reasons are retained if both checks flag. The fitted anchoredRI interval and the anchors-only interval remain available under `diagnostics$anchored` and `diagnostics$anchors_only`. Read `status`, `reason`, `recommendation`, and `safeguard` for the reporting decision. The anchors-only interval is never substituted into `limits`. A declined result recommends at least 120 screened patients or verifying a suitable published interval with 20 screened patients. For at least 50,000 routine results, it also suggests an established indirect method such as refineR.
+A declined result has missing reported limits and a recorded reason. The reason is “routine data disagree with the screened sample” for the LRT flag or “estimated lower limit is below every observed result” for the lower-limit flag. Both reasons are retained if both checks flag. The fitted anchoredRI interval and the anchors-only interval remain available under `diagnostics$anchored` and `diagnostics$anchors_only`. Read `status`, `reason`, `recommendation`, and `safeguard` for the reporting decision. The anchors-only interval is never substituted into `limits`. A declined result recommends at least 120 screened patients or verifying a suitable published interval with 20 screened patients. For at least 50,000 routine results, it recommends refineR or anchorRefine.
 
 Bootstrap output distinguishes declined fits from numerical failures and retains both checks for every draw. A declined point fit withholds the reported interval and confidence intervals. For an accepted point fit, confidence intervals use accepted, finite bootstrap draws and require at least 80% of requested draws. Report the accepted and declined counts and identify these as intervals conditional on passing the safeguard.
 
@@ -18,11 +36,11 @@ Researchers can set `safeguard = FALSE` to return the fitted limits. The package
 
 Heavily mixed routine data with many mildly abnormal patients, including ICU-only populations, can produce wrong reference intervals that pass both checks. Passing the safeguard does not establish clinical validity.
 
-Archived-fit validation reproduces the committed B2 confirmation decisions and the archived RIbench decline counts using the same raw estimates and inputs. The tests will distinguish native mean-absolute-z implausibility from an extreme error at either endpoint. The package now accepts one or two routine settings. `probs = .95` requests a one-sided upper limit. The existing two-setting fits and central-95% defaults are preserved. The archived decision replay uses saved estimates to avoid differences caused by refitting on another numerical runtime. Separate tests check the public entry points and agreement with the frozen fitter on the same runtime.
+The archive replay checks each Arm B reporting decision against Task E. A separate test compares the installed fitter with the Task E source on the same R runtime. [Validation and reproduction](tools/safeguard/REPORT.md)
 
-## Version 0.2: estimate the offset
+## Earlier results with version 0.2
 
-`transform = "auto"` compares normal, lognormal and shifted-lognormal mixtures, each with one to three components. The shifted model estimates its offset jointly with the component shapes and service proportions. BIC includes the transformation Jacobian and the extra offset parameter, so scores are comparable on the measurement scale. The default point-fit transform remains `"identity"` for compatibility.
+Version 0.2 compared normal, lognormal and shifted-lognormal mixtures with one to three components when `transform = "auto"`. The shifted model estimates its offset jointly with the component shapes and service proportions. BIC includes the transformation Jacobian and the extra offset parameter, so scores are comparable on the measurement scale. Its point-fit default was `"identity"`.
 
 `bootstrap_anchored_ri()` now resamples both routine services and screened observations, repeating the complete model selection and offset estimation. It records failed fits, boundary flags, offsets and selected models for every draw. Its default transform is `"auto"`.
 
@@ -32,17 +50,19 @@ Across the 20 fresh datasets matching that shifted scenario, mean endpoint perce
 
 ## Install from GitHub
 
-The package occupies the `anchoredRI` directory of the author's public GitHub Pages repository. In R 4.1 or later, run
+To install the proposed version from the review branch in R 4.1 or later, run
 
 ```r
 install.packages("remotes")  # once
 remotes::install_github("amromeo/amromeo.github.io", subdir = "anchoredRI",
-                        ref = "study/safeguard")
+                        ref = "proposal/arm-b-safeguard")
 ```
 
-Model fitting uses R's standard packages. To run the published comparator, install `refineR` with `install.packages("refineR")`.
+Building this branch from source requires a C++17 compiler and R’s package build tools. Install the checkout before sourcing its R files directly. To run the published comparator, install `refineR` with `install.packages("refineR")`.
 
 ## Primary comparison: refineR as intended
+
+The worked examples and the earlier clinic/ward results below used earlier package versions. To reproduce the published figures, run their scripts from the archived source. [Source for the earlier comparisons](https://github.com/amromeo/amromeo.github.io/tree/55eee86b3f4111197b0043cc062ef0b781dc2057/anchoredRI)
 
 The main page uses the authors' practical workflow: the same 5,000 eligible routine patients for both methods, a single physiological partition, one result per person, 200 bootstrap resamples and `medianBS` refineR estimates with 95% CIs. anchoredRI adds 40 independent screened patients and service labels. Direct benchmarks use empirical percentiles from 120 and 400 screened patients. The shifted profile uses `modBoxCox` for refineR. Both the original identity/log anchoredRI estimates and the new automatic estimates are shown.
 
@@ -104,7 +124,7 @@ A screened patient contributes once. If you review charts from the same set of r
 
 1. Both settings share the component means and standard deviations. Each setting gets its own component proportions.
 2. A routine observation contributes the probability density of the mixture for its setting. A screened observation contributes the probability density of the reference component. Each observation contributes once, with unit weight.
-3. The fitter compares one, two and three components using BIC. Automatic selection also compares identity, log and shifted-log families. It reports the central 95% of the selected reference component in the original units.
+3. The default fitter compares one through five components across the eligible normal, lognormal and shifted-lognormal families by original-scale BIC. It reports the requested limits in measurement units when the selected fit passes both safeguards.
 
 The offset is shared across components and constrained below every observation. Default bounds run from the minimum observation minus five routine MADs to that minimum minus 0.001 MAD; SD substitutes when MAD is zero. These numerical constraints avoid a fit collapsing onto the smallest result, but they can influence estimates. Optional `shift_bounds` must use measurement units. Selected boundary fits are retained and flagged. Mixture BIC and percentile bootstrap intervals are practical choices with limitations, especially when models fit poorly or screened samples are small. They do not guarantee correct model selection or confidence-interval coverage.
 
