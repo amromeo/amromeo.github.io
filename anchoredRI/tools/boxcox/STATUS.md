@@ -8,6 +8,20 @@ At N ≤ 5,000, Arm B had the lowest before-safeguard score among the tested met
 
 Arm B and the improved baseline tied on all 900 simulation-grid datasets. Arm A stopped during reliability testing. [Protocol](PROTOCOL.md) · [Comparator for anchorRefine](anchorRefine-comparator/README.md)
 
+## Task G (planned, not started)
+
+Recorded 24 November 2026. The proposed method returns the anchoredRI interval when its safeguard passes. If anchoredRI declines and there are at least 5,000 routine results, try anchorRefine (or refineR plus the anchor check). Report the fallback interval only if it passes the anchor check. Below 5,000 routine results, a decline stands.
+
+On the RIbench discovery data, anchoredRI’s reported intervals had lower error than refineR on the same datasets at each of the three sizes. A separate discovery comparison used anchoredRI when it reported an interval and refineR when it declined. Lower scores indicate better accuracy.
+
+| Routine results per dataset | anchoredRI then refineR | refineR alone |
+|---:|---:|---:|
+| 1,000 | 0.24 | 0.51 |
+| 5,000 | 0.20 | 0.33 |
+| 50,000 | 0.16 | 0.24 |
+
+The 1,000-result row is part of the discovery comparison. The proposed Task G fallback starts at 5,000. Testing will wait for anchorRefine Stage 3 and will use its confirmation datasets.
+
 ## Earlier validation runs
 
 Implementation started after user approval on 22 November 2026. No package files under `R/` were changed.
