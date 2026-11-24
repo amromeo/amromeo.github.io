@@ -1,6 +1,6 @@
 # Box-Cox shape and mixture capacity study
 
-The accuracy comparison on 2,880 small RIbench and 900 grid datasets is complete for the improved baseline and Arm B. Arm A stopped during reliability testing. N = 50,000 awaits the separate runtime review. [Accuracy results](accuracy/results/REPORT.md) · [Protocol](PROTOCOL.md) · [Baseline comparator for anchorRefine](anchorRefine-comparator/README.md)
+The accuracy comparison on 2,880 small RIbench and 900 grid datasets is complete for the improved baseline and Arm B. Arm A stopped during reliability testing. The N = 50,000 stage is approved for both methods on GitHub Actions. [Accuracy results](accuracy/results/REPORT.md) · [Protocol](PROTOCOL.md) · [Baseline comparator for anchorRefine](anchorRefine-comparator/README.md)
 
 Implementation of the approved Task E protocol. The package code in `R/` is unchanged. The original frozen baseline is `55eee86b3f4111197b0043cc062ef0b781dc2057` and the one-group adapter is copied from `f72ea14fc7978bf2478f54c87548cb6c127fa766`.
 

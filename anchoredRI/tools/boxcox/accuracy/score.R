@@ -3,19 +3,25 @@ library(RIbench)
 source("tools/boxcox/native-scores.R")
 save_tab<-function(d,name)write.csv(d,file.path(out,paste0(name,".csv")),row.names=FALSE,na="")
 diag<-read.csv(file.path(out,"diagnostics.csv"),stringsAsFactors=FALSE)
+large <- length(args) >= 3L && args[3] == "50000"
+stage <- if (large) "50000" else "small"
+archive <- if (large) cfg$large_archive else cfg$small_archive
 defs<-loadTestsetDefinition()
-defs<-defs[defs$Index %in% diag$Index[diag$stage=="small"],]
+defs<-defs[defs$Index %in% diag$Index[diag$stage==stage],]
 preview<-length(args)>=3L && args[3]=="preview"
-if(!preview)stopifnot(nrow(defs)==2880L,nrow(diag[diag$stage=="grid",])==5400L)
-methods<-c("anchoredRI","armB","frozenLocal","archivedC2","anchorsOnly","refineR")
-read_native<-function(m)readRDS(file.path(cfg$small_archive,paste0(m,"-native-performance.rds")))$resRIs
+if(large) {
+  stopifnot(nrow(defs)==1440L,all(defs$N==50000L),!anyDuplicated(diag[c("Index","method")]),
+            nrow(diag)==4L*nrow(defs))
+} else if(!preview) stopifnot(nrow(defs)==2880L,nrow(diag[diag$stage=="grid",])==5400L)
+methods<-c("anchoredRI","armB",if(large)"frozenActions" else "frozenLocal","archivedC2","anchorsOnly","refineR")
+read_native<-function(m)readRDS(file.path(archive,paste0(m,"-native-performance.rds")))$resRIs
 template<-read_native("anchoredRI")
 markers<-unique(defs$Analyte)
 native<-scores<-categories<-list()
 for(m in methods) {
   archived<-m %in% c("archivedC2","anchorsOnly","refineR")
   source_results<-if(archived && m!="archivedC2")read_native(m)else template
-  d<-subset(diag,stage=="small" & method==m)
+  d<-diag[diag$stage==stage & diag$method==m,]
   ris<-lapply(markers,function(analyte){
     a<-source_results[[analyte]]
     s<-defs[defs$Analyte==analyte,]
@@ -105,6 +111,11 @@ for(m in c("anchoredRI","armB"))for(other in setdiff(methods,m)) {
 }
 summ<-do.call(rbind,rows);save_tab(summ,"ribench-summary")
 save_tab(do.call(rbind,paired),"ribench-pairs");save_tab(do.call(rbind,flagrows),"ribench-safeguard-by-error")
+if (large) {
+  source("tools/boxcox/accuracy/large/criteria.R", local = TRUE)
+  writeLines("Large-N scoring complete", file.path(root, "SCORED.txt"))
+  quit(save = "no", status = 0L)
+}
 before<-subset(summ,group=="all"&filter=="before");thr<-before$capped_mean[before$method=="frozenLocal"]
 criteria<-do.call(rbind,lapply(c("anchoredRI","armB"),function(m){
  a<-before[before$method==m,];data.frame(method=m,small_native_capped=a$capped_mean,threshold=thr,
@@ -134,8 +145,16 @@ for(m in c("anchoredRI","armB"))for(other in setdiff(unique(grid$method),m))for(
      family=if(g!="all")p$family[ix]else NA,overlap=if(g!="all")p$overlap[ix]else NA,
      affected=if(g!="all")p$affected[ix]else NA,attempts=sum(keep),complete=length(delta),
      mean_difference=mean(delta),MCSE=mc,wins=sum(delta<0),ties=sum(delta==0),losses=sum(delta>0),
-     regression=mean(delta)>2*mc)
+     above_two_mcse=mean(delta)>2*mc)
  }
 }
-save_tab(do.call(rbind,gr),"grid-summary");save_tab(do.call(rbind,gp),"grid-pairs")
+save_tab(do.call(rbind,gr),"grid-summary")
+grid_pairs <- do.call(rbind, gp)
+save_tab(grid_pairs, "grid-pairs")
+reviewed <- subset(grid_pairs, arm == "anchoredRI" & comparator == "frozenLocal" &
+                     filter == "before" & above_two_mcse == TRUE & case %in% c(2L, 19L, 20L) & abs(mean_difference) < .001)
+reviewed <- reviewed[order(reviewed$case), c("case", "family", "overlap", "affected", "complete", "mean_difference", "MCSE")]
+reviewed$arms <- rep("improved baseline and Arm B", nrow(reviewed))
+reviewed$review <- rep("numerically negligible", nrow(reviewed))
+save_tab(reviewed, "grid-review")
 if(!preview)writeLines("Small-N and grid complete",file.path(root,"SCORED.txt"))

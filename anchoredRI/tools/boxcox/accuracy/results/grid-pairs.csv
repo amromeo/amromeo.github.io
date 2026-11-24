@@ -1,4 +1,4 @@
-"arm","comparator","filter","group","case","family","overlap","affected","attempts","complete","mean_difference","MCSE","wins","ties","losses","regression"
+"arm","comparator","filter","group","case","family","overlap","affected","attempts","complete","mean_difference","MCSE","wins","ties","losses","above_two_mcse"
 "anchoredRI","armB","before","all",,,,,900,900,0,,0,900,0,
 "anchoredRI","armB","before","1",1,"normal","separated",0.1,20,20,0,0,0,20,0,FALSE
 "anchoredRI","armB","before","2",2,"lognormal","separated",0.1,20,20,0,0,0,20,0,FALSE

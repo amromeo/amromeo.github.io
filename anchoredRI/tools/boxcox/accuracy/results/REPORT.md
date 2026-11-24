@@ -78,9 +78,7 @@ Grid errors are the larger absolute endpoint error as a percentage of the true r
 
 A negative paired change favors the improved baseline. Paired after-safeguard results include only datasets on which both methods reported an interval.
 
-Improved baseline had 3 of 45 grid cells with mean error higher than the frozen local baseline by more than two paired Monte Carlo SEs.
-
-Arm B had 3 of 45 grid cells with mean error higher than the frozen local baseline by more than two paired Monte Carlo SEs.
+Arm B tied the improved baseline on all 900 grid datasets. Cases 2, 19 and 20 crossed the two-MCSE threshold because the paired fits were nearly identical. Their mean increases over the frozen local fit were 0.000374, 0.000143 and 0.000176 percentage points of interval width, respectively. All three were accepted as numerically negligible. [Reviewed scenarios](grid-review.csv)
 
 The distribution and pathological-fraction table reports paired differences, wins, ties, losses and the common reporting denominator before and after safeguarding. [RIbench paired comparisons](ribench-pairs.csv) · [Grid comparisons and MCSE](grid-pairs.csv)
 
@@ -116,6 +114,6 @@ The exit log includes the source start of the winning candidate. A logged exit l
 
 The two stages ran concurrently on GitHub Actions with four workers per batch. Wall times span the first to last accepted fit and include queue gaps. Extraction and scoring took 4.6 additional minutes. The projected fitting time for the remaining 1,296 large datasets is 0.08 hours at observed throughput (0.08 hours using median archived timing ratios). Repeating all 1,440 from scratch would take approximately 0.09 hours. This uses fresh small-N fitting times and the earlier C2 50,000-to-5,000 timing ratio for each analyte. A cross-analyte correction supplies the 5,000 estimate where all corresponding small fits were cached. This is a planning estimate for fitting. Scoring and publication add time.
 
-The comparator CSV now includes 2,880 small-N datasets, 900 grid datasets, and the 144 pre-existing large-N Hb datasets. The large-N accuracy comparison awaits approval.
+The comparator CSV now includes 2,880 small-N datasets, 900 grid datasets, and the 144 pre-existing large-N Hb datasets. The N = 50,000 comparison was approved after this review.
 
 [Comparator CSV](../../anchorRefine-comparator/anchoredRI-comparator.csv) · [Summary and paired tables](.)

@@ -8,7 +8,7 @@
 | RIbench N = 50,000 | 144 previously fitted Hb datasets | 1,440 |
 | Simulation grid, replicates 1 to 20 | 900 | 900 |
 
-The file contains 3,924 unique datasets. The 396 overlapping small-N rows use the accepted Actions fits on the same routine and anchor samples. The 144 previously exported large-N rows remain available. The full large-N comparison awaits approval. Grid rows use keys of the form `s-CC-RR` (case and replicate), the original routine seed and the family-specific screened seed. The design deliberately reuses each screened sample across scenarios in a family and replicate.
+The file contains 3,924 unique datasets. The 396 overlapping small-N rows use the accepted Actions fits on the same routine and anchor samples. The 144 previously exported large-N rows remain available. These 144 Hb estimates predate the approved Actions comparison. Grid rows use keys of the form `s-CC-RR` (case and replicate), the original routine seed and the family-specific screened seed. The design deliberately reuses each screened sample across scenarios in a family and replicate.
 
 ## Pairing datasets
 

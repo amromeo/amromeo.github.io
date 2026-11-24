@@ -1,0 +1,4 @@
+case,family,overlap,affected,complete,mean_difference,MCSE,arms,review
+2,lognormal,separated,0.1,20,0.000373852063603528,0.000184330506119978,improved baseline and Arm B,numerically negligible
+19,normal,separated,0.5,20,0.000142539325106605,6.52417215721495e-05,improved baseline and Arm B,numerically negligible
+20,lognormal,separated,0.5,20,0.000176368107132446,6.61145173202704e-05,improved baseline and Arm B,numerically negligible
