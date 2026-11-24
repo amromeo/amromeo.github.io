@@ -36,7 +36,7 @@ Researchers can set `safeguard = FALSE` to return the fitted limits. The package
 
 Heavily mixed routine data with many mildly abnormal patients, including ICU-only populations, can produce wrong reference intervals that pass both checks. Passing the safeguard does not establish clinical validity.
 
-The archive replay checks each Arm B reporting decision against Task E. A separate test compares the installed fitter with the Task E source on the same R runtime. [Validation and reproduction](tools/safeguard/REPORT.md)
+The safeguard reproduced all 5,220 archived Arm B reporting decisions. On seven fresh fits, the package and the original Task E fitter agreed on the same R runtime. Calcium dataset 870 was reported locally and declined in the archived run because the two runtimes selected different models. [Validation and reproduction](tools/safeguard/REPORT.md)
 
 ## Earlier results with version 0.2
 
