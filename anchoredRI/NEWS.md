@@ -1,3 +1,7 @@
+# anchoredRI 0.3.1
+
+- Large-dataset messages now recommend refineR; anchorRefine is labeled as in development. No change to fitting or safeguard decisions.
+
 # anchoredRI 0.3.0
 
 - The point fit and bootstrap now default to Task E Arm B. Original-scale BIC selects among one to five components across eligible normal, lognormal and shifted-lognormal families.

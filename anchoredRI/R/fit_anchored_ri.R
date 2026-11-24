@@ -7,7 +7,7 @@ fit_anchored_ri <- function(value, setting, anchor,
   .validate_ri_reporting(safeguard, probs)
   if (length(value) > 5000L)
     message("RIbench accuracy between 5,000 and 50,000 routine results has not been tested. ",
-            "At 50,000, refineR was more accurate. Consider refineR or anchorRefine.")
+            "At 50,000, refineR was more accurate. ", .ri_large_dataset_advice)
   result <- .fit_anchored_interval(value, setting, anchor, transform, shift_bounds, safeguard,
                                    probs, rounding_unit, fit_seed)
   .signal_ri_fit(result, inferred_unit = is.null(rounding_unit))
