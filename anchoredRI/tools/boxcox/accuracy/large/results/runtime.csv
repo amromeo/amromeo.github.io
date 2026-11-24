@@ -1,0 +1,2 @@
+preparation_seconds,elapsed_fitting_window_seconds,sum_fit_worker_seconds,sum_fit_cpu_seconds,sum_frozen_validation_worker_seconds,scoring_and_export_seconds,elapsed_from_generation_to_report_seconds
+168.1872899532318,1962.093716621399,7375.007,7336.967,6621.166,26.24436330795288,2598.904564142227

@@ -1,14 +1,15 @@
 # Improved anchoredRI comparator for anchorRefine
 
-[Download the per-dataset CSV](anchoredRI-comparator.csv). Each row gives the local anchoredRI estimate for one dataset, using the round 3 fitter with up to three components. The raw limits come from the lowest-BIC candidate among the eligible identity, log and shifted-log models.
+[Download the per-dataset CSV](anchoredRI-comparator.csv). Each row contains the improved anchoredRI baseline fit from GitHub Actions. The fitter selected the lowest-BIC eligible identity, log or shifted-log model with one to three components.
 
-| Coverage at the small-N and grid review | Available | Planned |
-| --- | ---: | ---: |
-| RIbench N ≤ 5,000 | 2,880 | 2,880 |
-| RIbench N = 50,000 | 144 previously fitted Hb datasets | 1,440 |
-| Simulation grid, replicates 1 to 20 | 900 | 900 |
+| Benchmark | Datasets |
+| --- | ---: |
+| RIbench N ≤ 5,000 | 2,880 |
+| RIbench N = 50,000 | 1,440 |
+| Simulation grid, replicates 1 to 20 | 900 |
+| Total unique datasets | 5,220 |
 
-The file contains 3,924 unique datasets. The 396 overlapping small-N rows use the accepted Actions fits on the same routine and anchor samples. The 144 previously exported large-N rows remain available. These 144 Hb estimates predate the approved Actions comparison. Grid rows use keys of the form `s-CC-RR` (case and replicate), the original routine seed and the family-specific screened seed. The design deliberately reuses each screened sample across scenarios in a family and replicate.
+The large-N run refitted all 1,440 datasets, including 144 previously exported Hb datasets with matching routine and anchor hashes. The small-N and grid rows are byte-identical to the accepted export. The two-setting grid uses keys of the form `s-CC-RR` (case and replicate) and reuses the screened sample across scenarios within each family and replicate. [Large-N results](../accuracy/large/results/REPORT.md) · [Small-N and grid results](../accuracy/results/REPORT.md)
 
 ## Pairing datasets
 
@@ -33,4 +34,4 @@ stopifnot(setequal(paired$dataset_id, overlap))
 | `routine_min`, `lrt_statistic`, `lrt_p`, `lower_flag`, `declined`, `technical`, `report_status`, `reason` | The original Task E safeguard and its result for this fit. |
 | `reported_lower`, `reported_upper` | Limits released by the safeguard. Withheld limits are blank. A one-sided interval also has a blank lower endpoint. |
 
-All finite numeric fields preserve double precision. The exporter rereads the CSV and validates limits, likelihoods and LRT values against the saved fits. [Stage export script](../accuracy/extract.R) · [Accuracy report](../accuracy/results/REPORT.md)
+All finite numeric fields preserve double precision. The exporter rereads the CSV and validates limits, likelihoods and LRT values against the saved fits. [Small-N export](../accuracy/extract.R) · [Large-N export](../accuracy/large/extract.R)

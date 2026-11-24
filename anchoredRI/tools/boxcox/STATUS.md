@@ -1,6 +1,6 @@
 # Task E implementation status
 
-The accuracy comparison on 2,880 small RIbench and 900 grid datasets is complete for the improved baseline and Arm B. Arm A stopped during reliability testing. The N = 50,000 stage is approved for both methods on GitHub Actions. [Accuracy results](accuracy/results/REPORT.md) · [Protocol](PROTOCOL.md) · [Baseline comparator for anchorRefine](anchorRefine-comparator/README.md)
+The improved baseline and Arm B both passed at small N. At N = 50,000, both missed refineR’s native score of 0.2282. The improved baseline produced 37 implausible fits and Arm B produced one, against a limit of 14 among 1,440 attempts. Arm B tied the baseline on all 900 grid datasets. Arm A stopped during reliability testing. [Large-N results](accuracy/large/results/REPORT.md) · [Small-N and grid results](accuracy/results/REPORT.md) · [Protocol](PROTOCOL.md) · [Comparator for anchorRefine](anchorRefine-comparator/README.md)
 
 ## Earlier validation runs
 
