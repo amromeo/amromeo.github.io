@@ -101,13 +101,18 @@
   fit
 }
 
+.ri_large_dataset_advice <- paste(
+  "For datasets this large, use refineR.",
+  "anchorRefine, which adds screened patients to refineR, is still in development."
+)
+
 .ri_reporting_decision <- function(check,safeguard,n_routine) {
   technical <- safeguard && check$technical
   declined <- safeguard && !technical && length(check$reasons)>0L
   status <- if(technical)"withheld" else if(declined)"declined" else "reported"
   recommendation <- if(status!="reported")paste(
     "Obtain at least 120 screened patients or verify a suitable published interval with 20 screened patients.",
-    if(n_routine>=50000L)"For a dataset this large, use refineR or anchorRefine." else "") else ""
+    if (n_routine >= 50000L) .ri_large_dataset_advice else "") else ""
   list(status=status,declined=declined,technical_withholding=technical,
        reason=if(safeguard)c(check$reasons,if(technical)"safeguard could not be evaluated")else character(),
        recommendation=trimws(recommendation))

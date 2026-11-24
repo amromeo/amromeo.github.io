@@ -44,7 +44,8 @@ stopifnot(continuous$value$rounding_unit == 0,
 
 # Only routine results count toward the size threshold. Check every reporting status.
 size_notice <- paste("RIbench accuracy between 5,000 and 50,000 routine results has not been tested.",
-                     "At 50,000, refineR was more accurate. Consider refineR or anchorRefine.")
+                     "At 50,000, refineR was more accurate. For datasets this large, use refineR.",
+                     "anchorRefine, which adds screened patients to refineR, is still in development.")
 routine <- rep(10:20, length.out = 5001)
 at_cutoff <- observe(point(routine[-1L], a, rounding_unit = 1, safeguard = FALSE))
 reported <- observe(point(routine, a, rounding_unit = 1, safeguard = FALSE))
