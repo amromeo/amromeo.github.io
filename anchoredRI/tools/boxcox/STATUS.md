@@ -1,6 +1,12 @@
 # Task E implementation status
 
-The improved baseline and Arm B both passed at small N. At N = 50,000, both missed refineR’s native score of 0.2282. The improved baseline produced 37 implausible fits and Arm B produced one, against a limit of 14 among 1,440 attempts. Arm B tied the baseline on all 900 grid datasets. Arm A stopped during reliability testing. [Large-N results](accuracy/large/results/REPORT.md) · [Small-N and grid results](accuracy/results/REPORT.md) · [Protocol](PROTOCOL.md) · [Comparator for anchorRefine](anchorRefine-comparator/README.md)
+Task E closed on 23 November 2026. At N = 50,000, neither the improved three-component baseline (0.3618) nor Arm B (0.3744) met the prespecified before-safeguard RIbench score of 0.2282 set by refineR. Lower scores indicate better accuracy. The baseline had 37 implausible fits among 1,440 attempts. Arm B had 1 and passed the count criterion of at most 14. Arm B selected the five-component maximum in 941 of 1,440 fits (65.3%).
+
+At N ≤ 5,000, Arm B had the lowest before-safeguard score among the tested methods (0.2224 across 2,880 datasets, compared with 0.3696 for refineR). At N = 50,000, use refineR or anchorRefine. Task E directly compared refineR. Further anchoredRI method development is on hold pending the project lead's decision.
+
+[Small-N and grid results](accuracy/results/REPORT.md) · [Large-N results](accuracy/large/results/REPORT.md)
+
+Arm B and the improved baseline tied on all 900 simulation-grid datasets. Arm A stopped during reliability testing. [Protocol](PROTOCOL.md) · [Comparator for anchorRefine](anchorRefine-comparator/README.md)
 
 ## Earlier validation runs
 

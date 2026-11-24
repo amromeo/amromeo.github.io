@@ -154,3 +154,11 @@ The baseline matched on 49/50 datasets and Arm B matched on 49/50. The exception
 Arm B tied the improved baseline on all 900 grid datasets. Cases 2, 19 and 20 crossed the two-MCSE threshold because the paired fits were nearly identical. Their mean increases over the frozen local fit were 0.000374, 0.000143 and 0.000176 percentage points of interval width, respectively. All three were accepted as numerically negligible. The paired table retains the original two-MCSE flag.
 
 Run the improved baseline and Arm B on GitHub Actions on all 1,440 RIbench datasets at N = 50,000, including the 144 Hb datasets with earlier local estimates. Use the same one-group inputs, 40 independent anchors, pinned fitter, selection rule and safeguard as at small N. Reuse the archived refineR and anchors-only results from C2. Apply both large-N criteria before safeguarding, with the missing-fit rule above. Report K = 4, K = 5 and their union as shares of all attempts, with error before and after safeguarding and the percentage declined within each group. Refresh the improved baseline comparator on matching dataset and input hashes.
+
+## Final decision, 23 November 2026
+
+Task E closed on 23 November 2026. At N = 50,000, neither the improved three-component baseline (0.3618) nor Arm B (0.3744) met the prespecified before-safeguard RIbench score of 0.2282 set by refineR. Lower scores indicate better accuracy. The baseline had 37 implausible fits among 1,440 attempts. Arm B had 1 and passed the count criterion of at most 14. Arm B selected the five-component maximum in 941 of 1,440 fits (65.3%).
+
+At N ≤ 5,000, Arm B had the lowest before-safeguard score among the tested methods (0.2224 across 2,880 datasets, compared with 0.3696 for refineR). At N = 50,000, use refineR or anchorRefine. Task E directly compared refineR. Further anchoredRI method development is on hold pending the project lead's decision.
+
+[Small-N and grid results](accuracy/results/REPORT.md) · [Large-N results](accuracy/large/results/REPORT.md)
