@@ -1,0 +1,43 @@
+name: Archive completed Task E 50000 results
+on:
+  push:
+    branches: [study/boxcox-50000-ci]
+    paths: ['.github/workflows/boxcox-archive-50000.yml']
+permissions:
+  actions: read
+  contents: write
+jobs:
+  archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify the completed run and its scored artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN: '45298562883'
+          SOURCE_SHA: 6c57171c51185efb9f688fd3c8b0d5ea3f57ddc5
+        run: |
+          set -euo pipefail
+          api="repos/$GITHUB_REPOSITORY/actions"
+          gh api "$api/runs/$SOURCE_RUN" > "$RUNNER_TEMP/run.json"
+          jq -e --arg sha "$SOURCE_SHA" '.conclusion=="success" and .head_sha==$sha and .head_branch=="study/boxcox-50000-ci"' "$RUNNER_TEMP/run.json" > /dev/null
+          name="task-e-50000-scored-$(jq -r .run_attempt "$RUNNER_TEMP/run.json")"
+          gh api "$api/runs/$SOURCE_RUN/artifacts?name=$name&per_page=100" > "$RUNNER_TEMP/artifacts.json"
+          jq -e --arg name "$name" '.total_count==1 and .artifacts[0].name==$name and (.artifacts[0].expired|not)' "$RUNNER_TEMP/artifacts.json" > /dev/null
+          id=$(jq -r '.artifacts[0].id' "$RUNNER_TEMP/artifacts.json")
+          expected=$(jq -r '.artifacts[0].digest | sub("^sha256:";"")' "$RUNNER_TEMP/artifacts.json")
+          gh api "$api/artifacts/$id/zip" > "$RUNNER_TEMP/scored.zip"
+          echo "$expected  $RUNNER_TEMP/scored.zip" | sha256sum -c -
+          dest=anchoredRI/tools/boxcox/accuracy/large/results
+          mkdir -p "$dest"
+          unzip -q "$RUNNER_TEMP/scored.zip" -d "$dest"
+          jq -e --arg run "$SOURCE_RUN" --arg sha "$SOURCE_SHA" '.run==$run and .source==$sha and .datasets==1440 and .comparator_rows==5220' "$dest/completion.json" > /dev/null
+          jq --arg run "$SOURCE_RUN" --arg sha "$SOURCE_SHA" '.artifacts[0] | {artifact_id:.id, name, size_in_bytes, digest, run_id:$run, source_commit:$sha}' "$RUNNER_TEMP/artifacts.json" > "$dest/provenance/scored-artifact.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$dest"
+          if ! git diff --cached --quiet; then
+            git commit -m "Archive the completed Task E 50000 scoring tables [skip ci]"
+            git push origin HEAD:refs/heads/study/boxcox-50000-ci
+          fi
