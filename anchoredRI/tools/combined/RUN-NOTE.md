@@ -1,0 +1,7 @@
+# Task G computational audit
+
+The first Actions run used the same Ubuntu label, R version, fit seed, ordered input vectors and package tarball in each job. GitHub assigned different image builds to some job pairs. For example, the two group 17 job logs show Ubuntu 24.04 image versions 20261116.376.1 and 20261116.133.1. Identical R session information therefore did not establish an identical execution environment. The source of each numerical difference cannot be inferred from the image labels alone. [First run](https://github.com/amromeo/amromeo.github.io/actions/runs/45611478391)
+
+Across all 749 pairs, 159 had a discrepancy. Three differed in component count, two in transform, eight in optimizer status and one in reporting status. These categories overlap. The first run was excluded in full before evaluating the success rule. The protocol tolerance and audit IDs were retained. [Per-ID discrepancies](results/first-audit-discrepancies.csv)
+
+The repeat builds anchoredRI 0.3.1 and its R dependencies once, distributes that compiled library to every primary and audit job, and uses a single linux/amd64 R 4.5.0 container addressed by digest. It also fixes BLAS threading and kernel selection and restricts host-specific glibc dispatch. CPU and library-checksum records are retained per job. No first-run fit substitutes for a repeated fit. [Repeat workflow](https://github.com/amromeo/amromeo.github.io/blob/5862f650ac49a657951fa3cbb0430a81249ed65a/.github/workflows/task-g.yml)
