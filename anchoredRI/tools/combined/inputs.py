@@ -12,6 +12,8 @@ def fetch(folder,p):
    if t==3: raise
 folders=['stage3-confirmation-45463873162','stage3-ribench-small-45530368829','stage3-ribench-large-45541935930']
 if __name__=='__main__':
+ Path('generator.R').write_bytes(urlopen(root+'stage2/generator.R').read())
+ Path('source-sums').write_bytes(urlopen(root+'results/'+folders[0]+'/SHA256SUMS').read())
  with ThreadPoolExecutor(12) as pool:
   jobs=[pool.submit(fetch,f,p) for f in folders for p in ['task-g-index.csv','task-g-manifest.json','evidence/fits.csv.gz','evidence/checks.csv.gz']+(['task-g-arm-b.csv.gz','task-g-arm-b-original.csv.gz'] if 'ribench' in f else [])]
   for j in jobs:j.result()
