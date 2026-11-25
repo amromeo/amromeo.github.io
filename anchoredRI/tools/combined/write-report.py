@@ -10,7 +10,7 @@ flags=h[(h.study=='confirmation')&(h.order_flag==True)]
 if len(flags):parts.append("**Order review required.** The blend-first order had lower mean loss in "+", ".join(f"N = {r.N:,} ({r.subset})" for r in flags.itertuples())+". The study stops here for review.")
 else:parts.append("The blend-first order did not have lower confirmation loss in any prespecified stratum. The study stops here for review.")
 rbflags=h[(h.study=='RIbench')&(h.order_flag==True)]
-if len(rbflags):parts.append('On descriptive RIbench, R also had lower loss in '+', '.join(f'N = {r.N:,} ({r.subset})' for r in rbflags.itertuples())+'.')
+if len(rbflags):parts.append('Order flag on descriptive RIbench: R had lower loss at '+', '.join(f'N = {r.N:,} ({r.subset})' for r in rbflags.itertuples())+'.')
 parts.append("A tries safeguarded anchoredRI first. B is the checked Stage 3 post-fit blend alone. R tries B first and uses anchoredRI as fallback. A and R can return on the same datasets. Their order matters when both component methods return different intervals. C is checked refineR. All losses count a nonreturn as 5. Accuracy uses only paired common returns.")
 for comp in ['B','R']:
  parts.append('## '+('A versus B: success conditions' if comp=='B' else 'A versus R: co-primary order comparison'))

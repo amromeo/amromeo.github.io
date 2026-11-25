@@ -1,4 +1,5 @@
 set -eu
+python3 verify-runtime.py
 python3 audit.py
 R --version | head -1
 python3 score.py
