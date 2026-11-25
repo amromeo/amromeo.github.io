@@ -2,66 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Help and definitions · anchoredRI</title>
-  <meta name="description" content="Plain-language definitions of the patient groups, screening rules, statistical models and reference-limit errors used in the anchoredRI simulator.">
-  <meta name="theme-color" content="#f7f8f3">
-  <link rel="stylesheet" href="assets/site.css?v=screened120400">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Package help · anchoredRI</title>
+  <meta name="description" content="Inputs, fit outcomes, fallback options, bootstrap confidence intervals, worked examples and installation for anchoredRI.">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/guide.css">
   <link rel="stylesheet" href="assets/help.css">
 </head>
 <body>
-  <a class="skip" href="#help">Skip to the help content</a>
-  <header class="top">
-    <div class="top-inner">
-      <a class="brand" href="./" aria-label="anchoredRI, back to the experiment"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
-      <nav aria-label="Main navigation"><a href="robustness.html">Completed stress study</a>
-        <a href="index.html">Prepared cohort</a>
-        <a href="stress.html">Stress tests</a>
-        <a href="stress.html#install">Install</a>
-        <a href="help.html" aria-current="page">Help</a>
-        <a class="source" href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">GitHub <span aria-hidden="true">↗</span></a>
-      </nav>
-    </div>
-  </header>
-  <main id="help" class="help-page">
-    <div class="help-intro">
-      <h1>Help and definitions</h1>
-      <p class="lede">How to read a fit from anchoredRI 0.4.0 and the results from the original simulations.</p>
-      <p>The <a href="index.html">prepared-cohort comparison</a> uses 5,000 routine patients, 200 bootstrap resamples, medianBS refineR estimates and nonparametric 120/400-person direct estimates. Its first run has one dataset per profile. <a href="BENCHMARK.md">Read the protocol and metrics</a>.</p><p>Definitions of the clinic/ward mixtures refer to the <a href="stress.html">earlier clinic/ward stress tests</a>. Those examples use synthetic aPTT-like results in seconds. The two main terminology changes are <a href="#disease">“affected” → analyte-altering disease</a> and <a href="#limit-error">“mean worst error” → average larger limit error</a>.</p>
-    </div>
-    <div class="help-layout">
-      <nav class="help-contents" aria-label="Help topics">
-        <a href="#current-package">Current package and safeguard</a>
-        <a href="#prepared-cohort">Prepared-cohort comparison</a>
-        <a href="#patient-groups">Patients and screening</a>
-        <a href="#sample-size">Comparing sample sizes</a>
-        <a href="#case-mix">The four case mixes</a>
-        <a href="#results">Reading the results</a>
-        <a href="#limit-error">Worked error example</a>
-        <a href="#methods">Comparison methods</a>
-        <a href="#fitting">Statistical terms</a>
-        <a href="#fitting-limits">Fitting warnings</a>
-      </nav>
-      <div class="help-content">
-        <section class="help-section" id="current-package" aria-labelledby="current-title">
-          <h2 id="current-title">Reading an anchoredRI 0.4.0 fit</h2>
-          <dl class="glossary">
+<a class="skip" href="#help">Skip to content</a>
+<header class="top"><div class="top-inner">
+  <a class="brand" href="index.html" aria-label="anchoredRI home"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
+  <nav aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="help.html" aria-current="page">Package help</a>
+    <a href="earlier-studies.html">Earlier studies</a>
+    <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Source</a>
+  </nav>
+</div></header>
+<main id="help" class="help-page">
+<header class="guide-hero">
+  <h1>Package help</h1>
+  <p class="lede">Prepare inputs, read a fit, and understand what each warning means.</p>
+  <p><a href="#current-package">Using the package</a> · <a href="#worked-outcomes">Worked examples</a> · <a href="#install">Install</a> · <a href="#simulator-glossary">Glossary for earlier studies</a></p>
+</header>
+<div class="help-content">
+  <section class="help-section" id="current-package" aria-labelledby="current-title">
+    <h2 id="current-title">Using the package</h2>
+    <p>For a point estimate, call <code>fit_anchored_ri()</code>. The first fit uses the routine results and screened patients together. If it cannot report an interval, the package tries anchorRefine, a refineR-based fallback adjusted toward the screened patients and checked against their results.</p>
+    <h3>Inputs</h3>
+    <ul>
+    <li>Results from one group that can share a reference interval, with the same analyte, assay, age group and sex.</li>
+    <li>One result per patient.</li>
+    <li>A care-setting label for each routine result. You can use one or two settings.</li>
+    <li>Results from 40 screened patients who meet your reference criteria after chart review.</li>
+    <li>The assay’s reporting increment, if you know it. Otherwise the package infers it.</li>
+  </ul>
+    <p>The <code>value</code> and <code>setting</code> vectors must describe the same routine patients in the same order. Use one label throughout if you have one setting. Pass the screened results separately as <code>anchor</code>, the function’s argument name.</p>
+    <h3>Reading the outcome</h3>
+    <div class="table-scroll" role="region" aria-label="Possible fit results" tabindex="0">
+    <table class="data-table">
+      <thead><tr><th scope="col">Outcome</th><th scope="col"><code>fit$method</code></th><th scope="col"><code>fit$status</code></th></tr></thead>
+      <tbody>
+        <tr><th scope="row">First fit supplies the interval</th><td><code>"anchoredRI"</code></td><td><code>"reported"</code></td></tr>
+        <tr><th scope="row">Fallback supplies the interval</th><td><code>"anchorRefine"</code></td><td><code>"reported"</code></td></tr>
+        <tr><th scope="row">No interval</th><td><code>NA</code></td><td><code>"declined"</code> or <code>"withheld"</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Read the limits in <code>fit$limits</code>. When no interval is available, <code>fit$recommendation</code> suggests obtaining at least 120 screened patients for a direct interval or verifying a suitable published interval with 20 screened patients.</p>
+    <h3>Checks, reasons, and options</h3>
+    <dl class="glossary">
             <dt id="safeguard">Safeguard</dt>
-            <dd>After fitting the reference group, the package checks whether it agrees with the screened patients and whether a two-sided lower limit falls below every routine result. These checks run by default for the first point fit and for each Arm B bootstrap draw. <code>fit$status</code> gives the reporting decision. A fit can pass both checks and still have inaccurate limits when the reference and disease groups overlap heavily.</dd>
+            <dd>After fitting the reference group, the package checks whether it agrees with the screened patients and whether a two-sided lower limit falls below every routine result. These checks run by default for the first point fit and for each bootstrap fit of the first model. <code>fit$status</code> gives the reporting decision. A fit can pass both checks and still have inaccurate limits when the reference and disease groups overlap heavily.</dd>
             <dt id="lrt-reason">“routine data disagree with the screened sample”</dt>
             <dd>The likelihood-ratio test (LRT) asks how well the screened results fit the reference group estimated from the routine and screened data together. It compares that fit with one that estimates the mean and SD from the screened patients alone, using the same transformation and offset. A p-value below 0.01 triggers this reason. The LRT also applies to one-sided limits.</dd>
             <dt id="lower-limit-reason">“estimated lower limit is below every observed result”</dt>
             <dd>The estimated lower limit of a two-sided interval is strictly below the smallest routine measurement. Equality passes this check. The package skips this check for one-sided requests.</dd>
             <dt id="method">Which method supplied the interval?</dt>
-            <dd><code>fit$method</code> identifies the source of <code>fit$limits</code>. It is <code>"anchoredRI"</code> when the first fit reports, <code>"anchorRefine"</code> when the checked fallback reports, or <code>NA</code> when no interval is returned. <code>fit$status</code> gives the final reporting decision.</dd>
+            <dd><code>fit$method</code> identifies the source of <code>fit$limits</code>. It is <code>"anchoredRI"</code> when the first fit reports, <code>"anchorRefine"</code> when the fallback reports, or <code>NA</code> when no interval is returned. <code>fit$status</code> gives the final reporting decision.</dd>
             <dt id="declined">Decline or withholding of the first method</dt>
             <dd>Read <code>fit$anchoredRI_reason</code> and <code>fit$anchoredRI_status</code> for the first decision, even when the fallback reports. Under <code>fit$diagnostics</code>, the <code>anchored</code> and <code>anchors_only</code> entries retain available estimates, and <code>anchorRefine</code> records the fallback and its check or the reason it was skipped. If neither method reports, obtain at least 120 screened patients for a direct estimate or verify a suitable published interval with 20 screened patients.</dd>
             <dt id="fallback-options">Fallback options</dt>
             <dd>Set <code>fallback = FALSE</code> to use anchoredRI alone. <code>fallback_seed</code> controls the fallback search and defaults to <code>123L</code>. <code>pit_seed</code> controls the random draws the fallback check uses within each rounded measurement bin and defaults to <code>1L</code>. These options also apply to the bootstrap’s point fit.</dd>
             <dt id="screened-count">Screened-patient count warning</dt>
-            <dd>Task G evaluated both methods with 40 screened patients, so the package warns at every other count. The fallback requires at least 40 nonnegative screened results and a positive rounding unit. Its check uses the actual screened count. With fewer than 40, the package explains why it skips the fallback when needed.</dd>
+            <dd>The combined-method study evaluated both methods with exactly 40 screened patients, so the package warns at every other count. The fallback requires at least 40 nonnegative screened results and a positive rounding unit. Its check uses the actual screened count. With fewer than 40, the package explains why it skips the fallback when needed.</dd>
             <dt id="fallback-ci">Missing confidence interval after a fallback</dt>
-            <dd>If <code>bootstrap_anchored_ri()</code> reports an anchorRefine point interval, the point limits are available and <code>ci</code> is missing. The message and <code>ci_reason</code> explain that the bootstrap does not cover fallback intervals. The resamples describe Arm B. Confidence-interval coverage has yet to be validated for either method.</dd>
+            <dd>If <code>bootstrap_anchored_ri()</code> reports an anchorRefine point interval, the point limits are available and <code>ci</code> is missing. The message and <code>ci_reason</code> explain that the bootstrap does not cover fallback intervals. The resamples describe the first model. Confidence-interval coverage has yet to be validated for either method.</dd>
             <dt id="rounding-unit">Rounding unit</dt>
             <dd>The reporting increment of the assay, such as 0.5 for results reported to the nearest half-unit. Supply it as <code>fit_anchored_ri(value, setting, anchor, rounding_unit = 0.5)</code>. If you omit it, the fitter finds the coarsest shared step of the form {1, 2, 2.5, 5} × 10<sup>k</sup>, with integer <i>k</i> from −8 to 3, that fits all routine and screened values. A message gives the inferred unit. <code>fit$rounding_unit</code> always gives the unit used. Zero means no rounding step was found or you supplied zero for continuous data.</dd>
             <dt id="runner-up">Runner-up model and BIC gap</dt>
@@ -69,12 +77,70 @@
             <dt id="iteration-limit">Iteration-limit warning</dt>
             <dd>The optimizer used all its allowed iterations for the winning fit. <code>fit$optimizer_status</code> records the exit. If the interval passes the safeguard, the package returns it with a warning. An iteration limit alone does not trigger a decline.</dd>
             <dt id="size-message">Size message</dt>
-            <dd>The package gives this message for more than 5,000 routine results, whatever the reporting decision. Accuracy between 5,000 and 50,000 results has yet to be tested directly. <a href="robustness.html#release-040">Task G results and limitations</a></dd>
+            <dd>The package gives this message for more than 5,000 routine results, whatever the reporting decision. Accuracy between 5,000 and 50,000 results has yet to be tested directly. <a href="evidence.html#limits">Current evidence and limitations</a></dd>
           </dl>
-        </section>
+    <p class="section-links"><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/man/fit_anchored_ri.Rd">Function reference</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/NEWS.md">Release notes</a> · <a href="website-sources.html#package-help">Number-to-source list</a></p>
+  </section>
+  <section class="help-section" id="worked-outcomes">
+  <h3>Worked examples of the three outcomes</h3>
+  <p>These are outputs from the archived package audit on simulated data, with limits displayed to six decimal places. The first dataset used the anchoredRI limits. The next used the fallback after the first fit declined. The last returned no interval.</p>
+  <pre class="guide-code" tabindex="0"><code>dataset  method  status  first_status  lower  upper
+1  anchoredRI  reported  reported  4.931891  19.971977
+3725  anchorRefine  reported  declined  10.710372  15.377137
+5517  NA  declined  declined  NA  NA</code></pre>
+  <p class="section-links"><a href="https://github.com/amromeo/amromeo.github.io/actions/runs/45625466089">Package audit run</a> · <a href="assets/fit-examples.csv">Archived audit rows for these datasets</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/tools/combined/audit-package.R">Audit script</a></p>
+  <details>
+    <summary>Code and inputs to reproduce these examples</summary>
+    <p>Download the input index, fit metadata and the three ZIP files into your working folder. The code reads the simulated inputs from the ZIP files and uses the settings and seeds recorded in the export.</p>
+    <p class="section-links"><a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/task-g-index.csv">Input index</a> · <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/evidence/fits.csv.gz">Fit metadata</a> · <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/artifacts/stage3-confirmation-1.zip">Inputs for dataset 1</a> · <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/artifacts/stage3-confirmation-75.zip">Inputs for dataset 3725</a> · <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/artifacts/stage3-confirmation-42.zip">Inputs for dataset 5517</a></p>
+    <pre class="guide-code" tabindex="0"><code>library(anchoredRI)
+index &lt;- read.csv(&quot;task-g-index.csv&quot;)
+fits &lt;- read.csv(gzfile(&quot;fits.csv.gz&quot;))
+cat(&quot;dataset  method  status  first_status  lower  upper\n&quot;)
 
-        <section class="help-section" id="prepared-cohort" aria-labelledby="prepared-title">
-          <h2 id="prepared-title">The prepared-cohort comparison</h2>
+for (j in c(1, 3725, 5517)) {
+  row &lt;- index[index$j == j, ]
+  saved &lt;- unzip(basename(row$archive), files = row$member, exdir = tempdir())
+  case &lt;- readRDS(saved)$cases[[row$rds_position]]
+  design &lt;- fits[fits$j == j &amp; fits$arm == &quot;baseline&quot;, ]
+  stopifnot(case$j == j)
+  fit &lt;- fit_anchored_ri(
+    case$routine, rep(&quot;routine&quot;, length(case$routine)), case$panels$guidance,
+    rounding_unit = design$h, fit_seed = 1L,
+    fallback_seed = design$fitter_seed, pit_seed = design$pit_primary_seed
+  )
+  cat(j, fit$method, fit$status, fit$anchoredRI_status,
+      sprintf(&quot;%.6f&quot;, fit$limits[1]), sprintf(&quot;%.6f&quot;, fit$limits[2]),
+      sep = &quot;  &quot;)
+  cat(&quot;\n&quot;)
+}</code></pre>
+    <p>The audit used a pinned R container. Model choice may occasionally differ across computers. <a href="#runner-up">Model diagnostics</a></p>
+  </details>
+</section>
+  <section class="help-section" id="install">
+    <h3>Install anchoredRI</h3>
+    <p>Use R 4.1.0 or later. Both options build from source and need a C++17 compiler. On Windows, install the version of Rtools that matches your R release. On a Mac, install the Xcode Command Line Tools with <code>xcode-select --install</code> or use the tools included with Xcode. The package depends on <code>ash</code> and <code>future.apply</code>.</p>
+<p class="section-links"><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/DESCRIPTION">Package requirements</a> · <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> · <a href="https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/">Mac instructions</a></p>
+  <div class="install-options">
+    <div><h3>Install from GitHub</h3><pre class="guide-code" tabindex="0"><code>install.packages(c(&quot;remotes&quot;, &quot;ash&quot;, &quot;future.apply&quot;))
+remotes::install_github(
+  &quot;amromeo/amromeo.github.io&quot;,
+  ref = &quot;anchoredRI-v0.4.0&quot;, subdir = &quot;anchoredRI&quot;
+)</code></pre></div>
+    <div><h3>Install from the source tarball</h3>
+      <p>Download the file and run the commands from the folder where you saved it. <a href="downloads/anchoredRI_0.4.0.tar.gz" download>Download anchoredRI 0.4.0</a>.</p>
+      <pre class="guide-code" tabindex="0"><code>install.packages(c(&quot;ash&quot;, &quot;future.apply&quot;))
+install.packages(&quot;anchoredRI_0.4.0.tar.gz&quot;, repos = NULL, type = &quot;source&quot;)</code></pre>
+    </div>
+  </div>
+  <p class="section-links">Previous versions · <a href="downloads/anchoredRI_0.3.1.tar.gz">0.3.1</a> · <a href="downloads/anchoredRI_0.3.0.tar.gz">0.3.0</a> · <a href="downloads/anchoredRI_0.2.0.tar.gz">0.2.0</a> · <a href="downloads/anchoredRI_0.1.0.tar.gz">0.1.0</a></p>
+  </section>
+  <section class="guide-section" id="simulator-glossary">
+    <h2>Glossary for earlier studies</h2>
+    <p>These terms describe the saved results on the <a href="prepared-cohort.html">prepared-cohort comparison</a> and the <a href="stress.html">clinic/ward simulator</a>. The simulator represents an aPTT-like clotting time in seconds.</p>
+    <p><a href="#prepared-cohort">Prepared-cohort comparison</a> · <a href="#patient-groups">Patients and screening</a> · <a href="#sample-size">Sample sizes</a> · <a href="#case-mix">Case mix</a> · <a href="#results">Reading the results</a> · <a href="#limit-error">Worked error example</a> · <a href="#methods">Comparison methods</a> · <a href="#fitting">Statistical terms</a> · <a href="#fitting-limits">Fitting warnings</a></p>
+    <section class="help-section" id="prepared-cohort" aria-labelledby="prepared-title">
+          <h3 id="prepared-title">The prepared-cohort comparison</h3>
           <dl class="glossary">
             <dt>Prepared cohort / physiological partition</dt>
             <dd>A set of patients who can reasonably share a reference interval, with compatible assays and a stable measurement period. In these examples, age, sex and assay effects are held constant by construction. A real dataset needs those checks before fitting.</dd>
@@ -91,7 +157,7 @@
             <dt>Automatic family selection</dt>
             <dd>The version 0.2 model in the prepared-cohort comparison fits normal, lognormal and shifted-lognormal mixtures, each with one to three components. The score rewards fit and penalizes extra parameters. It uses densities on the original measurement scale so the comparison is fair. Every bootstrap repeats this choice; the page reports how often each family was selected.</dd>
             <dt>A one-component fit</dt>
-            <dd>The model treats the routine cohort and screened sample as one reference distribution. That can be appropriate for an essentially unaffected population. When disease overlaps the reference population, a single flexible curve can also absorb the disease results and distort the reference limits. In the shifted overlap validation scenario, the updated model chose one component in 11 of 20 datasets. Numerical convergence did not identify that problem.</dd>
+            <dd>The model treats the routine cohort and screened sample as one reference distribution. That can be appropriate for a dataset with very few patients with disease. When disease overlaps the reference population, a single flexible curve can also absorb the disease results and distort the reference limits. In the shifted overlap validation scenario, the updated model chose one component in 11 of 20 datasets. Numerical convergence did not identify that problem.</dd>
             <dt>Monte Carlo standard error</dt>
             <dd>Uncertainty caused by using a finite number of simulated datasets. The validation CSV reports it for the average paired change in endpoint error. It is different from a confidence interval for a patient's reference limit, and does not address whether the simulation resembles clinical data.</dd>
             <dt>Reference population inside</dt>
@@ -105,21 +171,21 @@
           </dl>
         </section>
         <section class="help-section" id="patient-groups" aria-labelledby="patients-title">
-          <h2 id="patients-title">Patients and screening</h2>
+          <h3 id="patients-title">Patients and screening</h3>
           <dl class="glossary">
-            <dt id="disease">Analyte-altering disease <span class="former-label">Previously “affected”</span></dt>
+            <dt id="disease">Patients with disease</dt>
             <dd><p>A disease or condition that changes the distribution of the target test. In the simulation, a patient assigned to this group has a result generated from a disease-associated distribution. Those results can overlap the reference distribution, so an individual result can still fall within the reference interval.</p><p>The disease percentages describe how patients are generated. They are separate from the percentage of measurements outside the reference limits.</p></dd>
             <dt id="target-test">Target analyte or test</dt>
             <dd>The measurement whose reference interval is being estimated. Here it is a synthetic aPTT-like clotting time, expressed in seconds.</dd>
             <dt id="reference-population">Reference population / reference-eligible patients</dt>
-            <dd>The population the reference interval is intended to describe. Here its results are generated from a distribution with mean 30 s and standard deviation 3 s. Clinical use would require eligibility criteria relevant to the test, patient population, age and assay. The earlier “healthy” label referred to this simulated reference group.</dd>
-            <dt id="case-mix-definition">Case mix / disease prevalence</dt>
-            <dd>The proportions and types of patients in a dataset. “20% disease prevalence” gives each simulated patient a 20% chance of assignment to the analyte-altering disease group. The realized fraction varies between datasets.</dd>
+            <dd>The population the reference interval is intended to describe. Here its results are generated from a distribution with mean 30 s and standard deviation 3 s. Clinical use would require eligibility criteria relevant to the test, patient population, age and assay. </dd>
+            <dt id="case-mix-definition">Case mix and share of patients with disease</dt>
+            <dd>The proportions and types of patients in a dataset. A share of 20% means that each simulated patient has a 20% chance of assignment to the group with disease. The realized fraction varies between datasets.</dd>
             <dt id="setting">Setting / clinic / outpatients / ward</dt>
             <dd>Setting identifies where a patient receives care. The demo uses “clinic” for outpatients and “ward” for inpatients. Both settings contain reference-group patients and patients assigned to the disease group.</dd>
             <dt id="routine">Routine results / unscreened results</dt>
             <dd>Results from the full simulated clinical workload. They include both patient groups. For these results, the fitting method receives the measured value and setting. Group membership is unknown to the fitting method.</dd>
-            <dt id="screened">Screened patients / reference sample / anchors</dt>
+            <dt id="screened">Screened patients</dt>
             <dd><p>Additional individuals designated as eligible for the reference population after clinical review. Their results tell the model which distribution represents that population. “Anchor” is the code’s name for a screened reference result.</p><p>In the demo, 1,000 routine results plus 40 screened patients means 1,040 different individuals. Each contributes one result. A clinical dataset assembled by reviewing routine patients would need to count each person’s result once.</p></dd>
             <dt id="clinical-screening">Clinical-history screening / blinding</dt>
             <dd>Eligibility is determined from clinical information while the reviewer is blinded to the target result. The simulation implements ideal screening by drawing all screened patients directly from the known reference population.</dd>
@@ -131,7 +197,7 @@
         </section>
 
         <section class="help-section" id="sample-size" aria-labelledby="sample-size-title">
-          <h2 id="sample-size-title">Comparing screened sample sizes</h2>
+          <h3 id="sample-size-title">Comparing screened sample sizes</h3>
           <p>The table shows <strong>Screened alone · 120</strong> and <strong>Screened alone · 400</strong> alongside the joint model. With the default setting, this lets you compare anchoredRI using 40 screened patients plus routine data with reference intervals estimated from 120 or 400 screened patients alone.</p>
           <p>The screened sample-size control sets the number used by anchoredRI. You can choose 0, 20, 40, 80, 120 or 400. The two fixed screened-only rows remain available at every setting. Selecting 120 uses the same 120-patient screened cohort for both anchoredRI and Screened alone · 120, and likewise for 400.</p>
           <div class="help-table-wrap" role="region" aria-label="Patients used by each method" tabindex="0">
@@ -151,16 +217,16 @@
         </section>
 
         <section class="help-section" id="case-mix" aria-labelledby="mix-title">
-          <h2 id="mix-title">The four case mixes</h2>
-          <p>The percentages below are the expected prevalence of analyte-altering disease. The reference-group distribution is the same in all four scenarios.</p>
+          <h3 id="mix-title">The four case mixes</h3>
+          <p>The percentages are the expected share of patients with disease in each setting. The reference-group distribution is the same in all four scenarios.</p>
           <div class="help-table-wrap" role="region" aria-label="Case mix definitions" tabindex="0">
             <table class="help-table">
               <thead><tr><th scope="col">Scenario</th><th scope="col">Clinic</th><th scope="col">Ward</th><th scope="col">Disease-associated results</th></tr></thead>
               <tbody>
-                <tr><th scope="row">Low disease prevalence</th><td>5%</td><td>10%</td><td>Shifted upward and relatively well separated from the reference group.</td></tr>
+                <tr><th scope="row">Few patients with disease</th><td>5%</td><td>10%</td><td>Shifted upward and relatively well separated from the reference group.</td></tr>
                 <tr><th scope="row">Mostly prolonged on the ward</th><td>20%</td><td>75%</td><td>Shifted upward, with considerable overlap with reference-group results.</td></tr>
                 <tr><th scope="row">Short and prolonged on the ward</th><td>20%</td><td>75%</td><td>Shifted upward in clinic. On the ward, 55% of disease-group patients have results from a distribution shifted downward, and 45% from one shifted upward.</td></tr>
-                <tr><th scope="row">Equal disease prevalence</th><td>40%</td><td>40%</td><td>Shifted upward in both settings. The setting offers no systematic difference in the reference-group fraction.</td></tr>
+                <tr><th scope="row">Same share of patients with disease</th><td>40%</td><td>40%</td><td>Shifted upward in both settings. The setting offers no systematic difference in the reference-group fraction.</td></tr>
               </tbody>
             </table>
           </div>
@@ -168,7 +234,7 @@
         </section>
 
         <section class="help-section" id="results" aria-labelledby="results-title">
-          <h2 id="results-title">Reading the results</h2>
+          <h3 id="results-title">Reading the results</h3>
           <dl class="glossary">
             <dt id="ri">Reference interval / central 95%</dt>
             <dd>The interval between the 2.5th and 97.5th percentiles of the reference population. About 2.5% of that population’s results fall below the lower limit and 2.5% above the upper limit.</dd>
@@ -192,7 +258,7 @@
         </section>
 
         <section class="help-section error-example" id="limit-error" aria-labelledby="error-title">
-          <h2 id="error-title">How the error summary is calculated</h2>
+          <h3 id="error-title">How the error summary is calculated</h3>
           <p class="former-label">Previously “worst error” and “mean worst error”</p>
           <p><strong>Larger limit error</strong> means the larger of the absolute errors in the lower and upper limits for one dataset. <strong>Average larger limit error</strong> is the average of those numbers across the 12 datasets.</p>
           <p>Using the rounded reference interval 24.12–35.88 s, consider two illustrative datasets.</p>
@@ -210,7 +276,7 @@
         </section>
 
         <section class="help-section" id="methods" aria-labelledby="methods-title">
-          <h2 id="methods-title">What each method uses</h2>
+          <h3 id="methods-title">What each method uses</h3>
           <dl class="glossary">
             <dt>refineR · all results</dt>
             <dd>The published refineR 2.0.0 algorithm fitted to every routine result from clinic and ward.</dd>
@@ -226,13 +292,13 @@
             <dd>Uses all routine results and the clinic/ward labels, with a two-component mixture. It estimates a separate proportion in each component for each setting. It designates the component more prevalent in clinic as the candidate reference group.</dd>
             <dt>Pooled mixture</dt>
             <dd>Combines clinic and ward routine results when fitting a two-component mixture with one set of proportions. Afterwards, setting labels are used to identify the component enriched in clinic as the candidate reference group.</dd>
-            <dt>Anchored · two components</dt>
+            <dt>With screened patients · two components</dt>
             <dd>Uses all routine results and screened results, with the number of components fixed at two. Comparing this row with “Settings alone” helps assess the contribution of screened labels while keeping the same number of components. Comparing it with anchoredRI helps assess the effect of selecting the number of components.</dd>
           </dl>
         </section>
 
         <section class="help-section" id="fitting" aria-labelledby="fitting-title">
-          <h2 id="fitting-title">Statistical terms</h2>
+          <h3 id="fitting-title">Statistical terms</h3>
           <dl class="glossary">
             <dt id="distribution">Distribution / Gaussian / normal / standard deviation</dt>
             <dd>A distribution describes how results are spread across possible values. Gaussian and normal name the bell-shaped distribution used here. Its mean sets the center and its standard deviation (SD) describes the spread.</dd>
@@ -256,21 +322,24 @@
         </section>
 
         <section class="help-section" id="fitting-limits" aria-labelledby="warnings-title">
-          <h2 id="warnings-title">Fitting warnings and interpretation</h2>
+          <h3 id="warnings-title">Fitting warnings and interpretation</h3>
           <dl class="glossary">
             <dt>Parameter bounds / numerical fitting limits</dt>
             <dd>The optimizer is given allowable ranges for component means, spreads and proportions to regularize the fit. The original clinic/ward page flags fits in which a parameter reaches one of those bounds. “anchoredRI (6/12)” means this occurred in six of the twelve displayed fits. The fitted result warrants inspection because an imposed constraint may influence it.</dd>
             <dt>Optimizer / convergence / starting points</dt>
             <dd>The optimizer is the numerical procedure that adjusts the model parameters. Convergence means it met its numerical stopping rule. Version 0.4.0 tries several starting points for each candidate model and records how the winning fit ended. A reported fit can carry an <a href="#iteration-limit">iteration-limit warning</a>. Clinical interpretation still depends on whether the model describes the intended population.</dd>
             <dt>Simulation evidence / clinical validation</dt>
-            <dd>The comparisons show how the methods behave under the stated assumptions. Reference labels are perfect, and both services share the same reference distribution. The shifted example falls outside the original anchoredRI family; the updated family can represent it. Clinical validation would require independent reference individuals and assessment of both estimated limits in the intended patient population.</dd>
+            <dd>The comparisons show how the methods behave under the stated assumptions. Reference labels are perfect, and both services share the same reference distribution. The shifted example falls outside the original anchoredRI family; the updated family can represent it. Clinical validation would require independently screened patients and assessment of both estimated limits in the intended patient population.</dd>
           </dl>
           <p class="help-sources"><a href="R/simulate.R">Simulation code</a> · <a href="R/compare.R">Error calculation</a> · <a href="R/fit_anchored_ri.R">Model fitting code</a></p>
         </section>
-        <p class="help-return"><a href="./#experiment">Return to the experiment <span aria-hidden="true">↗</span></a></p>
-      </div>
-    </div>
-  </main>
-  <footer><span>anchoredRI 0.4.0</span><span>Fully AI-developed · Research software</span></footer>
+
+  </section>
+</div>
+</main>
+<footer>
+  <span>anchoredRI 0.4.0 · Research software</span>
+  <span>Fully AI-developed · <a href="stress.html#development">How the project was developed</a></span>
+</footer>
 </body>
 </html>

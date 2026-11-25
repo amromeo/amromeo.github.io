@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Numbers and sources · anchoredRI</title>
+  <meta name="description" content="Source files, calculations, and numbers for the anchoredRI website and earlier studies.">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/guide.css">
+
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="top"><div class="top-inner">
+  <a class="brand" href="index.html" aria-label="anchoredRI home"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
+  <nav aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="help.html">Package help</a>
+    <a href="earlier-studies.html">Earlier studies</a>
+    <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Source</a>
+  </nav>
+</div></header>
+<main id="content" class="guide-page">
+<header class="guide-hero"><h1>Numbers and sources</h1></header>
+<div class="guide-section">
+<p>This list covers the current guide and its earlier study pages. Calculations on the site use published fit records. The website does not fit models or simulate datasets.</p>
+<h2 id="home">Home</h2>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Number</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>About 40 screened patients. One result per patient. One or two care settings. One analyte, assay, age and sex group.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/DESCRIPTION">Package description</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/man/fit_anchored_ri.Rd">point-fit help</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/BENCHMARK.md">prepared-cohort protocol</a>.</td>
+</tr>
+<tr class="even">
+<td>The 98–100% first-screen summary.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/accuracy.csv">Published accuracy table</a>, combined method (<code>A</code>), <code>overall</code> rows. Confirmation was 98.2–99.5% and RIbench was 98.7–99.7% across their respective sizes, before rounding to the broader home-page range.</td>
+</tr>
+<tr class="odd">
+<td>1,000, 1,500, 5,000 and 50,000 routine results.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/PROTOCOL.md">Study protocol</a>. <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/stage2/generator.R#L135">Confirmation generator</a> and <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/sources/c2/anchoredRI/tools/ribench/PROTOCOL.md">RIbench sampling protocol</a> document the separate screened draws.</td>
+</tr>
+<tr class="even">
+<td>120 screened patients for a direct interval or 20 to verify a published interval. Also on Package help and in the README.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/R/safeguard.R">Package reporting advice</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/PROTOCOL.md">study protocol</a>.</td>
+</tr>
+<tr class="odd">
+<td>All four 5,000-result rows, split at 20% of patients with disease. The comparison with checked and unchecked refineR at 5,000 and 50,000 results.</td>
+<td>The exact values and files are in <a href="#evidence">Evidence</a> below.</td>
+</tr>
+<tr class="even">
+<td>The example reporting increment of 0.1.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/R/simulate.R#L26">Simulation rounding</a>.</td>
+</tr>
+<tr class="odd">
+<td>Version 0.4.0, R 4.1.0 or later, C++17, package citation year 2026 and source commit <code>53d7b947bb40849b9b0b7556f97c676a0845928f</code>. Applies to Home, Package help, the archive banners and the README.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/DESCRIPTION">Package description</a> and <a href="https://github.com/amromeo/amromeo.github.io/pull/4">package merge</a>.</td>
+</tr>
+<tr class="even">
+<td>Previous download versions 0.3.1, 0.3.0, 0.2.0 and 0.1.0.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/tree/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/downloads">Published package downloads</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/NEWS.md">changelog</a>.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="evidence">Evidence</h2>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Number</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Independent confirmation, 7,488 simulated datasets, 16 of 16 prespecified conditions passed.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md">Study report</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/PROTOCOL.md">protocol</a>.</td>
+</tr>
+<tr class="even">
+<td>RIbench, 4,320 simulated datasets. Only the upper limit is scored for CRP. Error for each endpoint is capped at 5. A missing interval counts as 5 for loss.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/score.py">Scoring code</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md">study report</a>, and <a href="https://pubmed.ncbi.nlm.nih.gov/36264679/">RIbench paper</a> for the standardized error definition.</td>
+</tr>
+<tr class="odd">
+<td>Split at 20% of patients with disease. Paired 95% intervals for the order comparison. Three RIbench sizes with intervals including zero and four confirmation sizes with intervals below zero in that subgroup.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md#a-versus-r-co-primary-order-comparison">Order comparison</a>.</td>
+</tr>
+<tr class="even">
+<td>Box-Cox shape λ = 0.5, testing with 40 screened patients, and no direct test between 5,000 and 50,000 results.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md#study-population-and-reproducibility">Study report</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/NEWS.md">release notes</a>.</td>
+</tr>
+<tr class="odd">
+<td>Measurement-unit sensitivity at a threshold of 0.1% of interval width in 36 of 720 development datasets.</td>
+<td><a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/REPORT.md">Fallback study report</a>, unit sensitivity for the blend used in the package.</td>
+</tr>
+<tr class="even">
+<td>Chart axes at 0%, 25%, 50%, 75% and 100% return, and 0, 0.2, 0.4 and 0.6 mean error.</td>
+<td>Axis graduations for the values below. The marks and sample-size labels plot the same exact data as the tables.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="accuracy-table-and-figure">Accuracy table and figure</h3>
+<p>The combined method and checked refineR use <code>method=A</code> and <code>method=C</code> on the <code>stratum=pathology</code> rows in <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/accuracy.csv">accuracy.csv</a>. The return percentage divides the number reported by the number assigned. The average error, <code>returned_error</code>, uses only datasets with intervals. Percentages are rounded to one decimal except exact 100%; errors are rounded to three decimals.</p>
+<p>Unchecked refineR uses the <code>arm=baseline</code> rows and <code>native_lower</code>, <code>native_upper</code>, <code>native_z_lower</code>, and <code>native_z_upper</code> fields from these exports:</p>
+<ul>
+<li><a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/evidence/fits.csv.gz">Confirmation baseline fits</a> and <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/task-g-manifest.json">index and SHA-256 manifest</a>.</li>
+<li><a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-ribench-small-45530368829/evidence/fits.csv.gz">RIbench smaller-dataset baseline fits</a> and <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-ribench-small-45530368829/task-g-manifest.json">SHA-256 manifest</a>.</li>
+<li><a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-ribench-large-45541935930/evidence/fits.csv.gz">RIbench 50,000-result baseline fits</a> and <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-ribench-large-45541935930/task-g-manifest.json">SHA-256 manifest</a>.</li>
+</ul>
+<p>The baseline rows match the published input index by dataset ID and the hashes of the routine and screened results. Count an interval when all requested limits are finite. For each returned interval, take the absolute native z deviation, cap it at 5 per requested limit, and average across the requested limits. Use the signed native z deviations as exported, including the RIbench upper-zero convention. Average those case errors for each size and share-of-patients group. The confirmation scores also match the <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/task-g-evidence.zip">archived scoring</a> on all 6,062 datasets where checked refineR returned an interval.</p>
+<p>Each cell below gives <strong>number returned / datasets assigned (percent), mean error</strong>.</p>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Study</th>
+<th style="text-align: right;">Routine results</th>
+<th style="text-align: right;">Share of patients with disease</th>
+<th>Combined method</th>
+<th>Checked refineR</th>
+<th>Unchecked refineR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Independent confirmation</td>
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">≤20%</td>
+<td>574 / 576 (99.7%), 0.161</td>
+<td>537 / 576 (93.2%), 0.207</td>
+<td>576 / 576 (100%), 0.223</td>
+</tr>
+<tr class="even">
+<td>Independent confirmation</td>
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">&gt;20%</td>
+<td>1,269 / 1,296 (97.9%), 0.260</td>
+<td>887 / 1,296 (68.4%), 0.300</td>
+<td>1,296 / 1,296 (100%), 0.647</td>
+</tr>
+<tr class="odd">
+<td>Independent confirmation</td>
+<td style="text-align: right;">1,500</td>
+<td style="text-align: right;">≤20%</td>
+<td>574 / 576 (99.7%), 0.155</td>
+<td>540 / 576 (93.8%), 0.182</td>
+<td>576 / 576 (100%), 0.202</td>
+</tr>
+<tr class="even">
+<td>Independent confirmation</td>
+<td style="text-align: right;">1,500</td>
+<td style="text-align: right;">&gt;20%</td>
+<td>1,265 / 1,296 (97.6%), 0.252</td>
+<td>945 / 1,296 (72.9%), 0.297</td>
+<td>1,295 / 1,296 (99.9%), 0.613</td>
+</tr>
+<tr class="odd">
+<td>Independent confirmation</td>
+<td style="text-align: right;">5,000</td>
+<td style="text-align: right;">≤20%</td>
+<td>575 / 576 (99.8%), 0.103</td>
+<td>565 / 576 (98.1%), 0.127</td>
+<td>576 / 576 (100%), 0.130</td>
+</tr>
+<tr class="even">
+<td>Independent confirmation</td>
+<td style="text-align: right;">5,000</td>
+<td style="text-align: right;">&gt;20%</td>
+<td>1,271 / 1,296 (98.1%), 0.198</td>
+<td>988 / 1,296 (76.2%), 0.255</td>
+<td>1,296 / 1,296 (100%), 0.522</td>
+</tr>
+<tr class="odd">
+<td>Independent confirmation</td>
+<td style="text-align: right;">50,000</td>
+<td style="text-align: right;">≤20%</td>
+<td>576 / 576 (100%), 0.067</td>
+<td>570 / 576 (99.0%), 0.075</td>
+<td>576 / 576 (100%), 0.075</td>
+</tr>
+<tr class="even">
+<td>Independent confirmation</td>
+<td style="text-align: right;">50,000</td>
+<td style="text-align: right;">&gt;20%</td>
+<td>1,286 / 1,296 (99.2%), 0.127</td>
+<td>1,030 / 1,296 (79.5%), 0.223</td>
+<td>1,296 / 1,296 (100%), 0.472</td>
+</tr>
+<tr class="odd">
+<td>RIbench (descriptive)</td>
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">≤20%</td>
+<td>720 / 720 (100%), 0.207</td>
+<td>627 / 720 (87.1%), 0.198</td>
+<td>720 / 720 (100%), 0.235</td>
+</tr>
+<tr class="even">
+<td>RIbench (descriptive)</td>
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">&gt;20%</td>
+<td>715 / 720 (99.3%), 0.247</td>
+<td>523 / 720 (72.6%), 0.484</td>
+<td>720 / 720 (100%), 0.679</td>
+</tr>
+<tr class="odd">
+<td>RIbench (descriptive)</td>
+<td style="text-align: right;">5,000</td>
+<td style="text-align: right;">≤20%</td>
+<td>720 / 720 (100%), 0.182</td>
+<td>691 / 720 (96.0%), 0.137</td>
+<td>720 / 720 (100%), 0.146</td>
+</tr>
+<tr class="even">
+<td>RIbench (descriptive)</td>
+<td style="text-align: right;">5,000</td>
+<td style="text-align: right;">&gt;20%</td>
+<td>710 / 720 (98.6%), 0.203</td>
+<td>602 / 720 (83.6%), 0.365</td>
+<td>720 / 720 (100%), 0.479</td>
+</tr>
+<tr class="odd">
+<td>RIbench (descriptive)</td>
+<td style="text-align: right;">50,000</td>
+<td style="text-align: right;">≤20%</td>
+<td>714 / 720 (99.2%), 0.117</td>
+<td>677 / 720 (94.0%), 0.076</td>
+<td>720 / 720 (100%), 0.095</td>
+</tr>
+<tr class="even">
+<td>RIbench (descriptive)</td>
+<td style="text-align: right;">50,000</td>
+<td style="text-align: right;">&gt;20%</td>
+<td>707 / 720 (98.2%), 0.173</td>
+<td>614 / 720 (85.3%), 0.271</td>
+<td>720 / 720 (100%), 0.365</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="reporting-outcomes">Reporting outcomes</h3>
+<p>Sum <code>count</code> for <code>method=A</code> in <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/routes.csv">routes.csv</a> across scenarios and shares of patients with disease, using the recorded categories <code>anchored</code>, <code>t0.25</code> and <code>none</code>. Percentages divide each count by the total of those categories for that study and size, or across all sizes in its total row.</p>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Study</th>
+<th style="text-align: right;">Routine results</th>
+<th style="text-align: right;">anchoredRI</th>
+<th style="text-align: right;">Fallback</th>
+<th style="text-align: right;">No interval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>confirmation</td>
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">1,753 (93.6%)</td>
+<td style="text-align: right;">90 (4.8%)</td>
+<td style="text-align: right;">29 (1.5%)</td>
+</tr>
+<tr class="even">
+<td>confirmation</td>
+<td style="text-align: right;">1,500</td>
+<td style="text-align: right;">1,767 (94.4%)</td>
+<td style="text-align: right;">72 (3.8%)</td>
+<td style="text-align: right;">33 (1.8%)</td>
+</tr>
+<tr class="odd">
+<td>confirmation</td>
+<td style="text-align: right;">5,000</td>
+<td style="text-align: right;">1,759 (94.0%)</td>
+<td style="text-align: right;">87 (4.6%)</td>
+<td style="text-align: right;">26 (1.4%)</td>
+</tr>
+<tr class="even">
+<td>confirmation</td>
+<td style="text-align: right;">50,000</td>
+<td style="text-align: right;">1,794 (95.8%)</td>
+<td style="text-align: right;">68 (3.6%)</td>
+<td style="text-align: right;">10 (0.5%)</td>
+</tr>
+<tr class="odd">
+<td>confirmation</td>
+<td style="text-align: right;">Total</td>
+<td style="text-align: right;">7,073 (94.5%)</td>
+<td style="text-align: right;">317 (4.2%)</td>
+<td style="text-align: right;">98 (1.3%)</td>
+</tr>
+<tr class="even">
+<td>RIbench</td>
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">1,412 (98.1%)</td>
+<td style="text-align: right;">23 (1.6%)</td>
+<td style="text-align: right;">5 (0.3%)</td>
+</tr>
+<tr class="odd">
+<td>RIbench</td>
+<td style="text-align: right;">5,000</td>
+<td style="text-align: right;">1,369 (95.1%)</td>
+<td style="text-align: right;">61 (4.2%)</td>
+<td style="text-align: right;">10 (0.7%)</td>
+</tr>
+<tr class="even">
+<td>RIbench</td>
+<td style="text-align: right;">50,000</td>
+<td style="text-align: right;">1,135 (78.8%)</td>
+<td style="text-align: right;">286 (19.9%)</td>
+<td style="text-align: right;">19 (1.3%)</td>
+</tr>
+<tr class="odd">
+<td>RIbench</td>
+<td style="text-align: right;">Total</td>
+<td style="text-align: right;">3,916 (90.6%)</td>
+<td style="text-align: right;">370 (8.6%)</td>
+<td style="text-align: right;">34 (0.8%)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="package-help">Package help</h2>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Number</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>First check at p &lt; 0.01, second check for two-sided intervals only, fallback search seed 123 and check seed 1.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/man/fit_anchored_ri.Rd">Point-fit help</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/R/safeguard.R">safeguard code</a>.</td>
+</tr>
+<tr class="even">
+<td>40 patients to run the fallback and warning at other counts. The reporting increment example of 0.5, inference grid of {1, 2, 2.5, 5} × 10^k for k from −8 to 3, and zero meaning continuous data or no shared step. Zero is also a possible BIC gap.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/man/fit_anchored_ri.Rd">Point-fit help</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/help.html">0.4.0 help before this revision</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/NEWS.md">release notes</a>.</td>
+</tr>
+<tr class="odd">
+<td>Medical assay rounding and coarsest-step messages, plus the size message above 5,000 referring to the 5,000–50,000 range.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/R/fit_anchored_ri.R">Public fit function</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/NEWS.md">release notes</a>.</td>
+</tr>
+<tr class="even">
+<td>Calcium dataset 870.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/tools/safeguard/REPORT.md">Model-choice validation report</a>.</td>
+</tr>
+<tr class="odd">
+<td>Worked output. Dataset 1, anchoredRI limits 4.931891 and 19.971977. Dataset 3725, fallback limits 10.710372 and 15.377137. Dataset 5517, no limits.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/actions/runs/45625466089">Package audit run</a> and <a href="assets/fit-examples.csv">three audited rows</a> from the run’s package-audit-0 artifact. Limits are displayed at six decimal places. The published inputs and positions are in the <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/task-g-index.csv">simulation index</a>; the reproduction code uses the same seeds and limit indices as the <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/tools/combined/audit-package.R">audit script</a>.</td>
+</tr>
+<tr class="even">
+<td>The glossary’s historical numbers, examples and controls, including 5,000 routine results, 200 resamples, 220 repeat datasets, 120/400 screened-patient comparisons, 2.5th and 97.5th percentiles, the 95% reference and bootstrap intervals, the 26–34 s screen and twelve-dataset average.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/help.html">Original glossary</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/BENCHMARK.md">prepared-cohort protocol</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/R/simulate.R">clinic/ward simulator generator</a>. The particular fit and validation values are in the files cited in the archives below.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="earlier-studies">Earlier studies</h2>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Number</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Version 0.3.0 update, 900 datasets for version 0.2.0, prepared-cohort versions 0.1.0 and 0.2.0, and clinic/ward version 0.1.0.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/NEWS.md">Release notes</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/robustness.html">900-dataset study and version</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/offset/versions.txt">prepared-cohort versions</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/versions.txt">clinic/ward versions</a>.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="version-030-update">Version 0.3.0 update</h2>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Number</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>November 24, 2026 date, one to five components, p &lt; 0.01 and screening advice.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/robustness.html">Original update</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/tools/safeguard/REPORT.md">validation report</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/NEWS.md">release notes</a>.</td>
+</tr>
+<tr class="even">
+<td>Comparison with 40 screened patients in 28 of 30 separated or moderate-overlap scenarios and 12 heavy-overlap scenarios with 30% to 90% of patients with disease.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/anchors-only/REPORT.md">Screened-patients comparison</a>.</td>
+</tr>
+<tr class="odd">
+<td>Published 1,000-result score 0.233 vs 0.432 and 28 / 1,440 declines (1.9%); 5,000-result score 0.211 vs 0.308 and 71 / 1,440 (4.9%); 50,000-result score 0.374 vs 0.228 and 305 / 1,440 (21.2%). Error exclusion cutoff 5.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/74d1c7c43c0d7e64ef983db91ec401b1d12c6d56/anchoredRI/tools/boxcox/accuracy/results/REPORT.md">Small-size report</a>, <a href="https://github.com/amromeo/amromeo.github.io/tree/74d1c7c43c0d7e64ef983db91ec401b1d12c6d56/anchoredRI/tools/boxcox/accuracy/results/ribench-outcomes">per-dataset scores</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/74d1c7c43c0d7e64ef983db91ec401b1d12c6d56/anchoredRI/tools/boxcox/accuracy/large/results/REPORT.md">large-size report</a>. This earlier study used a different error rule from the current guide.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="prepared-cohort-comparison">Prepared-cohort comparison</h2>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Number</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The four comparison profiles, simulated measurements, 5,000 routine patients and 40 screened patients for anchoredRI; 200 resamples; 95% intervals; empirical 2.5th and 97.5th percentiles for the 120- and 400-patient groups; 10% and 25% shares of patients with disease.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/BENCHMARK.md">Protocol and metrics</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/guided/profiles.csv">profile design</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/offset/fits.csv">saved estimates</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/offset/versions.txt">recorded versions</a>.</td>
+</tr>
+<tr class="even">
+<td>220 simulated datasets and 440 fits for the paired version check, 20 datasets per scenario, 7.12% to 1.04% for the matching shifted example, 8.51% to 11.83% for the shifted overlap scenario and a 0.000001 percentage point tie tolerance.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/offset/validation-summary.csv">Saved validation summary</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/offset/validation-design.csv">design</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/offset/validation-fits.csv">validation fits</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/55eee86b3f4111197b0043cc062ef0b781dc2057/anchoredRI/tools/validate-offset.R">validation script</a>.</td>
+</tr>
+<tr class="odd">
+<td>The limits, plot values, BIC, component counts, and iteration counts shown for each selected dataset.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/offset/fits.csv">Saved estimates</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/offset/models.csv">model records</a> and the <a href="https://github.com/amromeo/amromeo.github.io/tree/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/offset">selection and bootstrap files</a> linked by the controls.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="completed-stress-study">Completed stress study</h2>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Number</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>900 datasets, 45 scenarios × 20 datasets, 14.06% vs 14.09% overall error; 693 of 900 (77%) and split 121 of 180 (67.2%) vs 572 of 720 (79.4%); the 10% design cells in the lower group; 13.60% screened-only error, 617 of 900 comparisons and 304 vs 289 errors above 10%.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/comparison-study/summary/comparison-results.zip">All saved comparison results</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/comparison-study/summary/scenario-summary.csv">scenario results</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/comparison-study/summary/paired-comparisons.csv">paired results</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/robustness.html">original framing</a>.</td>
+</tr>
+<tr class="even">
+<td>5,000 routine results, 40 screened patients, 40/120/400 nested subsets; 10%, 30%, 50%, 70%, and 90% with disease, and settings offset by five percentage points. Overlap percentages of 5.1%, 94.9%, 48.6%, 51.3%, 81.8%, and 16.7%. The 48.7% original entry was corrected to 48.6% from the design value, 0.486457003201592.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/STRESS_PROTOCOL.md">Original protocol</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/stress-grid/design.csv">design file</a> and the dated note in the <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/robustness.html">original page</a>.</td>
+</tr>
+<tr class="odd">
+<td>The earlier bootstrap examples, 45 comparisons; 9,000 draws per method and 5 refineR failures; illustrated limits 24.12–35.88, 35.35–49.09 and 24.23–35.96; shifted overlap errors 51.4%, 18.0% and 2.3%.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/stress-grid/examples.csv">Saved bootstrap examples</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/stress-grid/summary.csv">summaries</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/robustness.html">original page</a>.</td>
+</tr>
+<tr class="even">
+<td>7,200 fit and comparison records, refineR 2.0.0, 900 datasets per method, and every value generated by the archive controls.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/comparison-study/summary/comparison-results.zip">Complete published comparison export</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/stress-grid/all-results.zip">downloadable example archive</a> and <a href="https://github.com/amromeo/amromeo.github.io/tree/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/comparison-study/summary">summary data</a>.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="clinicward-simulator">Clinic/ward simulator</h2>
+<div class="table-scroll" role="region" aria-label="Source table" tabindex="0"><table class="data-table">
+<thead>
+<tr class="header">
+<th>Number</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>61.25% of patients with disease in the default pooled cohort; 1,000 or 4,000 routine results, 250 clinic results for the smaller design; 0, 20, 40, 80, 120 or 400 screened patients; 12 replicate datasets per design.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/stress.html">Original simulator</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/R/simulate.R">simulation settings</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/fits.csv">saved fits</a>.</td>
+</tr>
+<tr class="even">
+<td>Reference limits at the 2.5th and 97.5th percentiles; reference mean 30 s and SD 3 s; rounding at 0.1 s; disease group distributions with means 42, 36, and 24 s and SDs 4, 4.5, and 2.5 s; 55% of ward disease-group patients in the downward-shifted subgroup; 26–34 s screen.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/R/simulate.R">Simulation code</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/55eee86b3f4111197b0043cc062ef0b781dc2057/anchoredRI/tools/build-demo.R">published generator and plots</a>.</td>
+</tr>
+<tr class="odd">
+<td>Version 0.1.0 and all original tabulated, plotted or selectable numbers.</td>
+<td><a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/versions.txt">Software versions</a>, <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/assets/fits.csv">saved fits</a> and <a href="https://github.com/amromeo/amromeo.github.io/blob/4dc28713269ab0b63b83af12628f7f3741de5876/anchoredRI/stress.html">original simulator</a>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</main>
+<footer>
+  <span>anchoredRI 0.4.0 · Research software</span>
+  <span>Fully AI-developed · <a href="stress.html#development">How the project was developed</a></span>
+</footer>
+</body>
+</html>

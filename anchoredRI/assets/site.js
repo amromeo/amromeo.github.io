@@ -18,7 +18,7 @@ const methods = {
   screened_400: ["Screened alone · 400", "#785280"],
   joint: ["Settings alone", "#41605e"],
   pooled_mixture: ["Pooled mixture", "#655777"],
-  anchored_two: ["Anchored · two components", "#367a75"]
+  anchored_two: ["With screened patients · two components", "#367a75"]
 };
 const referenceMethods = ["screened_120", "screened_400"];
 let rows = [];

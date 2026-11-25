@@ -1,73 +1,121 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>anchoredRI · Compare on a prepared cohort</title>
-  <meta name="description" content="Compare anchoredRI with refineR using the authors' recommended preparation, bootstrap estimation and fit review.">
-  <link rel="stylesheet" href="assets/site.css?v=guided1">
-  <link rel="stylesheet" href="assets/guided.css?v=offset2">
-  <script src="assets/guided.js?v=offset2" type="module"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>anchoredRI</title>
+  <meta name="description" content="Estimate laboratory reference intervals from routine results and screened patients. See simulation evidence, fit outcomes and installation instructions.">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/guide.css">
+  <script src="assets/legacy-cohort-links.js" defer></script>
 </head>
 <body>
-<a class="skip" href="#experiment">Skip to the comparison</a>
+<a class="skip" href="#content">Skip to content</a>
 <header class="top"><div class="top-inner">
-  <a class="brand" href="index.html"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
-  <nav aria-label="Main navigation"><a href="robustness.html">Completed stress study</a><a href="index.html" aria-current="page">Prepared cohort</a><a href="stress.html">Stress tests</a><a href="help.html">Help</a><a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Source</a></nav>
+  <a class="brand" href="index.html" aria-label="anchoredRI home"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
+  <nav aria-label="Main navigation">
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="help.html">Package help</a>
+    <a href="earlier-studies.html">Earlier studies</a>
+    <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Source</a>
+  </nav>
 </div></header>
-<main>
-  <div class="guided-hero"><p class="kicker">Original comparison · anchoredRI 0.1 and 0.2</p>
-    <h1>Compare on a prepared cohort</h1>
-    <p class="lede">Both methods receive the same 5,000 eligible routine results. refineR uses the authors’ bootstrap workflow. anchoredRI also receives 40 independent screened patients and the service labels.</p>
-    <p class="pilot-note">The controls display results calculated in R with anchoredRI 0.1 and 0.2. These runs predate the safeguard. The four worked examples and the separate comparison on 220 synthetic datasets use the original estimates. <a href="robustness.html#release-040">Read the 0.4.0 update and Task G results.</a></p>
+<main id="content" class="guide-page">
+<section class="guide-hero welcome" aria-labelledby="home-title">
+  <div>
+    <h1 id="home-title">anchoredRI</h1>
+    <p class="lede">anchoredRI estimates a laboratory reference interval from routine results and results from about <strong>40 chart-reviewed patients</strong> who meet the reference criteria.</p>
+  <p>It first fits the anchoredRI model, which uses the screened patients to pick out the reference group. If that fit fails its checks, it tries anchorRefine, a refineR-based fallback adjusted toward the screened patients and checked against them. If neither passes, it returns no interval and suggests what to do next.</p>
+    <p class="guide-actions"><a class="guide-button" href="#install">Install in R</a> <a href="help.html">Package help</a></p>
   </div>
-  <section id="experiment" aria-labelledby="experiment-title">
-    <div class="section-head"><div><p class="kicker">Prepared cohort</p><h2 id="experiment-title">Limits and uncertainty</h2></div><a href="assets/offset/fits.csv" download>Download results</a></div>
-    <div class="guided-workspace">
-      <div class="controls">
-        <label for="profile">Reference distribution</label>
-        <select id="profile"><option value="normal">Normal, separated disease</option><option value="overlap">Normal, overlapping disease</option><option value="lognormal">Right-skewed</option><option value="shifted">Right-skewed and shifted</option></select>
-        <p id="profile-note" class="hint"></p>
-        <label for="dataset">Simulated dataset</label><select id="dataset"><option value="1">Dataset 1</option></select>
-        <dl class="facts"><dt>Routine patients</dt><dd>5,000</dd><dt>Bootstrap resamples</dt><dd>200 per method</dd><dt>Physiological partition</dt><dd>One age/sex group</dd><dt>Assay and time period</dt><dd>Stable by construction</dd><dt>Results per patient</dt><dd>One</dd></dl>
-        <p class="hint">Eligibility is decided before fitting. No results are removed because they fall outside an existing interval.</p>
-      </div>
-      <div class="guided-results">
-        <p id="truth-note" class="truth-note"></p>
-        <div id="guided-chart" aria-label="Estimated reference intervals and confidence intervals"><p>Loading fitted results…</p></div>
-        <p class="chart-key">Thick lines show reference intervals. Thin whiskers show 95% confidence intervals for each limit. The shaded band marks the known reference interval.</p>
-        <div class="table-scroll"><table class="result-table"><thead><tr><th>Method</th><th>Lower limit<br><span>95% CI</span></th><th>Upper limit<br><span>95% CI</span></th><th>Larger limit error</th><th>Reference population inside</th></tr></thead><tbody id="result-rows"></tbody></table></div>
-        <p class="chart-key">Error is the larger absolute difference between an estimated endpoint and its known value. <a href="help.html#mean-percentage-error">MPE</a> averages the percentage errors at both endpoints for this dataset. Reference-population coverage has a 95% target. Reference limits and absolute errors use synthetic units.</p>
-        <p id="fit-status" role="status"></p>
-        <p id="anchor-note" class="chart-key"></p>
-        <p class="chart-key"><a id="anchor-selection-link" href="assets/offset/normal-selection.csv" download>Model comparison</a> · <a id="anchor-bootstrap-link" href="assets/offset/normal-bootstrap.csv" download>All 200 version 0.2 bootstrap fits</a></p>
-      </div>
+  <aside class="welcome-summary"><a href="evidence.html">In simulations, it returned an interval for 98–100% of datasets at every size tested.</a></aside>
+</section>
+<section class="guide-section" id="inputs">
+  <h2>What you need</h2>
+  <ul>
+    <li>Results from one group that can share a reference interval, with the same analyte, assay, age group and sex.</li>
+    <li>One result per patient.</li>
+    <li>A care-setting label for each routine result. You can use one or two settings.</li>
+    <li>Results from 40 screened patients who meet your reference criteria after chart review.</li>
+    <li>The assay’s reporting increment, if you know it. Otherwise the package infers it.</li>
+  </ul>
+  <p>The simulations drew screened results separately from routine results, so the groups represented different people within each dataset. The routine dataset sizes tested were 1,000, 1,500, 5,000 and 50,000.</p>
+  <p class="section-links"><a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/stage2/generator.R#L135">Confirmation generator</a> · <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/sources/c2/anchoredRI/tools/ribench/PROTOCOL.md">RIbench sampling protocol</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md">Study report</a></p>
+</section>
+<section class="guide-section" id="outcomes">
+  <h2>What you get back</h2>
+  <div class="table-scroll" role="region" aria-label="Possible fit results" tabindex="0">
+    <table class="data-table">
+      <thead><tr><th scope="col">Outcome</th><th scope="col"><code>fit$method</code></th><th scope="col"><code>fit$status</code></th></tr></thead>
+      <tbody>
+        <tr><th scope="row">First fit supplies the interval</th><td><code>"anchoredRI"</code></td><td><code>"reported"</code></td></tr>
+        <tr><th scope="row">Fallback supplies the interval</th><td><code>"anchorRefine"</code></td><td><code>"reported"</code></td></tr>
+        <tr><th scope="row">No interval</th><td><code>NA</code></td><td><code>"declined"</code> or <code>"withheld"</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Read the limits in <code>fit$limits</code>. When no interval is available, <code>fit$recommendation</code> suggests obtaining at least 120 screened patients for a direct interval or verifying a suitable published interval with 20 screened patients.</p>
+  <p class="section-links"><a href="help.html#current-package">Reading a fit</a></p>
+</section>
+<section class="guide-section" id="accuracy">
+  <h2>How well it works</h2>
+  <p>Each method’s mean error is based on the datasets where it returned an interval. Checked refineR applies the same screened-patient check used for the fallback. Unchecked refineR uses the estimates before that check.</p>
+  <div class="table-scroll" role="region" aria-label="5,000 routine results per dataset" tabindex="0">
+    <table class="data-table accuracy-table">
+      <caption>5,000 routine results per dataset</caption>
+      <thead><tr><th scope="col">Study</th><th scope="col">Share of patients with disease</th>
+        <th scope="col" class="number">Combined method<small>% with interval · mean error</small></th><th scope="col" class="number">Checked refineR<small>% with interval · mean error</small></th><th scope="col" class="number">Unchecked refineR<small>% with interval · mean error</small></th>
+      </tr></thead>
+      <tbody>
+        <tr class="dataset-start"><th scope="rowgroup" rowspan="2">Independent confirmation</th><th scope="row">≤20%</th><td class="number">99.8%<small>0.103</small></td><td class="number">98.1%<small>0.127</small></td><td class="number">100%<small>0.130</small></td></tr>
+        <tr><th scope="row">&gt;20%</th><td class="number">98.1%<small>0.198</small></td><td class="number">76.2%<small>0.255</small></td><td class="number">100%<small>0.522</small></td></tr>
+      </tbody><tbody>
+        <tr class="dataset-start"><th scope="rowgroup" rowspan="2">RIbench (descriptive)</th><th scope="row">≤20%</th><td class="number">100%<small>0.182</small></td><td class="number">96.0%<small>0.137</small></td><td class="number">100%<small>0.146</small></td></tr>
+        <tr><th scope="row">&gt;20%</th><td class="number">98.6%<small>0.203</small></td><td class="number">83.6%<small>0.365</small></td><td class="number">100%<small>0.479</small></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>In the independent confirmation simulations, the combined method had lower mean error than both versions of refineR at every tested size in both groups, and returned more intervals than checked refineR. On RIbench, when the share of patients with disease was 20% or less, the intervals returned by both versions of refineR were more accurate at 5,000 and 50,000 routine results.</p>
+  <p class="section-links"><a href="evidence.html">Full evidence and error definition</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/accuracy.csv">Published accuracy table</a> · <a href="website-sources.html#home">Number-to-source list</a></p>
+  <aside class="research-note"><strong>Research software.</strong> anchoredRI has been tested only on simulated data. Clinical performance on patient data has yet to be established.</aside>
+</section>
+<section class="guide-section" id="install">
+  <h2>Install</h2>
+  <p>Use R 4.1.0 or later. Both options build from source and need a C++17 compiler. On Windows, install the version of Rtools that matches your R release. On a Mac, install the Xcode Command Line Tools with <code>xcode-select --install</code> or use the tools included with Xcode. The package depends on <code>ash</code> and <code>future.apply</code>.</p>
+<p class="section-links"><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/DESCRIPTION">Package requirements</a> · <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> · <a href="https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/">Mac instructions</a></p>
+  <div class="install-options">
+    <div><h3>Install from GitHub</h3><pre class="guide-code" tabindex="0"><code>install.packages(c(&quot;remotes&quot;, &quot;ash&quot;, &quot;future.apply&quot;))
+remotes::install_github(
+  &quot;amromeo/amromeo.github.io&quot;,
+  ref = &quot;anchoredRI-v0.4.0&quot;, subdir = &quot;anchoredRI&quot;
+)</code></pre></div>
+    <div><h3>Install from the source tarball</h3>
+      <p>Download the file and run the commands from the folder where you saved it. <a href="downloads/anchoredRI_0.4.0.tar.gz" download>Download anchoredRI 0.4.0</a>.</p>
+      <pre class="guide-code" tabindex="0"><code>install.packages(c(&quot;ash&quot;, &quot;future.apply&quot;))
+install.packages(&quot;anchoredRI_0.4.0.tar.gz&quot;, repos = NULL, type = &quot;source&quot;)</code></pre>
     </div>
-    <details class="fit-review" open><summary>Inspect the refineR fit</summary><div class="details-body">
-      <p id="fit-note"></p><a id="fit-link" href="assets/guided/normal-01.svg" target="_blank" rel="noopener">Open full-size fit plot</a>
-      <img id="fit-image" src="assets/guided/normal-01.svg" alt="Original refineR diagnostic plot of the routine histogram, fitted reference distribution and estimated limits">
-      <p>Use the chart and table above for the confidence interval around each limit.</p>
-      <p id="default-fit" hidden><a id="default-fit-link" href="assets/guided/shifted-default-01.svg" target="_blank" rel="noopener">Inspect the initial one-parameter Box-Cox fit</a>. The shifted example uses modBoxCox, specified before looking at its error against truth.</p>
-    </div></details>
-  </section>
-  <section class="story" aria-labelledby="validation-title">
-    <div class="section-head"><div><p class="kicker">Fresh datasets</p><h2 id="validation-title">Does the improvement repeat?</h2></div><a href="assets/offset/validation-summary.csv" download>Download summary</a></div>
-    <p>Each row uses 20 newly generated datasets with 5,000 routine patients. The two versions receive the same patients and screened results. The design varies the offset, skew, disease overlap and screened sample size. These runs compare anchoredRI 0.1 with automatic selection in 0.2; refineR was not rerun in this repeated test.</p>
-    <p class="pilot-note">For the scenario matching the fourth example, mean endpoint error fell from 7.12% to 1.04%. All three unshifted scenarios were unchanged. In the shifted scenario with strong disease overlap, error increased from 8.51% to 11.83% on average. All 440 fits returned estimates; numerical success did not prevent that bias.</p>
-    <div class="table-scroll"><table class="result-table"><thead><tr><th>Scenario</th><th>Original MPE</th><th>Updated MPE</th><th>Updated: better / tied / worse</th><th>Successful pairs</th></tr></thead><tbody id="validation-rows"></tbody></table></div>
-    <p id="validation-status" role="status"></p>
-    <p class="chart-key">MPE is averaged across both endpoints and all successful paired datasets. Smaller is better. The win counts compare errors within each pair; ties differ by no more than 0.000001 percentage point. The CSV also reports the Monte Carlo standard error of the paired change, failures, boundary fits and selected families. Twenty datasets per scenario give a preliminary estimate of performance. These point-estimate runs do not measure confidence-interval coverage.</p>
-    <p><a href="assets/offset/validation-fits.csv" download>Every fresh fit</a> · <a href="assets/offset/validation-design.csv" download>Scenario definitions</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/55eee86b3f4111197b0043cc062ef0b781dc2057/anchoredRI/tools/validate-offset.R">Validation script</a></p>
-  </section>
-  <section class="story" aria-labelledby="workflow-title"><div class="section-head"><h2 id="workflow-title">What follows the authors’ guidance</h2></div>
-    <div class="story-grid">
-      <article><h3>A suitable input population</h3><p>Each fit uses one physiological partition from two eligible services. Expected affected fractions are 10% or 25%. Both methods use the same routine patients. In a clinical study, assay comparability, age/sex partitions, repeated patients and high-risk services would need actual review.</p></article>
-      <article><h3>The released refineR workflow</h3><p>refineR 2.0.0 runs 200 bootstrap resamples and reports <code>medianBS</code> estimates with 95% CIs. The normal and lognormal examples use BoxCox. The shifted example uses modBoxCox, and its default fit is available for inspection.</p></article>
-      <article><h3>Direct estimates from 120 and 400</h3><p>These rows use the empirical 2.5th and 97.5th percentiles, as in the original paper’s direct-method comparison. The earlier stress page retains its Gaussian mean-and-SD estimates. The 40-, 120- and 400-person reference samples are nested and independent of routine patients.</p></article>
-      <article><h3>Conditions that challenge each method</h3><p>Overlapping disease can bias refineR even when most results are non-pathological. The shifted lognormal example exposes a limitation of anchoredRI 0.1. Version 0.2 estimates the offset jointly with the mixture. It receives no true distribution parameters. Screened labels are perfect in all examples.</p></article>
-    </div>
-    <p>In version 0.2, automatic selection compares normal, lognormal and shifted-lognormal mixtures with one to three components. BIC scores use the original measurement scale and penalize the extra offset parameter. Every bootstrap resamples both services and screened patients, then repeats the entire selection and offset fit. Numerical bounds and model assumptions still matter; the shifted-log model does not estimate a general Box-Cox power.</p>
-    <p><a href="BENCHMARK.md">Full protocol and assumptions</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/55eee86b3f4111197b0043cc062ef0b781dc2057/anchoredRI/tools/build-offset-benchmark.R">Updated benchmark script</a> · <a href="assets/offset/versions.txt">Software versions</a> · <a href="downloads/anchoredRI_0.4.0.tar.gz" download>Download anchoredRI 0.4.0</a> · <a href="stress.html#install">Install instructions</a></p>
-  </section>
-  <section class="credits"><h3>Sources</h3><p><a href="https://pubmed.ncbi.nlm.nih.gov/34362961/">Ammer et al., 2021: original algorithm and evaluation</a><br><a href="https://pubmed.ncbi.nlm.nih.gov/36610416/">Ammer et al., 2023: practical guide</a><br><a href="https://cloud.r-project.org/web/packages/refineR/vignettes/refineR_package.html">refineR package vignette</a></p><p>anchoredRI is an independent research prototype. All examples are synthetic; no CHOP data were used. Clinical performance is unvalidated. This project was fully AI-developed. <a href="stress.html#development">How the project was developed</a>.</p></section>
-</main><footer><span>Original results · anchoredRI 0.1 and 0.2</span><span>Fully AI-developed · Research software</span></footer>
-</body></html>
+  </div>
+  <p class="section-links">Previous versions · <a href="downloads/anchoredRI_0.3.1.tar.gz">0.3.1</a> · <a href="downloads/anchoredRI_0.3.0.tar.gz">0.3.0</a> · <a href="downloads/anchoredRI_0.2.0.tar.gz">0.2.0</a> · <a href="downloads/anchoredRI_0.1.0.tar.gz">0.1.0</a></p>
+  <h3>Five-line example</h3>
+  <p>Put <code>value</code> and <code>setting</code> columns in <code>routine.csv</code> and a <code>value</code> column in <code>screened.csv</code>. Replace <code>0.1</code> with your assay’s reporting increment or omit that argument.</p>
+  <pre class="guide-code" tabindex="0"><code>library(anchoredRI)
+routine &lt;- read.csv(&quot;routine.csv&quot;)
+screened &lt;- read.csv(&quot;screened.csv&quot;)$value
+fit &lt;- fit_anchored_ri(routine$value, routine$setting, screened, rounding_unit = 0.1)
+fit[c(&quot;method&quot;, &quot;status&quot;, &quot;limits&quot;, &quot;recommendation&quot;)]</code></pre>
+  <p class="section-links"><a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/R/simulate.R#L26">Example reporting increment</a></p>
+</section>
+<section class="guide-section" id="citation">
+  <h2>How to cite</h2>
+  <p>Obstfeld A. anchoredRI: reference intervals from routine results and screened patients. R package version 0.4.0, 2026. <a href="https://amromeo.github.io/anchoredRI/">https://amromeo.github.io/anchoredRI/</a> · <a href="https://github.com/amromeo/amromeo.github.io/commit/53d7b947bb40849b9b0b7556f97c676a0845928f">Commit <code>53d7b947bb40849b9b0b7556f97c676a0845928f</code></a>. Fully AI-developed.</p>
+  <p class="section-links"><a href="evidence.html">Evidence</a> · <a href="help.html">Package help</a> · <a href="earlier-studies.html">Earlier studies</a> · <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Source code</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/NEWS.md">Changelog</a> · <a href="https://github.com/amromeo/amromeo.github.io/issues">Questions or issues</a></p>
+  <p id="former-comparison"><span id="experiment"></span><span id="experiment-title"></span><span id="profile"></span><span id="profile-note"></span><span id="dataset"></span><span id="truth-note"></span><span id="guided-chart"></span><span id="result-rows"></span><span id="fit-status"></span><span id="anchor-note"></span><span id="anchor-selection-link"></span><span id="anchor-bootstrap-link"></span><span id="fit-note"></span><span id="fit-link"></span><span id="fit-image"></span><span id="default-fit"></span><span id="default-fit-link"></span><span id="validation-title"></span><span id="validation-rows"></span><span id="validation-status"></span><span id="workflow-title"></span><a href="prepared-cohort.html">Open the earlier prepared-cohort comparison</a>.</p>
+</section>
+</main>
+<footer>
+  <span>anchoredRI 0.4.0 · Research software</span>
+  <span>Fully AI-developed · <a href="stress.html#development">How the project was developed</a></span>
+</footer>
+</body>
+</html>

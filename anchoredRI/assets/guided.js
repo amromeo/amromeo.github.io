@@ -1,9 +1,9 @@
 const el = id => document.getElementById(id);
 const defs = {
-  normal: {note:'A normal reference population with disease shifted upward. Expected affected fraction: 10% overall (5% and 15% by service).', model:'BoxCox'},
-  overlap: {note:'Disease overlaps the reference distribution. Expected affected fraction: 25% overall (20% and 30% by service). The clean-region assumption is more challenging here.', model:'BoxCox'},
-  lognormal: {note:'A lognormal reference population with an upper disease component. Expected affected fraction: 10%. The updated anchoredRI chooses its transformation from the data.', model:'BoxCox'},
-  shifted: {note:'A lognormal reference population shifted 10 units from zero. Expected affected fraction: 10%. The updated anchoredRI estimates the offset; it is not supplied the true shift.', model:'modBoxCox'}
+  normal: {note:'A normal reference population with disease shifted upward. Expected share of patients with disease: 10% overall (5% and 15% by service).', model:'BoxCox'},
+  overlap: {note:'Disease overlaps the reference distribution. Expected share of patients with disease: 25% overall (20% and 30% by service). The clean-region assumption is more challenging here.', model:'BoxCox'},
+  lognormal: {note:'A lognormal reference population with an upper disease component. Expected share of patients with disease: 10%. The updated anchoredRI chooses its transformation from the data.', model:'BoxCox'},
+  shifted: {note:'A lognormal reference population shifted 10 units from zero. Expected share of patients with disease: 10%. The updated anchoredRI estimates the offset; it is not supplied the true shift.', model:'modBoxCox'}
 };
 const labels = {refineR:'refineR', anchored40:'anchoredRI 0.1', anchored_auto40:'anchoredRI 0.2', direct120:'Screened alone · 120', direct400:'Screened alone · 400'};
 const colors = {refineR:'#426da3', anchored40:'#7c8982', anchored_auto40:'#006b60', direct120:'#9a692c', direct400:'#81558e'};

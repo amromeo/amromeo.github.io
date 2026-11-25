@@ -1,56 +1,111 @@
 # anchoredRI
 
-An R research package for asking whether a small group of independently screened children can improve a reference interval estimated from mixed outpatient and ward results. The main function estimates the central 95% interval for one analyte, assay method and comparable age group. All published experiments use synthetic data.
+anchoredRI estimates a laboratory reference interval from routine results and results from about 40 chart-reviewed patients who meet the reference criteria. It first fits the anchoredRI model, which uses the screened patients to pick out the reference group. If that fit fails its checks, it tries anchorRefine, a refineR-based fallback adjusted toward the screened patients and checked against them. If neither passes, it returns no interval and suggests what to do next.
 
-**Fully AI-developed.** A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and wrote the method implementation, simulation experiments, tests, package documentation and website. The package uses maximum likelihood with an R interface and a compiled C++ fitter. Clinical performance has yet to be established.
+**Research software.** anchoredRI has been tested only on simulated data. Clinical performance on patient data has yet to be established.
 
-[Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Original prepared-cohort results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [Download anchoredRI 0.4.0](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.4.0.tar.gz) · [Previous versions and installation](https://amromeo.github.io/anchoredRI/stress.html#install)
+**Fully AI-developed.** A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and wrote the method implementation, simulation experiments, tests, package documentation and website.
+
+[Home](https://amromeo.github.io/anchoredRI/) · [Evidence](https://amromeo.github.io/anchoredRI/evidence.html) · [Package help](https://amromeo.github.io/anchoredRI/help.html) · [Earlier studies](https://amromeo.github.io/anchoredRI/earlier-studies.html) · [Source](https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI)
+
+## What you need
+
+- Routine results from one group that can share a reference interval, with the same analyte, assay, age group and sex.
+- One result per patient.
+- A care-setting label for each routine result, with one or two settings.
+- Results from 40 patients who meet your reference criteria after chart review.
+- The assay’s reporting increment, if you know it. Otherwise the package infers it.
+
+The simulations drew the routine and screened results separately, representing different patients in each group. The tested routine dataset sizes were 1,000, 1,500, 5,000 and 50,000. [Study report](https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md)
 
 [Project roadmap](ROADMAP.md)
 
 ## Fitting and reporting a reference interval
 
-`fit_anchored_ri()` starts with Task E Arm B. The fitter considers one through five components for each eligible family (normal, lognormal and shifted lognormal) and selects the lowest BIC on the measurement scale. It reports those limits when the anchoredRI safeguard passes. If the first fit declines or withholds, the function tries the anchorRefine Stage 3 post-fit blend with weight 0.25 at any sample size. The default interval covers the central 95% of the screened component. Use `probs = .95` for a one-sided upper limit.
+`fit_anchored_ri()` compares normal, lognormal and shifted-lognormal mixtures with one to five components per family, using BIC on the measurement scale. It reports the selected fit’s limits when the fit passes its checks. The default is the central 95% interval. Use `probs = .95` for a one-sided upper limit.
 
-The fallback pools the routine results for the Box-Cox fit. It uses Stage 2 peak choice or the original Box-Cox fit if that choice fails. Both paths use the refineR 2.0.0 search and quantile code included in anchoredRI. The Stage 3 blend adjusts the reference mean and spread toward estimates from the screened results, then applies the Stage 1 anchor check. The check uses a randomized probability integral transform within each measurement bin. The fallback requires at least 40 nonnegative screened results and a positive rounding unit, supplied or inferred. The Stage 1 check computes its exact null distribution for the number of screened results supplied. The peak vote rules and blend weight of 0.25 apply to all eligible counts. Below 40, the fit explains why the fallback was skipped. Point and bootstrap fits warn at every screened count other than 40 because Task G evaluated both methods with exactly 40. The Box-Cox fit uses nonnegative routine results and needs at least 11 of them.
+| Outcome | `fit$method` | `fit$status` |
+| --- | --- | --- |
+| First fit supplies the interval | `"anchoredRI"` | `"reported"` |
+| Fallback supplies the interval | `"anchorRefine"` | `"reported"` |
+| No interval | `NA` | `"declined"` or `"withheld"` |
 
-Read `method` for the source of the reported limits and `anchoredRI_reason` for the first decision. `diagnostics$anchorRefine` retains the Stage 2 fit, the blend and the anchor check if the fallback was tried. The existing model and safeguard fields describe the anchoredRI fit. Set `fallback = FALSE` for an anchoredRI-only fit. Use `fallback_seed` and `pit_seed` to reproduce the two steps of a fallback.
+Read the limits in `fit$limits`. The first decision and its reason stay in `fit$anchoredRI_status` and `fit$anchoredRI_reason` even if the fallback reports. When no interval is available, `fit$recommendation` suggests obtaining at least 120 screened patients for a direct interval or verifying a suitable published interval with 20 screened patients.
 
-Supply the assay’s reporting increment with `rounding_unit` when known. It sets a minimum component SD in measurement units. If you omit it, the fitter finds the largest step of the form {1, 2, 2.5, 5} × 10^k, for integer k from −8 through 3, that divides every routine and screened value. For example, results reported to the nearest 0.5 can give an inferred unit of 0.5. The fitter sends a message with the inferred unit and always returns the unit used in `rounding_unit`. A value of zero means that only the other SD constraints apply. You can supply zero for continuous data, and the fitter uses zero if no shared step fits. All bootstrap draws use the point fit’s unit.
+The fallback pools the routine results for the Box-Cox fit. It uses the screened patients to help choose the reference peak and uses the original Box-Cox fit if peak selection fails. It adjusts the estimated reference mean and spread toward the screened results with a fixed weight of 0.25, then checks how well the adjusted distribution fits their results, accounting for rounding. The package includes the refineR 2.0.0 code it needs. The external refineR package is optional for the separate comparator. [Fallback research record](https://github.com/amromeo/anchorRefine)
 
-`runner_up` identifies the alternative model with the next-lowest original-scale BIC. Its `bic_gap` is the runner-up BIC minus the winning BIC. Zero indicates a tie. The fit also returns the winning optimizer’s `optimizer_status`, numeric `optimizer_code`, and original `optimizer_message`. A reported fit that reached the iteration limit produces a warning and retains its interval. Line-search failures have their own status. Bootstrap output includes these diagnostics for the point fit and records the optimizer exit and runner-up for each fitted draw.
+The fallback requires at least 40 nonnegative screened results, at least 11 nonnegative routine results and a positive reporting increment. Its check accounts for the actual number of screened patients. The package warns at counts other than 40 because the combined-method study evaluated exactly 40. Set `fallback = FALSE` to use the first fit alone. The `fallback_seed` controls the fallback search and `pit_seed` controls the random draws used to check rounded results.
 
-`fit_seed` (default 1) controls the optimizer starts. The bootstrap `seed` controls patient resampling. A change in fit seed or computing environment can occasionally change the selected model and the reporting decision. On RIbench calcium dataset 870, the same fit seed selected five normal components in the archived run and four shifted-lognormal components in the local run. Both safeguards flagged the archived fit. The local fit passed both. [Validation and reproduction](tools/safeguard/REPORT.md)
+Supply the assay’s reporting increment with `rounding_unit` when known. It sets a minimum component spread in measurement units. If you omit it, the fitter finds the largest shared step of the form {1, 2, 2.5, 5} × 10^k, for integer k from −8 through 3, that fits all routine and screened values. The fit reports the unit in `rounding_unit` and sends a message when it infers the value. Zero means there is no shared step or that you supplied zero for continuous data. All bootstrap draws use the same unit.
 
-### RIbench accuracy by routine sample size
+`runner_up` identifies the alternative model with the next-lowest BIC. Its `bic_gap` is the runner-up BIC minus the winning BIC. The fit also returns the winning optimizer’s exit information, including `optimizer_status`. An interval that passes its checks can be reported with an iteration-limit warning. The optimizer’s starting points and the computing environment can occasionally change the selected model. RIbench calcium dataset 870 is an example. [Validation and reproduction](tools/safeguard/REPORT.md)
 
-Task G tested the combined point fit at 1,000, 1,500, 5,000 and 50,000 routine results in 7,488 confirmation datasets. The method passed all 16 prespecified conditions. In descriptive RIbench at ≤20% pathology, blend-first gave slightly lower loss at all three sizes, with paired 95% intervals that included zero. Version 0.4.0 uses the prespecified anchoredRI-first order. Accuracy between 5,000 and 50,000 routine results has not been tested directly. The fit gives this message for every sample above 5,000. [Task G results](https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md)
+## Safeguard
 
-The earlier Task E comparison below used 40 independently screened anchors. It compared the Arm B fit before the safeguard with refineR.
+The likelihood-ratio test checks whether the screened results agree with the fitted reference group. It compares the screened results under that fit with a model fitted to the screened results alone on the same transformed scale. A p-value below 0.01 causes a decline. A two-sided lower limit below every routine result also causes a decline. The lower-limit check is skipped for one-sided requests. If the test statistic cannot be calculated, the interval is withheld.
 
-| Routine results per dataset | Datasets | anchoredRI (Arm B) | refineR |
+The first fit keeps its joint and screened-only diagnostics in `diagnostics$anchored` and `diagnostics$anchors_only`. The fallback’s diagnostics are in `diagnostics$anchorRefine`. For research use, `safeguard = FALSE` skips the checks and the fallback. When many patients have disease and their results overlap heavily with the reference group, an inaccurate interval can pass both checks.
+
+`bootstrap_anchored_ri()` resamples routine results within settings and resamples the screened patients. It uses the first model for the bootstrap draws. If the fallback supplies the point estimate, its limits are available and the confidence limits are missing. Read `ci_reason` for the explanation. For a reported first fit, confidence intervals use the finite draws that passed the checks and require at least 80% of the requested draws. Coverage on either method has yet to be validated. [Package help](https://amromeo.github.io/anchoredRI/help.html#fallback-ci)
+
+## Evidence
+
+In the independent confirmation simulations, the combined method met all 16 prespecified conditions across 7,488 datasets. It returned an interval for 98–100% of datasets at every size tested. On descriptive RIbench, when the share of patients with disease was 20% or less, refineR had lower mean error at 5,000 and 50,000 results among the intervals it returned. Accuracy between 5,000 and 50,000 has yet to be tested directly. The package prints a message above 5,000 routine results. [Tables and limitations](https://amromeo.github.io/anchoredRI/evidence.html) · [Study record (Task G)](https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md)
+
+## Install from GitHub
+
+Use R 4.1.0 or later and a C++17 compiler. On Windows, install the Rtools version for your R release. On a Mac, use the Xcode Command Line Tools or Xcode. [Package requirements](https://github.com/amromeo/amromeo.github.io/blob/53d7b947bb40849b9b0b7556f97c676a0845928f/anchoredRI/DESCRIPTION) · [Rtools](https://cran.r-project.org/bin/windows/Rtools/) · [Mac instructions](https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/)
+
+```r
+install.packages(c("remotes", "ash", "future.apply"))
+remotes::install_github(
+  "amromeo/amromeo.github.io",
+  ref = "anchoredRI-v0.4.0", subdir = "anchoredRI"
+)
+```
+
+Or download the source tarball and run the following from the folder where you saved it. [Download anchoredRI 0.4.0](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.4.0.tar.gz) · [Previous versions](https://amromeo.github.io/anchoredRI/help.html#install)
+
+```r
+install.packages(c("ash", "future.apply"))
+install.packages("anchoredRI_0.4.0.tar.gz", repos = NULL, type = "source")
+```
+
+Put `value` and `setting` columns in `routine.csv` and a `value` column in `screened.csv`. Replace `0.1` with your assay’s reporting increment or omit that argument.
+
+```r
+library(anchoredRI)
+routine <- read.csv("routine.csv")
+screened <- read.csv("screened.csv")$value
+fit <- fit_anchored_ri(routine$value, routine$setting, screened, rounding_unit = 0.1)
+fit[c("method", "status", "limits", "recommendation")]
+```
+
+## How to cite
+
+Obstfeld A. anchoredRI: reference intervals from routine results and screened patients. R package version 0.4.0, 2026. [https://amromeo.github.io/anchoredRI/](https://amromeo.github.io/anchoredRI/) · [Commit `53d7b947bb40849b9b0b7556f97c676a0845928f`](https://github.com/amromeo/amromeo.github.io/commit/53d7b947bb40849b9b0b7556f97c676a0845928f). Fully AI-developed.
+
+[Change log](NEWS.md) · [Questions or issues](https://github.com/amromeo/amromeo.github.io/issues)
+
+## Earlier results
+
+<a id="ribench-accuracy-by-routine-sample-size"></a>
+
+### RIbench accuracy for the version 0.3.0 fitter
+
+The earlier RIbench comparison used 40 independently screened patients. It compared the updated anchoredRI fitter before the safeguard with refineR.
+
+| Routine results per dataset | Datasets | anchoredRI | refineR |
 | ---: | ---: | ---: | ---: |
 | 1,000 | 1,440 | 0.2334 | 0.4318 |
 | 5,000 | 1,440 | 0.2114 | 0.3082 |
 | 50,000 | 1,440 | 0.3744 | 0.2282 |
 
-The scores are mean absolute endpoint z deviations before the safeguard. Lower scores indicate better accuracy. RIbench excludes dataset errors above 5 from this mean. Across both smaller sizes the scores were 0.2224 for anchoredRI and 0.3696 for refineR. At N = 50,000, Arm B had one implausible fit and selected five components in 941/1,440 fits (65.3%). The safeguard declined 305 fits and released 1,135. The score of 0.1307 among released fits applies to those 1,135 only. [Small-N results](https://github.com/amromeo/amromeo.github.io/blob/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/results/REPORT.md) · [Large-N results](https://github.com/amromeo/amromeo.github.io/blob/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/large/results/REPORT.md)
+The scores are mean absolute endpoint z deviations before the safeguard. Lower scores indicate better accuracy. RIbench excludes dataset errors above 5 from this mean. Across both smaller sizes the scores were 0.2224 for anchoredRI and 0.3696 for refineR. At N = 50,000, anchoredRI had one implausible fit and selected five components in 941/1,440 fits (65.3%). The safeguard declined 305 fits and released 1,135. The score of 0.1307 among released fits applies to those 1,135 only. [Small-N results](https://github.com/amromeo/amromeo.github.io/blob/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/results/REPORT.md) · [Large-N results](https://github.com/amromeo/amromeo.github.io/blob/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/large/results/REPORT.md)
 
-## Safeguard
+The checks reproduced the 5,220 archived reporting decisions. A same-environment repeat on seven datasets matched the original models and decisions. [Validation and reproduction](tools/safeguard/REPORT.md)
 
-Version 0.3 adds `safeguard = TRUE` to `fit_anchored_ri()` and `bootstrap_anchored_ri()`. After the selected point fit and every bootstrap fit, two checks decide whether an interval can be reported. The Step B likelihood-ratio test compares the anchors under component 1 with their own normal MLE on the selected transform and fixed offset. A nominal chi-squared p-value with 2 df below 0.01 declines the interval. A lower limit strictly below the smallest routine value also declines it. The lower-limit check is skipped for one-sided limits.
-
-A decline of the first fit is recorded in `anchoredRI_status` and `anchoredRI_reason`. The reason is “routine data disagree with the screened sample” for the LRT flag or “estimated lower limit is below every observed result” for the lower-limit flag. Both reasons are retained if both checks flag. The fitted anchoredRI interval and the anchors-only interval remain available under `diagnostics$anchored` and `diagnostics$anchors_only`. Read `status` and `method` for the final decision. If both methods decline or withhold, the returned limits are missing and `recommendation` advises obtaining at least 120 screened patients or verifying a suitable published interval with 20 screened patients.
-
-The bootstrap uses the combined point fit. After a fallback return, it preserves the point limits, leaves the confidence limits missing and explains why in `ci_reason`. Arm B draws remain available as diagnostics. Confidence-interval coverage has yet to be validated for either method. Bootstrap output distinguishes declined fits from numerical failures and retains both checks for every draw. A declined point fit withholds the reported interval and confidence intervals. For an accepted point fit, confidence intervals use accepted, finite bootstrap draws and require at least 80% of requested draws. Report the accepted and declined counts and identify these as intervals conditional on passing the safeguard.
-
-Researchers can set `safeguard = FALSE` to return the fitted limits. The package skips both checks, sets their flags and the LRT p-value to `NA`, and records `safeguard$enabled = FALSE`. With checks enabled, an unavailable statistic gives a `withheld` status.
-
-Heavily mixed routine data with many mildly abnormal patients, including ICU-only populations, can produce wrong reference intervals that pass both checks. Passing the safeguard does not establish clinical validity.
-
-The safeguard reproduced all 5,220 archived Arm B reporting decisions. On seven datasets refitted on the same runtime, the package and the original Task E fitter chose the same models and made the same decisions. [Validation and reproduction](tools/safeguard/REPORT.md)
-
-## Earlier results with version 0.2
+### Earlier results with version 0.2
 
 Version 0.2 compared normal, lognormal and shifted-lognormal mixtures with one to three components when `transform = "auto"`. The shifted model estimates its offset jointly with the component shapes and service proportions. BIC includes the transformation Jacobian and the extra offset parameter, so scores are comparable on the measurement scale. Its point-fit default was `"identity"`.
 
@@ -60,23 +115,11 @@ On the original shifted example, the new model estimates an offset of 10.30 and 
 
 Across the 20 fresh datasets matching that shifted scenario, mean endpoint percentage error decreased from 7.12% to 1.04%, with improvement in all 20 pairs. The three unshifted scenarios were unchanged in all 60 pairs. The seven shifted scenarios without strong disease overlap improved in all 140 pairs. The shifted overlap scenario worsened on average, from 8.51% to 11.83%, although 9 of its 20 pairs improved. All 440 fits returned estimates without selected numerical-boundary flags. The new transformation fixes a distributional limitation; it does not resolve ambiguous separation of reference and disease components.
 
-## Install from GitHub
-
-To install the current version from the main branch in R 4.1 or later, run
-
-```r
-install.packages("remotes")  # once
-remotes::install_github("amromeo/amromeo.github.io", subdir = "anchoredRI",
-                        ref = "main")
-```
-
-Building the package from source requires a C++17 compiler and R’s package build tools. Install the checkout before sourcing its R files directly. The fallback includes its own copy of the refineR 2.0.0 point-fit code. The external refineR package is optional for the separate comparator.
-
 ## Primary comparison: refineR as intended
 
 The worked examples and the earlier clinic/ward results below used earlier package versions. To reproduce the published figures, run their scripts from the archived source. [Source for the earlier comparisons](https://github.com/amromeo/amromeo.github.io/tree/55eee86b3f4111197b0043cc062ef0b781dc2057/anchoredRI)
 
-The main page uses the authors' practical workflow: the same 5,000 eligible routine patients for both methods, a single physiological partition, one result per person, 200 bootstrap resamples and `medianBS` refineR estimates with 95% CIs. anchoredRI adds 40 independent screened patients and service labels. Direct benchmarks use empirical percentiles from 120 and 400 screened patients. The shifted profile uses `modBoxCox` for refineR. Both the original identity/log anchoredRI estimates and the new automatic estimates are shown.
+The [prepared-cohort comparison](https://amromeo.github.io/anchoredRI/prepared-cohort.html) uses the authors' practical workflow: the same 5,000 eligible routine patients for both methods, one age and sex group, one result per person, 200 bootstrap resamples and `medianBS` refineR estimates with 95% CIs. anchoredRI adds 40 independent screened patients and service labels. Direct benchmarks use empirical percentiles from 120 and 400 screened patients. The shifted profile uses `modBoxCox` for refineR. Both the original identity/log anchoredRI estimates and the new automatic estimates are shown.
 
 The four worked examples show estimates, confidence intervals and original refineR diagnostic plots. The updated runner reuses the published comparator rows without changing their estimates or resampling. It adds 200 bootstrap draws for each new anchoredRI fit.
 
@@ -92,7 +135,7 @@ Read [BENCHMARK.md](BENCHMARK.md) for the prespecified distributions, metrics an
 
 ### Apply the workflow to a prepared partition
 
-`eligible` below is a data frame of compatible routine results with one row per patient and two eligible service labels. `screened` contains independent reference-eligible patients. Decide eligibility and physiological partitions before fitting, without filtering by an existing reference interval.
+`eligible` below is a data frame of compatible routine results with one row per patient and two eligible service labels. `screened` contains independent reference-eligible patients. Decide eligibility and the age and sex group before fitting. Select screened patients using clinical criteria.
 
 ```r
 ref <- refineR::findRI(eligible$value, model = "BoxCox",
@@ -130,7 +173,7 @@ d$truth                    # available for simulated data
 compare_ri_methods(d$routine$value, d$routine$setting, d$anchor)
 ```
 
-A screened patient contributes once. If you review charts from the same set of routine patients, remove those screened individuals from the unlabeled input before fitting. The simulator counts 40 **additional** screened patients. Eligibility should be decided from clinical information relevant to the analyte, while blinded to the measurement. Taking only values that fall inside an existing interval can narrow the apparent reference distribution.
+A screened patient contributes once. The simulations drew the groups separately. Their results describe a study design with different patients in the two sets. The simulator counts 40 **additional** screened patients. Eligibility should be decided from clinical information relevant to the analyte, while blinded to the measurement. Taking only values that fall inside an existing interval can narrow the apparent reference distribution.
 
 ## How the method works
 
@@ -140,7 +183,7 @@ A screened patient contributes once. If you review charts from the same set of r
 
 The offset is shared across components and constrained below every observation. Default bounds run from the minimum observation minus five routine MADs to that minimum minus 0.001 MAD; SD substitutes when MAD is zero. These numerical constraints avoid a fit collapsing onto the smallest result, but they can influence estimates. Optional `shift_bounds` must use measurement units. Selected boundary fits are retained and flagged. Mixture BIC and percentile bootstrap intervals are practical choices with limitations, especially when models fit poorly or screened samples are small. They do not guarantee correct model selection or confidence-interval coverage.
 
-The initial prototype labeled the component enriched in the outpatient cohort. It struggled in simulations where both settings had the same fraction of affected patients or disease shifted values in both directions. The next version introduced clinically screened observations and allowed two disease components. The original routine-only model and a fixed two-component anchored comparison remain available for investigating what each change contributes.
+The initial prototype labeled the component enriched in the outpatient cohort. It struggled in simulations where both settings had the same share of patients with disease or disease shifted values in both directions. The next version introduced clinically screened observations and allowed two disease components. The original routine-only model and a fixed two-component comparison using screened patients remain available for investigating what each change contributes.
 
 ## Earlier clinic/ward stress experiment
 
@@ -153,9 +196,9 @@ The initial prototype labeled the component enriched in the outpatient cohort. I
 | Screened alone, 120 / 400 | The same Gaussian calculation on fixed 120- and 400-patient screened cohorts |
 | Settings alone | Two-component Gaussian mixture with setting-specific fractions and a clinic enrichment assumption |
 | Pooled mixture | Same two-component family with pooled fractions, using setting labels afterward to name the putative reference component |
-| Anchored, two components | Joint screened/routine likelihood with the component count fixed at two |
+| With screened patients, two components | Joint screened/routine likelihood with the component count fixed at two |
 
-The page displays R fits calculated in advance on 96 synthetic datasets. The table includes screened-only estimates from 120 and 400 patients alongside the selected-size anchored model, using the same screening rule. Smaller screened cohorts are nested within the generated 400-patient cohort. Choose one of four case mixes, 1,000 or 4,000 routine results, 0/20/40/80/120/400 screened individuals, clinical screening or an intentionally restrictive 26–34 s cutoff, and an individual draw or the average of 12. The page uses the real `refineR::findRI(..., NBootstrap = 0L)` and `refineR::getRI()` point estimates. The average worst-limit error is the mean of each draw's larger absolute endpoint error. Averaging signed errors first would hide errors in opposite directions.
+The page displays R fits calculated in advance on 96 synthetic datasets. The table includes screened-only estimates from 120 and 400 patients alongside the model using the selected number of screened patients, using the same screening rule. Smaller screened cohorts are nested within the generated 400-patient cohort. Choose one of four case mixes, 1,000 or 4,000 routine results, 0/20/40/80/120/400 screened individuals, clinical screening or an intentionally restrictive 26–34 s cutoff, and an individual draw or the average of 12. The page uses the real `refineR::findRI(..., NBootstrap = 0L)` and `refineR::getRI()` point estimates. The average worst-limit error is the mean of each draw's larger absolute endpoint error. Averaging signed errors first would hide errors in opposite directions.
 
 ```r
 # Reproduce a benchmark for 40 screened and 1,000 routine patients.
@@ -167,12 +210,12 @@ To regenerate the earlier stress-test results, run `Rscript tools/build-demo.R` 
 
 ## Interpretation for pediatric laboratories
 
-Both experiments assume a single physiological partition, one assay, a common reference distribution across settings, independent patients and perfect clinical eligibility labels. The earlier stress generator uses Gaussian components, which favor anchoredRI's model. The prepared-cohort comparison also includes lognormal and shifted lognormal distributions. Neither models developmental trajectories, censored reporting, preanalytical differences or mislabeled clinical histories. The earlier 1,000-result stress design gives the outpatient-only comparator 250 observations, below refineR's 1,000-result caution threshold.
+Both experiments assume one age and sex group, one assay, a common reference distribution across settings, independent patients and perfect clinical eligibility labels. The earlier stress generator uses Gaussian components, which favor anchoredRI's model. The prepared-cohort comparison also includes lognormal and shifted lognormal distributions. Neither models developmental trajectories, censored reporting, preanalytical differences or mislabeled clinical histories. The earlier 1,000-result stress design gives the outpatient-only comparator 250 observations, below refineR's 1,000-result caution threshold.
 
-The appropriate number of screened observations still needs to be established for each intended application. The exercise tests errors in estimated reference limits. It does not evaluate classification of individual patients. A clinical study would need an independent reference cohort covering both tails and an evaluation of uncertainty before reporting an interval. No CHOP data were used.
+The appropriate number of screened patients still needs to be established for each intended application. The exercise tests errors in estimated reference limits. It does not evaluate classification of individual patients. A clinical study would need an independent group of screened patients covering both tails and an evaluation of uncertainty before reporting an interval. No CHOP data were used.
 
 ## Credit and license
 
-We acknowledge Tatjana Ammer and colleagues for the published **refineR** method. The R package by Matthias Beck, Tatjana Ammer, Christopher M. Rank and André Schützenmeister supplies the baseline estimates and the search code for the checked fallback. The port retains the GPL-3 notices. [Ported code and license](inst/NOTICE). anchoredRI is an independent research project. [Ammer et al., *Scientific Reports* (2021)](https://pubmed.ncbi.nlm.nih.gov/34362961/) · [refineR on CRAN](https://cran.r-project.org/package=refineR)
+We acknowledge Tatjana Ammer and colleagues for the published **refineR** method. The R package by Matthias Beck, Tatjana Ammer, Christopher M. Rank and André Schützenmeister supplies the baseline estimates and the search code for the checked fallback. The port retains the GPL-3 notices. [Ported code and license](inst/NOTICE). anchoredRI is an independent research project. [Ammer et al., *Scientific Reports* (2021)](https://pubmed.ncbi.nlm.nih.gov/34362961/) · [refineR on CRAN](https://cloud.r-project.org/web/packages/refineR/index.html)
 
 Package code, simulations and website materials are licensed under the [GNU General Public License, version 3](LICENSE). The Hedvig Letters Serif font is distributed under its [SIL Open Font License](assets/FONT-LICENSE.txt).
