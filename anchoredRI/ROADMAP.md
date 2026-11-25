@@ -14,7 +14,7 @@ This file records where the project stands, the decisions already made, and the 
 
 1. **No fallback to the screened patients alone.** When neither method can report an interval, the package suggests a direct study with at least 120 screened patients or verification of a suitable published interval with 20.
 2. **One rule at every dataset size.** Try anchoredRI first and the fallback second. The package makes this decision without a known share of patients with disease.
-3. **Keep anchoredRI first.** With 20% of patients with disease or less, trying the fallback first had slightly lower loss at each RIbench size, with all three paired 95% intervals including zero. In the same subgroup of the independent confirmation data, trying anchoredRI first had lower loss at each size, with all four paired 95% intervals below zero. Loss counts a missing interval as an error of 5. [Task G order comparison](https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md#a-versus-r-co-primary-order-comparison)
+3. **Keep anchoredRI first.** With 20% of patients with disease or less, trying the fallback first had slightly lower loss at each RIbench size, with all three paired 95% intervals including zero. In the same subgroup of the independent confirmation data, trying anchoredRI first had lower loss at each size, with all four paired 95% intervals below zero. Loss counts a missing interval as an error of 5. Study 10 tests whether choosing the order from the data does better. [Task G order comparison](https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md#a-versus-r-co-primary-order-comparison)
 4. **Include settings where refineR struggles.** The studies include cases where most patients have disease. Report results separately for a share of patients with disease of 20% or less and more than 20%.
 5. **Keep anchorRefine in its own research repository.** Study changes to the fallback there. Bring package changes here through a pull request.
 
@@ -40,6 +40,7 @@ This file records where the project stands, the decisions already made, and the 
 | 7 | Measurement units | Can the fallback give the same interval across measurement units? | Not started | Later |
 | 8 | Same answer on every computer | Can model selection be made stable across computers? | Not started | Later |
 | 9 | Real pediatric data | Does it work on real CHOP data, judged against independently screened children? | Not started | Later (start planning now) |
+| 10 | Order chosen from the data | Should large datasets that look mostly free of disease try the fallback first? | Not started | Later |
 
 ### 1. Website revision
 
@@ -110,6 +111,14 @@ This study tests clinical performance and will take time to set up.
 **Plan.** Choose a few analytes and age groups. Agree on eligibility rules, comparisons and a success rule in a protocol, and obtain approvals for patient data use before collecting data. Collect routine results from CHOP and chart-review two independent groups of children. Use 40 screened children as inputs to the method and use a separate group of at least 120 to estimate the interval directly for comparison.
 
 **Done when** the method's intervals are compared with the direct intervals on real data and the findings are reported regardless of the outcome.
+
+### 10. Order chosen from the data
+
+The package always tries anchoredRI first. On RIbench, with 20% or fewer patients with disease, refineR's limits were closer to the true values at 5,000 and 50,000 routine results. At 50,000 the error was 0.095 for refineR alone against 0.117 for the combined method. With more than 20% disease, refineR did much worse (0.365 against 0.173). The package can't know the true share of patients with disease, but the first fit produces an estimate of it. [RIbench evidence](https://amromeo.github.io/anchoredRI/evidence.html#ribench) · [Numbers and sources](https://amromeo.github.io/anchoredRI/website-sources.html#accuracy-table-and-figure)
+
+**Plan.** Use the first fit's estimate of the share of routine results outside the reference group, together with dataset size, to decide which method to try first. Measure how well that estimate tracks the true share, especially when disease overlaps heavily with the reference group. Choose the rule and its cut-offs on new development data. Then test it against the fixed anchoredRI-first order on new confirmation data not used in Task G.
+
+**Done when** the rule beats the fixed order on independent confirmation data without losing accuracy when disease is common, or we keep the fixed order and record why.
 
 ## Known limits with no study planned yet
 
