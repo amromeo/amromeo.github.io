@@ -14,6 +14,13 @@ Accepted 25 November 2026. Method A passed all 16 prespecified conditions on the
 
 On descriptive RIbench, blend-first had slightly lower loss at ≤20% pathology at all three sizes (1,000, 5,000 and 50,000). All three paired 95% intervals included zero. The package proposal retains the anchoredRI-first order. [Task G results](https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md)
 
+## Open work
+
+- Study confidence-interval coverage for both reporting methods.
+- Evaluate screened samples with counts other than 40.
+- Evaluate whether the blend weight should depend on routine sample size.
+- Validate on real pediatric data with independently screened children.
+
 ## Task G discovery and initial plan
 
 Recorded 24 November 2026. The proposed method returns the anchoredRI interval when its safeguard passes. If anchoredRI declines and there are at least 5,000 routine results, try anchorRefine (or refineR plus the anchor check). Report the fallback interval only if it passes the anchor check. Below 5,000 routine results, a decline stands.
