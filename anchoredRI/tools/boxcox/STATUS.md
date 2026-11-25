@@ -8,7 +8,13 @@ At N ≤ 5,000, Arm B had the lowest before-safeguard score among the tested met
 
 Arm B and the improved baseline tied on all 900 simulation-grid datasets. Arm A stopped during reliability testing. [Protocol](PROTOCOL.md) · [Comparator for anchorRefine](anchorRefine-comparator/README.md)
 
-## Task G (planned, not started)
+## Task G (accepted)
+
+Accepted 25 November 2026. Method A passed all 16 prespecified conditions on the 7,488 independent Stage 3 confirmation datasets. The 749-fit audit matched in the pinned runtime. Keep the prespecified order. Try safeguarded anchoredRI first at every N, then the checked Stage 3 post-fit blend (t = 0.25) when the first fit declines or withholds an interval.
+
+On descriptive RIbench, blend-first had slightly lower loss at ≤20% pathology at all three sizes (1,000, 5,000 and 50,000). All three paired 95% intervals included zero. The package proposal retains the anchoredRI-first order. [Task G results](https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md)
+
+## Task G discovery and initial plan
 
 Recorded 24 November 2026. The proposed method returns the anchoredRI interval when its safeguard passes. If anchoredRI declines and there are at least 5,000 routine results, try anchorRefine (or refineR plus the anchor check). Report the fallback interval only if it passes the anchor check. Below 5,000 routine results, a decline stands.
 
