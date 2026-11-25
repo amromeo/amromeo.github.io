@@ -6,6 +6,8 @@ An R research package for asking whether a small group of independently screened
 
 [Prepared-cohort comparison](https://amromeo.github.io/anchoredRI/) · [Earlier stress tests](https://amromeo.github.io/anchoredRI/stress.html) · [Original prepared-cohort results (CSV)](https://amromeo.github.io/anchoredRI/assets/offset/fits.csv) · [Download anchoredRI 0.4.0](https://amromeo.github.io/anchoredRI/downloads/anchoredRI_0.4.0.tar.gz) · [Previous versions and installation](https://amromeo.github.io/anchoredRI/stress.html#install)
 
+[Project roadmap](ROADMAP.md)
+
 ## Fitting and reporting a reference interval
 
 `fit_anchored_ri()` starts with Task E Arm B. The fitter considers one through five components for each eligible family (normal, lognormal and shifted lognormal) and selects the lowest BIC on the measurement scale. It reports those limits when the anchoredRI safeguard passes. If the first fit declines or withholds, the function tries the anchorRefine Stage 3 post-fit blend with weight 0.25 at any sample size. The default interval covers the central 95% of the screened component. Use `probs = .95` for a one-sided upper limit.
