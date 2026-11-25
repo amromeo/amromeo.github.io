@@ -11,18 +11,53 @@
 </style><script src="assets/robustness.js?v=900-comparators" defer></script></head><body>
 <header class="top"><div class="top-inner"><a class="brand" href="index.html">anchoredRI</a><nav aria-label="Main navigation"><a href="index.html">Prepared cohort</a><a href="robustness.html" aria-current="page">Completed stress study</a><a href="stress.html">Earlier experiment</a><a href="help.html">Help</a></nav></div></header>
 <main>
+<section id="release-040" class="package-update" aria-labelledby="release-040-title">
+  <header class="guided-hero">
+    <p class="kicker">Package update · <time datetime="2026-11-25">November 25, 2026</time></p>
+    <h1 id="release-040-title">Reference intervals with anchoredRI 0.4.0</h1>
+    <p class="lede">The package checks the anchoredRI interval first. If the first fit declines or cannot be reported, it tries the checked anchorRefine blend for eligible inputs.</p>
+  </header>
+  <h2>What the package returns</h2>
+  <p>The fallback uses the screened sample to adjust the estimate of the reference group and checks whether the adjusted model agrees with the screened results. The same order applies at every routine sample size. You can run the fit without knowing the fraction of patients with disease or choosing a separate method for large datasets.</p>
+  <p>If neither method reports an interval, the result explains why and advises obtaining at least 120 screened patients for a direct interval or verifying a suitable published interval with 20 screened patients. <a href="help.html#method">How to read the result</a> · <a href="https://github.com/amromeo/anchorRefine">anchorRefine research record</a></p>
+  <h2>Task G results</h2>
+  <p>The anchoredRI-first procedure passed all 16 prespecified conditions on 7,488 independent synthetic confirmation datasets. The conditions compared its loss and accuracy with the checked blend alone. RIbench results are descriptive and cover 4,320 datasets.</p>
+  <div class="table-scroll"><table class="result-table">
+    <caption>Reporting routes for the anchoredRI-first procedure</caption>
+    <thead><tr><th scope="col">Routine results per dataset</th><th scope="col">Confirmation</th><th scope="col">RIbench (descriptive)</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">1,000</th><td>1,753 / 90 / 29</td><td>1,412 / 23 / 5</td></tr>
+      <tr><th scope="row">1,500</th><td>1,767 / 72 / 33</td><td>—</td></tr>
+      <tr><th scope="row">5,000</th><td>1,759 / 87 / 26</td><td>1,369 / 61 / 10</td></tr>
+      <tr><th scope="row">50,000</th><td>1,794 / 68 / 10</td><td>1,135 / 286 / 19</td></tr>
+      <tr><th scope="row">Total</th><td>7,073 / 317 / 98</td><td>3,916 / 370 / 34</td></tr>
+    </tbody>
+  </table></div>
+  <p class="chart-key">Each cell gives the counts for anchoredRI, the anchorRefine fallback and no interval, in that order. RIbench had no 1,500-result group. <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/routes.csv">Route counts by scenario</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md">Full Task G report</a></p>
+  <h2>Limits of the evidence</h2>
+  <ul>
+    <li>On RIbench at 20% pathology or less, trying the blend first had slightly lower loss at 1,000, 5,000 and 50,000 routine results. All three paired 95% intervals for the difference included zero.</li>
+    <li>On the independent confirmation data, trying anchoredRI first had lower loss than trying the blend first at every dataset size with 20% pathology or less. All four paired 95% intervals excluded zero. <a href="https://github.com/amromeo/amromeo.github.io/blob/655a007f6d5ec67d41262c45f21293b3d0b945b5/anchoredRI/tools/combined/results/REPORT.md#a-versus-r-co-primary-order-comparison">A versus R table</a></li>
+    <li>The confirmation simulations use anchorRefine’s Box-Cox design for healthy patients. Accuracy between 5,000 and 50,000 routine results has yet to be tested directly.</li>
+    <li>Task G evaluated both methods with exactly 40 screened patients. The package warns at other counts and skips the fallback below 40.</li>
+    <li>Bootstrap confidence intervals are unavailable for fallback estimates. Confidence-interval coverage has yet to be validated for either method.</li>
+    <li>Model choice can occasionally differ across computers. <a href="help.html#runner-up">Model diagnostics</a></li>
+    <li>The fallback inherits a small sensitivity to measurement units from refineR. Changing units and converting back moved a limit by more than 0.1% of the interval width on 36 of 720 development datasets. <a href="https://github.com/amromeo/anchorRefine/blob/638e2d3500faa01d4e2816895a95d7a6685567a0/results/stage3-confirmation-45463873162/REPORT.md#observations-from-development">anchorRefine Stage 3 report</a></li>
+  </ul>
+  <p><a href="stress.html#install">Install 0.4.0</a> · <a href="#package-update">Earlier 0.3 update</a></p>
+</section>
 <section id="package-update" class="package-update" aria-labelledby="update-title">
   <header class="guided-hero">
     <p class="kicker">Package update · <time datetime="2026-11-24">November 24, 2026</time></p>
-    <h1 id="update-title">Reference intervals with anchoredRI 0.3.0</h1>
+    <h2 id="update-title">Reference intervals with anchoredRI 0.3.0</h2>
     <p class="lede">The improved Task E fitter (Arm B) is now the default. It compares models with one to five components and checks the selected reference interval before reporting it.</p>
   </header>
-  <h2>When the package declines an interval</h2>
+  <h3>When the package declines an interval</h3>
   <p>A likelihood-ratio test (LRT) asks whether the fitted reference group agrees with the independently screened patients. A p-value below 0.01 triggers a decline. For a two-sided interval, a lower limit below the smallest routine result also triggers a decline. One-sided requests use the LRT alone.</p>
-  <p>A decline means there is no interval to report. The fit gives the reason and keeps both the joint estimate and the screened-only estimate for inspection. Obtain at least 120 screened patients for a direct interval, or verify a suitable published interval with 20 screened patients. <a href="help.html#safeguard">Safeguard definitions</a></p>
-  <h2>What routine results added to 40 screened patients</h2>
+  <p>In version 0.3, a decline left the reported interval missing. The fit gives the reason and keeps both the joint estimate and the screened-only estimate for inspection. Obtain at least 120 screened patients for a direct interval, or verify a suitable published interval with 20 screened patients. <a href="help.html#safeguard">Safeguard definitions</a></p>
+  <h3>What routine results added to 40 screened patients</h3>
   <p>Step 1 compared the original anchoredRI 0.2 fits with a model fitted to the same 40 screened patients alone. The screened-only model could also choose its best-fitting distribution. Adding routine results improved accuracy by the study’s prespecified rule in 28 of 30 scenarios with separated or moderately overlapping reference and disease distributions. Under heavy overlap, the screened-only estimate had lower mean error in all 12 scenarios with 30% to 90% affected. <a href="https://github.com/amromeo/amromeo.github.io/blob/315660030dd25910e45f36fb9bee0784efcaf9dc/anchoredRI/assets/anchors-only/REPORT.md">Step 1 results</a></p>
-  <h2>RIbench accuracy by dataset size</h2>
+  <h3>RIbench accuracy by dataset size</h3>
   <p>With 40 independent screened patients, Arm B had the lowest error among the methods tested at 1,000 and 5,000 routine results. At 50,000, refineR was more accurate.</p>
   <div class="table-scroll"><table class="result-table">
     <caption>Accuracy before the safeguard and intervals declined by Arm B</caption>
@@ -34,9 +69,9 @@
     </tbody>
   </table></div>
   <p class="chart-key">Lower scores mean more accurate limits. RIbench averages absolute endpoint errors in z-score units and excludes dataset errors above 5 from this mean. The decline rates include every attempted fit. <a href="https://github.com/amromeo/amromeo.github.io/blob/74d1c7c43c0d7e64ef983db91ec401b1d12c6d56/anchoredRI/tools/boxcox/accuracy/results/REPORT.md">Small-sample report</a> · <a href="https://github.com/amromeo/amromeo.github.io/tree/74d1c7c43c0d7e64ef983db91ec401b1d12c6d56/anchoredRI/tools/boxcox/accuracy/results/ribench-outcomes">Per-dataset scores and declines</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/74d1c7c43c0d7e64ef983db91ec401b1d12c6d56/anchoredRI/tools/boxcox/accuracy/large/results/REPORT.md">50,000-result report</a></p>
-  <h2>Where the method falls short</h2>
-  <p>If many patients are affected and their results overlap heavily with the reference group, an inaccurate interval can pass both checks. Above 5,000 routine results, the only size tested with Arm B was 50,000. For datasets this large, use refineR. anchorRefine, which adds screened patients to refineR, is still in development. Task E compared anchoredRI with refineR directly; anchorRefine was not part of that comparison. <a href="https://cran.r-project.org/package=refineR">refineR on CRAN</a> · <a href="https://github.com/amromeo/anchorRefine">anchorRefine repository (work in progress)</a></p>
-  <p><a href="https://github.com/amromeo/amromeo.github.io/blob/74d1c7c43c0d7e64ef983db91ec401b1d12c6d56/anchoredRI/tools/boxcox/STATUS.md">Task E closeout</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/315660030dd25910e45f36fb9bee0784efcaf9dc/anchoredRI/tools/safeguard/REPORT.md">Package validation report</a> · <a href="stress.html#install">Install 0.3.1</a> · <a href="#original-study">Original stress study</a></p>
+  <h3>Where the method falls short</h3>
+  <p>If many patients are affected and their results overlap heavily with the reference group, an inaccurate interval can pass both checks. Above 5,000 routine results, the only size tested with Arm B was 50,000. Task E compared the Arm B fit with refineR. <a href="https://cran.r-project.org/package=refineR">refineR on CRAN</a></p>
+  <p><a href="https://github.com/amromeo/amromeo.github.io/blob/74d1c7c43c0d7e64ef983db91ec401b1d12c6d56/anchoredRI/tools/boxcox/STATUS.md">Task E closeout</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/315660030dd25910e45f36fb9bee0784efcaf9dc/anchoredRI/tools/safeguard/REPORT.md">Package validation report</a> · <a href="stress.html#install">Install 0.4.0</a> · <a href="#original-study">Original stress study</a></p>
 </section>
 <div class="guided-hero" id="original-study"><p class="kicker">Completed simulation · anchoredRI 0.2</p><h2>What do healthy anchors add?</h2><p class="lede">Across 900 matched datasets, healthy anchors substantially improve mixture fitting. Modeling services separately adds little to overall mean accuracy: 14.06% error for anchoredRI versus 14.09% for the pooled anchored mixture. Heavy overlap remains a limitation.</p><p class="pilot-note">Completed comparison: 45 scenarios × 20 datasets, with all methods evaluated on the same samples. anchoredRI had lower error than refineR in 693 of 900 datasets (77%). This compares full-data point estimates; the earlier 45 bootstrap examples remain available below.</p>
 <p class="pilot-note"><strong>November 24, 2026 · Win rate by pathological fraction.</strong> In this original study, anchoredRI had lower error than refineR in 121 of 180 datasets (67.2%) with 20% affected or less and in 572 of 720 (79.4%) with more than 20% affected. The lower group contained only the 10% scenarios. These are the two groups behind the 77% overall figure. <a href="assets/comparison-study/summary/paired-comparisons.csv">Paired results by scenario</a></p></div>
