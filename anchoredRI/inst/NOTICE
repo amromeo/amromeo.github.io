@@ -1,0 +1,26 @@
+The Stage 2 peak selection, Stage 3 post-fit blend and Stage 1 anchor check
+in this package come from anchorRefine (GPL-3). They were ported from the
+following files at commit 55b9d09ba7e17b13e341e67b0aa03855351bc25b:
+
+    R/anchor-check.R
+    R/stage2-peaks.R
+    R/stage2-search.R
+    R/stage2-grid.R (peak-only dispatch)
+    R/stage2-selected.R
+    stage3/anchors.R
+
+Source and license: https://github.com/amromeo/anchorRefine/tree/55b9d09ba7e17b13e341e67b0aa03855351bc25b
+
+The peak search is derived from refineR 2.0.0 by Matthias Beck, Tatjana
+Ammer, Christopher M Rank and Andre Schuetzenmeister, licensed GPL (>= 3).
+The peak interpolation, smoothing and search regions derive from Tatjana
+Ammer's findMainPeak, defineSearchRegions and related search code. The
+vendored search, histogram and point-quantile functions are in
+R/refiner_2_0_0.R with the original author notices. They come from
+vendor/refineR/R/algoInvHist.R and vendor/refineR/R/utils.R at the Stage 0
+revision above. The wrapper adapts findRI to the Box-Cox point-fit path.
+The refineR code retains its GPL (>= 3) license. See
+inst/licenses/refineR-GPL-3.txt for the license text. The anchorRefine
+changes distributed here use GPL-3.
+
+refineR source and license: https://cran.r-project.org/package=refineR

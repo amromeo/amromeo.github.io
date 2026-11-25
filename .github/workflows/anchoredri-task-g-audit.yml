@@ -1,0 +1,104 @@
+name: anchoredRI 0.4.0 Task G regression
+on:
+  push:
+    branches: [proposal/task-g-0.4.0]
+    paths:
+      - .github/workflows/anchoredri-task-g-audit.yml
+      - anchoredRI/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TASK_G_IMAGE: rocker/r-ver@sha256:5e8963d73b87865e0ad779df4202555fb1b436ee95dc7d7442450308b8ea77f3
+  STAGE3_BUNDLE: https://raw.githubusercontent.com/amromeo/anchorRefine/55b9d09ba7e17b13e341e67b0aa03855351bc25b/stage0/frozen/bundle.tar.gz
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build once using the archived Stage 3 dependencies
+        run: |
+          mkdir -p task-g-runtime/package-lib build
+          curl --fail --silent --show-error --location --retry 4 "$STAGE3_BUNDLE" -o stage3.tgz
+          echo 'ab482e6a48109c476c8d4e6d14231e64f28470259708cdba728b7b8ec0e91027  stage3.tgz' | sha256sum -c -
+          tar xzf stage3.tgz -C task-g-runtime deps cran/refineR
+          docker run --rm --platform linux/amd64 -v "$PWD:/work" -w /work/build \
+            -e R_LIBS=/work/task-g-runtime/package-lib:/work/task-g-runtime/cran:/work/task-g-runtime/deps \
+            -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -e OPENBLAS_CORETYPE=CORE2 \
+            -e GLIBC_TUNABLES=glibc.cpu.hwcaps=-AVX512F,-AVX2,-AVX,-FMA,-FMA4 \
+            "$TASK_G_IMAGE" bash -ec '
+              R CMD build --no-build-vignettes /work/anchoredRI
+              R CMD INSTALL -l /work/task-g-runtime/package-lib anchoredRI_0.4.0.tar.gz
+              R CMD check --no-manual anchoredRI_0.4.0.tar.gz
+              grep -qx "Status: OK" anchoredRI.Rcheck/00check.log
+            '
+          tar czf task-g-runtime.tgz task-g-runtime/deps task-g-runtime/package-lib
+          sha256sum task-g-runtime.tgz > task-g-runtime.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: package-check-log
+          path: build/anchoredRI.Rcheck/00check.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package-audit-runtime
+          path: |
+            task-g-runtime.tgz
+            task-g-runtime.sha256
+          compression-level: 0
+
+  audit:
+    needs: build
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: package-audit-runtime
+      - name: Compare routes and endpoints within absolute tolerance 1e-10
+        env:
+          AUDIT_GROUP: ${{ matrix.group }}
+        run: |
+          sha256sum -c task-g-runtime.sha256
+          tar xzf task-g-runtime.tgz
+          study=anchoredRI/tools/combined
+          python3 "$study/prepare-audit.py" fixtures "$AUDIT_GROUP" 12
+          mkdir audit-results
+          lscpu > audit-results/cpu.txt
+          docker run --rm --platform linux/amd64 -v "$PWD:/work" -w /work \
+            -e R_LIBS=/work/task-g-runtime/package-lib:/work/task-g-runtime/deps \
+            -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -e OPENBLAS_CORETYPE=CORE2 \
+            -e GLIBC_TUNABLES=glibc.cpu.hwcaps=-AVX512F,-AVX2,-AVX,-FMA,-FMA4 \
+            "$TASK_G_IMAGE" Rscript --vanilla "$study/audit-package.R" fixtures "audit-results/audit-$AUDIT_GROUP.csv"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: package-audit-${{ matrix.group }}
+          path: audit-results/
+
+  summary:
+    needs: audit
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: package-audit-[0-9]*
+          path: audit-results
+      - name: Require all 749 records
+        run: |
+          set -o pipefail
+          python3 anchoredRI/tools/combined/summarize-audit.py audit-results | tee "$GITHUB_STEP_SUMMARY"

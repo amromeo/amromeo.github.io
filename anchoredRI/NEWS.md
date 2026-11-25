@@ -1,3 +1,12 @@
+# anchoredRI 0.4.0
+
+- `fit_anchored_ri()` tries the checked anchorRefine Stage 3 post-fit blend when safeguarded anchoredRI declines or withholds an interval. The blend uses the Stage 2 peak-choice fit with weight 0.25. Set `fallback = FALSE` for the anchoredRI-only point fit.
+- The result identifies the reporting method and retains the first decision and the diagnostics from both attempted methods. If neither reports an interval, the result gives the screened-patient advice.
+- The fallback includes the refineR 2.0.0 point-fit functions and uses Stage 1's rounding-aware randomized PIT check. The external refineR package is optional for comparisons.
+- Fallback accepts at least 40 screened patients and evaluates the exact Stage 1 null at the supplied count. Point and bootstrap fits warn at counts other than 40, the only count evaluated for both methods in Task G.
+- Bootstrap uses the combined point fit. When the fallback reports, confidence limits are missing and `ci_reason` explains why. Confidence-interval coverage has yet to be validated for either method.
+- The size message records that accuracy between 5,000 and 50,000 routine results has not been tested directly.
+
 # anchoredRI 0.3.1
 
 - Large-dataset messages now recommend refineR; anchorRefine is labeled as in development. No change to fitting or safeguard decisions.

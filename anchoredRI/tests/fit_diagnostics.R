@@ -19,7 +19,7 @@ point <- function(x, a, ...) fit_anchored_ri(x, rep("one", length(x)), a, "ident
 x <- rep(c(-4, -2, 0, 2, 4), each = 5)
 a <- c(-3, -1, 0, 1, 3)
 for (step in c(0.5, 5, 10)) {
-  seen <- observe(point(x * step, a * step))
+  seen <- observe(point(x * step, a * step, fallback = FALSE))
   fit <- seen$value
   stopifnot(identical(fit$rounding_unit, step),
             identical(seen$messages, paste0("Inferred rounding unit is ", step, ".")),
@@ -30,7 +30,7 @@ for (step in c(0.5, 5, 10)) {
             nzchar(fit$optimizer_message))
 }
 for (unit in c(0, 0.5)) {
-  supplied <- observe(point(x, a, rounding_unit = unit))
+  supplied <- observe(point(x, a, rounding_unit = unit, fallback = FALSE))
   stopifnot(identical(supplied$value$rounding_unit, unit), !length(supplied$messages))
 }
 infer <- getFromNamespace(".measurement_unit", "anchoredRI")
@@ -38,14 +38,14 @@ for (step in c(2e-4, 2.5, 5000, 1e-8))
   stopifnot(infer(c(-3, 0, 1, 2) * step, NULL) == step)
 large_decimal <- (1e11 + 1:7) / 20
 stopifnot(infer(large_decimal, NULL) == 0.05, infer(large_decimal, 0.05) == 0.05)
-continuous <- observe(point(x * sqrt(2), a * sqrt(2)))
+continuous <- observe(point(x * sqrt(2), a * sqrt(2), fallback = FALSE))
 stopifnot(continuous$value$rounding_unit == 0,
           identical(continuous$messages, "Inferred rounding unit is 0 (no shared increment found)."))
 
 # Only routine results count toward the size threshold. Check every reporting status.
-size_notice <- paste("RIbench accuracy between 5,000 and 50,000 routine results has not been tested.",
-                     "At 50,000, refineR was more accurate. For datasets this large, use refineR.",
-                     "anchorRefine, which adds screened patients to refineR, is still in development.")
+size_notice <- "RIbench accuracy between 5,000 and 50,000 routine results has not been tested directly."
+fallback_skip <- "The anchorRefine fallback requires at least 40 screened patients."
+anchor_warning <- "Task G evaluated both methods with exactly 40 screened patients."
 routine <- rep(10:20, length.out = 5001)
 at_cutoff <- observe(point(routine[-1L], a, rounding_unit = 1, safeguard = FALSE))
 reported <- observe(point(routine, a, rounding_unit = 1, safeguard = FALSE))
@@ -53,10 +53,22 @@ declined <- observe(point(routine, a, rounding_unit = 1))
 withheld <- observe(point(routine, rep(0, 5), rounding_unit = 1))
 stopifnot(!length(at_cutoff$messages),
           identical(reported$messages, size_notice), reported$value$status == "reported",
-          identical(declined$messages, size_notice), declined$value$status == "declined",
-          identical(withheld$messages, size_notice), withheld$value$status == "withheld",
+          identical(declined$messages, c(size_notice, fallback_skip)), declined$value$status == "declined",
+          identical(withheld$messages, c(size_notice, fallback_skip)), withheld$value$status == "withheld",
+          all(vapply(list(at_cutoff, reported, declined, withheld),
+                     function(x) sum(x$warnings == anchor_warning) == 1L, logical(1))),
+          identical(reported$value$method, "anchoredRI"),
+          is.null(reported$value$diagnostics$anchorRefine),
+          is.na(declined$value$method), identical(declined$value$anchoredRI_status, "declined"),
+          identical(declined$value$diagnostics$anchorRefine$status, "skipped"),
+          identical(declined$value$diagnostics$anchorRefine$reason, fallback_skip),
+          is.na(withheld$value$method), identical(withheld$value$anchoredRI_status, "withheld"),
           all(vapply(list(reported, declined, withheld),
                      function(x) x$value$rounding_unit == 1, logical(1))))
+disabled <- observe(point(routine, a, rounding_unit = 1, fallback = FALSE))$value
+stopifnot(identical(disabled$limits, declined$value$limits),
+          identical(disabled$anchoredRI_reason, declined$value$anchoredRI_reason),
+          is.null(disabled$diagnostics$anchorRefine))
 
 boot <- observe(bootstrap_anchored_ri(routine, rep("one", length(routine)), a, "identity",
                                      n_boot = 2, safeguard = FALSE))
