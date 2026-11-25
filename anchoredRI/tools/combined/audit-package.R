@@ -1,7 +1,7 @@
 # Run in the Task G container with the Stage 3 dependency snapshot.
 library(anchoredRI)
-stopifnot(packageVersion("anchoredRI") == "0.4.0", packageVersion("refineR") == "2.0.0",
-          getRversion() == "4.5.0")
+stopifnot(packageVersion("anchoredRI") == "0.4.0", getRversion() == "4.5.0",
+          !requireNamespace("refineR", quietly = TRUE))
 args <- commandArgs(trailingOnly = TRUE)
 stopifnot(length(args) == 2L)
 fixtures <- read.csv(file.path(args[1L], "fixtures.csv"), na.strings = "NA",
@@ -47,6 +47,24 @@ for (shard_name in unique(fixtures$rds)) {
       if (is.na(fit$method)) {
         stopifnot(grepl("120 screened", fit$recommendation, fixed = TRUE),
                   grepl("20 screened", fit$recommendation, fixed = TRUE))
+      }
+      # This archived case reliably reports through the fallback.
+      if (f$j == 3725L) {
+        notices <- character()
+        boot <- withCallingHandlers(
+          bootstrap_anchored_ri(case$routine, rep("routine", f$N), case$panels$guidance,
+                                n_boot = 2L, rounding_unit = f$h, fit_seed = 1L,
+                                fallback_seed = f$fallback_seed, pit_seed = f$pit_seed),
+          message = function(m) {
+            notices <<- c(notices, trimws(conditionMessage(m)))
+            invokeRestart("muffleMessage")
+          })
+        compare(boot$method, "anchorRefine", "Bootstrap point method")
+        compare(boot$limits, fit$limits, "Bootstrap point limits")
+        compare(boot$ci_reason, "Fallback intervals are not yet covered by the bootstrap.",
+                "Bootstrap reason")
+        stopifnot(all(is.na(boot$ci)), boot$ci_reason %in% notices,
+                  nrow(boot$bootstrap) == 2L)
       }
       data.frame(j = f$j, method = f$method, first_status = f$first_status,
                  lower = unname(fit$limits[1L]), upper = unname(fit$limits[2L]),

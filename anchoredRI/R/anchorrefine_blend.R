@@ -6,7 +6,7 @@
 # be transformed once per lambda and reused for every candidate Mu and Sigma.
 stage3_anchor_prepare <- function(anchors, h, lambda, shift) {
     valid_scalar <- function(x) is.numeric(x) && length(x) == 1L && is.finite(x)
-    if (!is.numeric(anchors) || length(anchors) != 40L || any(!is.finite(anchors)) ||
+    if (!is.numeric(anchors) || length(anchors) < 40L || any(!is.finite(anchors)) ||
         !valid_scalar(lambda) || lambda < 0 || !valid_scalar(shift)) {
         return(list(status = "invalid_panel_or_transformation"))
     }

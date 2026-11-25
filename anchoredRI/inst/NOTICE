@@ -15,7 +15,12 @@ The peak search is derived from refineR 2.0.0 by Matthias Beck, Tatjana
 Ammer, Christopher M Rank and Andre Schuetzenmeister, licensed GPL (>= 3).
 The peak interpolation, smoothing and search regions derive from Tatjana
 Ammer's findMainPeak, defineSearchRegions and related search code. The
-histogram fitting code and Box-Cox calculations run in the refineR package.
-The derivative code distributed here uses GPL-3.
+vendored search, histogram and point-quantile functions are in
+R/refiner_2_0_0.R with the original author notices. They come from
+vendor/refineR/R/algoInvHist.R and vendor/refineR/R/utils.R at the Stage 0
+revision above. The wrapper adapts findRI to the Box-Cox point-fit path.
+The refineR code retains its GPL (>= 3) license. See
+inst/licenses/refineR-GPL-3.txt for the license text. The anchorRefine
+changes distributed here use GPL-3.
 
 refineR source and license: https://cran.r-project.org/package=refineR

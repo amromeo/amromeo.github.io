@@ -4,18 +4,14 @@
 
 # Stage 2 is derived from refineR 2.0.0, GPL (>= 3), by Tatjana Ammer,
 # Matthias Beck, Christopher M Rank and Andre Schuetzenmeister.
-# The unchanged routine histogram and its cost remain in the upstream package.
-
-# These internal functions belong to refineR 2.0.0. The package pins that
-# version because the Stage 2 peak choice uses its search and histogram code.
-.refineR_function <- function(name) utils::getFromNamespace(name, "refineR")
+# The routine histogram and its cost come from the vendored refineR code.
 
 # Use the same two future seed calls as refineR::findRI(NBootstrap=0).
 stage2_job <- function(seed, work) {
     seeds <- future.apply::future_lapply(1L, function(i) .Random.seed,
                   future.chunk.size = Inf, future.seed = seed)
     future.apply::future_lapply(1L, function(i) work(), future.seed = seeds,
-                               future.packages = c("ash", "refineR"))[[1L]]
+                               future.packages = "ash")[[1L]]
 }
 
 stage2_routine <- function(x) {
@@ -67,9 +63,10 @@ stage2_prepare <- function(x, anchors, h, seed) {
     tryCatch(stage2_job(seed, function() {
         raw <- stage2_routine(x)
         data <- rep(raw, times = ceiling(250 / length(raw))) - 0
-        work <- stage2_working_data(data, .refineR_function("findRoundingBase")(data))
+        work <- stage2_working_data(data, .refineR_200$findRoundingBase(data))
         stage2_first_election(work$qData, stage2_first_window(work$qData), 24, anchors, h, 24L)
-    }), error = function(e) stage2_empty_election(paste("prepare", conditionMessage(e)), 24L))
+    }), error = function(e) stage2_empty_election(paste("prepare", conditionMessage(e)), 24L,
+                                                 length(anchors)))
 }
 
 stage2_trace <- function() {
@@ -88,7 +85,7 @@ stage2_track <- function(x, ab, mStart, ctx, lambda = NULL, initial = FALSE) {
 # Only the peak picker is replaced in this private copy. estimateAB's own
 # iterative expansion and clipping of both raw intervals remain unchanged.
 stage2_estimate_ab <- function(x, ctx) {
-    select_window <- .refineR_function("estimateAB")
+    select_window <- .refineR_200$estimateAB
     scope <- new.env(parent = environment(select_window))
     scope$findMainPeak <- function(x, ab, mStart, withHeight = FALSE, prevPeak = NULL) {
         initial <- !ctx$first_peak_seen
@@ -110,7 +107,7 @@ stage2_regions <- function(x, lambdaVec, roundingBase, abEst, ctx) {
     densM <- min(48, max(24, ceiling(50 - (1/10) * work$n / 1000)))
     for (i in seq_along(lambdaVec)) {
         lambda <- lambdaVec[i]
-        transformed <- suppressWarnings(refineR::BoxCox(qData, lambda))
+        transformed <- suppressWarnings(.refineR_200$BoxCox(qData, lambda))
         transformed <- transformed[is.finite(transformed)]
         abTr <- range(transformed)
         span <- diff(abTr)
@@ -161,7 +158,7 @@ stage2_guided <- function(x, seed, election) {
         tryCatch({
             raw <- stage2_routine(x)
             data <- rep(raw, times = ceiling(250 / length(raw))) - 0
-            rb <- .refineR_function("findRoundingBase")(data)
+            rb <- .refineR_200$findRoundingBase(data)
             lambda <- (1/12 * (0:12))^1.8170595
             best <- c(NA, NA, NA, NA, 1e9, NA)
             ab <- NULL
@@ -172,12 +169,10 @@ stage2_guided <- function(x, seed, election) {
                 if (pass == 1L) {
                     step <- "histogram"
                     ab <- regions$abEst
-                    hist <- .refineR_function("generateHistData")(data, ab$abHist, rb)
+                    hist <- .refineR_200$generateHistData(data, ab$abHist, rb)
                 }
                 step <- paste0("pass", pass, "_grid")
-                # The frozen peak-only arm delegates the entire grid to refineR.
-                best <- .refineR_function("testParam")(lambda, best, data, hist, regions,
-                                                        7, 0.01, 0.1)
+                best <- .refineR_200$testParam(lambda, best, data, hist, regions, 7, 0.01, 0.1)
                 if (pass == 1L) {
                     if (!is.finite(best[1L])) stop("no winning first-pass lambda")
                     idx <- min(length(lambda)-2, max(3, which.min(abs(best[1L]-lambda))))
@@ -186,7 +181,7 @@ stage2_guided <- function(x, seed, election) {
                     }), use.names = FALSE)
                 }
             }
-            fit <- list(Data = raw, Method = "refineR", PkgVersion = utils::packageVersion("refineR"),
+            fit <- list(Data = raw, Method = "refineR", PkgVersion = package_version("2.0.0"),
                         Model = "BoxCox", NBootstrap = 0, Lambda = best[1L], Mu = best[2L],
                         Sigma = best[3L], P = best[4L], Shift = 0, Cost = best[5L],
                         abOr = hist$abOr, roundingBase = rb, rf = best[6L])
@@ -200,7 +195,7 @@ stage2_guided <- function(x, seed, election) {
 
 stage2_baseline <- function(x, seed) {
     error <- NULL
-    fit <- tryCatch(refineR::findRI(Data = x, model = "BoxCox", NBootstrap = 0, seed = seed),
+    fit <- tryCatch(.refineR_200$findBoxCoxPoint(x, seed),
         error = function(e) { error <<- conditionMessage(e); NULL })
     status <- if (stage2_valid_fit(fit)) "ResultFound" else "fit_failed"
     list(fit = fit, status = status, baseline_error = error)

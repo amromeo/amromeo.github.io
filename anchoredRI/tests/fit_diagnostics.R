@@ -44,6 +44,8 @@ stopifnot(continuous$value$rounding_unit == 0,
 
 # Only routine results count toward the size threshold. Check every reporting status.
 size_notice <- "RIbench accuracy between 5,000 and 50,000 routine results has not been tested directly."
+fallback_skip <- "The anchorRefine fallback requires at least 40 screened patients."
+anchor_warning <- "Task G evaluated both methods with exactly 40 screened patients."
 routine <- rep(10:20, length.out = 5001)
 at_cutoff <- observe(point(routine[-1L], a, rounding_unit = 1, safeguard = FALSE))
 reported <- observe(point(routine, a, rounding_unit = 1, safeguard = FALSE))
@@ -51,12 +53,15 @@ declined <- observe(point(routine, a, rounding_unit = 1))
 withheld <- observe(point(routine, rep(0, 5), rounding_unit = 1))
 stopifnot(!length(at_cutoff$messages),
           identical(reported$messages, size_notice), reported$value$status == "reported",
-          identical(declined$messages, size_notice), declined$value$status == "declined",
-          identical(withheld$messages, size_notice), withheld$value$status == "withheld",
+          identical(declined$messages, c(size_notice, fallback_skip)), declined$value$status == "declined",
+          identical(withheld$messages, c(size_notice, fallback_skip)), withheld$value$status == "withheld",
+          all(vapply(list(at_cutoff, reported, declined, withheld),
+                     function(x) sum(x$warnings == anchor_warning) == 1L, logical(1))),
           identical(reported$value$method, "anchoredRI"),
           is.null(reported$value$diagnostics$anchorRefine),
           is.na(declined$value$method), identical(declined$value$anchoredRI_status, "declined"),
-          identical(declined$value$diagnostics$anchorRefine$reason, "invalid_anchor_panel"),
+          identical(declined$value$diagnostics$anchorRefine$status, "skipped"),
+          identical(declined$value$diagnostics$anchorRefine$reason, fallback_skip),
           is.na(withheld$value$method), identical(withheld$value$anchoredRI_status, "withheld"),
           all(vapply(list(reported, declined, withheld),
                      function(x) x$value$rounding_unit == 1, logical(1))))

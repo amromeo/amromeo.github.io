@@ -92,7 +92,7 @@ stage1_roots <- function(statistic, n) {
       stats::uniroot(f, c(0, log1p(h) + 2), tol = 1e-14)$root)
 }
 
-stage1_null_p <- function(statistic, n = 40L) {
+stage1_null_p <- function(statistic, n) {
     if (!is.finite(statistic) || statistic < 0) stop("Invalid LRT statistic")
     if (statistic == 0) return(1)
     # For V ~ chi-square(n-1), T = A + n*(exp(t)-1-t), t=log(V/n)
@@ -152,8 +152,9 @@ stage1_uniforms <- function(seed, n) {
 
 # The check is conditional on the routine-data model. It never changes the fit.
 stage1_check <- function(anchors, fit, decimals, seed, increment = NULL) {
+    n <- length(anchors)
     result <- function(status, reason, statistic = NA_real_, p = NA_real_) {
-        list(status = status, reason = reason, statistic = statistic, p = p)
+        list(status = status, reason = reason, statistic = statistic, p = p, anchor_n = n)
     }
     scalar <- function(x) is.numeric(x) && length(x) == 1L && is.finite(x)
     fields <- c("Mu", "Sigma", "Lambda", "Shift")
@@ -162,7 +163,7 @@ stage1_check <- function(anchors, fit, decimals, seed, increment = NULL) {
         return(result("check_failed", "invalid_model_parameters"))
     if (fit$Lambda < 0 || fit$Shift < 0)
         return(result("check_failed", "unsupported_model"))
-    if (!is.numeric(anchors) || length(anchors) != 40L || any(!is.finite(anchors)) ||
+    if (!is.numeric(anchors) || n < 40L || any(!is.finite(anchors)) ||
         any(anchors < 0))
         return(result("check_failed", "invalid_anchor_panel"))
     if (is.null(increment)) {
@@ -185,12 +186,12 @@ stage1_check <- function(anchors, fit, decimals, seed, increment = NULL) {
         return(result("decline", "structural_incompatibility", Inf, 0))
     flat <- bins$lower$cdf == bins$upper$cdf & bins$lower$survival == bins$upper$survival
     if (anyNA(flat) || any(flat)) return(result("check_failed", "unresolved_bin_probability"))
-    y <- tryCatch(stage1_randomized_scores(bins, stage1_uniforms(seed, length(anchors))),
-                  error = function(e) rep(NA_real_, length(anchors)))
+    y <- tryCatch(stage1_randomized_scores(bins, stage1_uniforms(seed, n)),
+                  error = function(e) rep(NA_real_, n))
     if (any(!is.finite(y))) return(result("check_failed", "nonfinite_normal_score"))
     statistic <- stage1_statistics(matrix(y, ncol = 1L))[[1L]]
     if (!is.finite(statistic)) return(result("check_failed", "degenerate_or_nonfinite_statistic"))
-    p <- tryCatch(stage1_null_p(statistic), error = function(e) NA_real_)
+    p <- tryCatch(stage1_null_p(statistic, n), error = function(e) NA_real_)
     if (!is.finite(p)) return(result("check_failed", "null_integration_failed", statistic))
     if (p < 0.01) return(result("decline", "p_below_threshold", statistic, p))
     result("keep", "within_threshold", statistic, p)

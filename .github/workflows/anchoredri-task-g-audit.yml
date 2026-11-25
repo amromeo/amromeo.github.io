@@ -37,7 +37,7 @@ jobs:
               R CMD check --no-manual anchoredRI_0.4.0.tar.gz
               grep -qx "Status: OK" anchoredRI.Rcheck/00check.log
             '
-          tar czf task-g-runtime.tgz task-g-runtime
+          tar czf task-g-runtime.tgz task-g-runtime/deps task-g-runtime/package-lib
           sha256sum task-g-runtime.tgz > task-g-runtime.sha256
       - uses: actions/upload-artifact@v4
         if: always()
@@ -77,7 +77,7 @@ jobs:
           mkdir audit-results
           lscpu > audit-results/cpu.txt
           docker run --rm --platform linux/amd64 -v "$PWD:/work" -w /work \
-            -e R_LIBS=/work/task-g-runtime/package-lib:/work/task-g-runtime/cran:/work/task-g-runtime/deps \
+            -e R_LIBS=/work/task-g-runtime/package-lib:/work/task-g-runtime/deps \
             -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -e OPENBLAS_CORETYPE=CORE2 \
             -e GLIBC_TUNABLES=glibc.cpu.hwcaps=-AVX512F,-AVX2,-AVX,-FMA,-FMA4 \
             "$TASK_G_IMAGE" Rscript --vanilla "$study/audit-package.R" fixtures "audit-results/audit-$AUDIT_GROUP.csv"

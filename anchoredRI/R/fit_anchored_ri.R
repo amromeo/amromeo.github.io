@@ -14,6 +14,9 @@ fit_anchored_ri <- function(value, setting, anchor,
     message("RIbench accuracy between 5,000 and 50,000 routine results has not been tested directly.")
 
   data <- .arm_b_data(value, setting, anchor, transform, shift_bounds, rounding_unit, fit_seed)
+  if (length(anchor) != 40L)
+    warning("Task G evaluated both methods with exactly 40 screened patients.",
+            call. = FALSE)
   try_fallback <- safeguard && fallback
   fit <- if (try_fallback) {
     tryCatch(.arm_b_optimize(data, transform, fit_seed), error = identity)

@@ -7,14 +7,14 @@
 # peak detection are called directly from that version. The anchor election
 # and tracking rule are modifications by the anchorRefine project (GPL-3).
 
-stage2_empty_election <- function(reason, K) {
+stage2_empty_election <- function(reason, K, anchor_n) {
     list(ok = FALSE, reason = reason, K = K, index = NA_integer_,
          winner = NA_integer_, peak_x = NA_real_, bounds = c(NA_real_, NA_real_),
          closed_right = NA, target = NA_real_, anchor_median = NA_real_,
          quantiles = c(NA_real_, NA_real_), votes = NA_integer_,
          runner_up = NA_integer_, counts = integer(), edges = numeric(),
          peak_indices = integer(), coordinates = numeric(),
-         assignments = rep(NA_integer_, 40L))
+         assignments = rep(NA_integer_, anchor_n))
 }
 
 stage2_valid_density <- function(dens) {
@@ -65,8 +65,9 @@ stage2_assess_election <- function(election, K) {
 }
 
 stage2_elect_peak <- function(dens, peaks, valleys, anchors, h, K) {
-    fail <- function(reason) stage2_empty_election(reason, K)
-    if (!is.numeric(anchors) || length(anchors) != 40L ||
+    anchor_n <- length(anchors)
+    fail <- function(reason) stage2_empty_election(reason, K, anchor_n)
+    if (!is.numeric(anchors) || anchor_n < 40L ||
         any(!is.finite(anchors)) || any(anchors < 0))
         return(fail("invalid_anchor_panel"))
     if (!stage2_valid_anchor_grid(anchors, h))
@@ -92,11 +93,11 @@ stage2_elect_peak <- function(dens, peaks, valleys, anchors, h, K) {
     basin <- findInterval(lower, edges)
     inside <- which(basin >= 1L & basin <= length(peaks) & upper > lower)
     whole <- inside[upper[inside] <= edges[basin[inside] + 1L]]
-    assignments <- rep(NA_integer_, 40L)
+    assignments <- rep(NA_integer_, anchor_n)
     assignments[whole] <- basin[whole]
     counts <- tabulate(assignments, nbins = length(peaks))
     leaders <- which(counts == max(counts))
-    election <- stage2_empty_election("undecided", K)
+    election <- stage2_empty_election("undecided", K, anchor_n)
     election$counts <- counts
     election$votes <- max(counts)
     election$runner_up <- if (length(counts) == 1L) 0L else sort(counts, decreasing = TRUE)[2L]
@@ -121,10 +122,10 @@ stage2_elect_peak <- function(dens, peaks, valleys, anchors, h, K) {
 stage2_peak_stop <- function(reason) stop(paste0("stage2_peak: ", reason), call. = FALSE)
 
 stage2_peak_grid <- function(x, ab, nbin, m) {
-    dens <- tryCatch(.refineR_function("ashDensity")(x = x, ab = ab, nbin = nbin, m = m),
+    dens <- tryCatch(.refineR_200$ashDensity(x = x, ab = ab, nbin = nbin, m = m),
                      error = function(e) stage2_peak_stop("ash_density_error"))
     if (!stage2_valid_density(dens)) stage2_peak_stop("invalid_density")
-    extrema <- tryCatch(.refineR_function("findPeaksAndValleys")(dens),
+    extrema <- tryCatch(.refineR_200$findPeaksAndValleys(dens),
                         error = function(e) stage2_peak_stop("peak_detection_error"))
     if (!length(extrema$peaks)) stage2_peak_stop("no_detected_peak")
     if (!stage2_grid_indices(extrema$peaks, length(dens$x)))
@@ -137,7 +138,7 @@ stage2_first_election <- function(x, ab, mStart, anchors, h, K) {
         grid <- stage2_peak_grid(x, ab, 512L, mStart)
         stage2_elect_peak(grid$density, grid$peaks, grid$valleys, anchors, h, K)
     }, error = function(e) {
-        stage2_empty_election(sub("^stage2_peak: ", "", conditionMessage(e)), K)
+        stage2_empty_election(sub("^stage2_peak: ", "", conditionMessage(e)), K, length(anchors))
     })
 }
 
@@ -148,8 +149,8 @@ stage2_tracking_coordinates <- function(election, lambda) {
         if (length(lambda) != 1L || !is.finite(lambda)) stage2_peak_stop("invalid_lambda")
         # At zero upstream gives the positive-domain limit, including -Inf
         # for logs. Raw ASH windows can extend below measurement support.
-        bounds <- refineR::BoxCox(pmax(0, bounds), lambda)
-        target <- refineR::BoxCox(target, lambda)
+        bounds <- .refineR_200$BoxCox(pmax(0, bounds), lambda)
+        target <- .refineR_200$BoxCox(target, lambda)
     }
     if (!is.finite(target)) stage2_peak_stop("nonfinite_target")
     if (anyNA(bounds) || bounds[1L] >= bounds[2L]) stage2_peak_stop("empty_mapped_basin")

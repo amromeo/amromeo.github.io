@@ -2,10 +2,17 @@
 .fit_anchor_refine <- function(value, anchor, unit, probs, seed, pit_seed) {
   result <- list(status = "withheld", reason = "", weight = .25,
                  rounding_unit = unit, fit_seed = seed, pit_seed = pit_seed,
-                 routine_n = sum(value >= 0), parent = NULL, blend = NULL, check = NULL,
+                 routine_n = sum(value >= 0), anchor_n = length(anchor),
+                 parent = NULL, blend = NULL, check = NULL,
                  limits = stats::setNames(rep(NA_real_, length(probs)), .ri_limit_names(probs)))
   result$candidate_limits <- result$limits
-  if (length(anchor) != 40L || any(anchor < 0)) {
+  if (result$anchor_n < 40L) {
+    result$status <- "skipped"
+    result$reason <- "The anchorRefine fallback requires at least 40 screened patients."
+    message(result$reason)
+    return(result)
+  }
+  if (any(anchor < 0)) {
     result$reason <- "invalid_anchor_panel"
     return(result)
   }
@@ -50,8 +57,9 @@
                       error = function(e) list(status = "check_failed", reason = conditionMessage(e),
                                                statistic = NA_real_, p = NA_real_))
   result$check <- checked
-  endpoints <- tryCatch(refineR::getRI(post$fit, RIperc = probs, UCMargins = FALSE)$PointEst,
-                        error = identity)
+  model <- post$fit
+  endpoints <- tryCatch(.refineR_200$cdfTruncatedBoxCox(model$Mu, model$Sigma, model$Lambda,
+                                                      model$Shift, probs), error = identity)
   if (inherits(endpoints, "error")) {
     result$reason <- conditionMessage(endpoints)
     return(result)

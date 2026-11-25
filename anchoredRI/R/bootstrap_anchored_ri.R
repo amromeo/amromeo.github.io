@@ -4,7 +4,8 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
                                   n_boot = 200L, conf = .95, seed = 123L,
                                   workers = 1L, shift_bounds = NULL,
                                   safeguard = TRUE, probs = c(.025,.975),
-                                  rounding_unit = NULL, fit_seed = 1L) {
+                                  rounding_unit = NULL, fit_seed = 1L, fallback = TRUE,
+                                  fallback_seed = 123L, pit_seed = 1L) {
   transform <- match.arg(transform)
   integer_scalar <- function(x, minimum) is.numeric(x) && length(x)==1L &&
     is.finite(x) && x==floor(x) && x>=minimum && x<=.Machine$integer.max
@@ -13,7 +14,16 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
       !is.finite(conf) || conf<=0 || conf>=1)
     stop("Use n_boot >= 2, workers >= 1, a nonnegative integer seed, and 0 < conf < 1.")
   point <- fit_anchored_ri(value, setting, anchor, transform, shift_bounds, safeguard, probs,
-                           rounding_unit = rounding_unit, fit_seed = fit_seed, fallback = FALSE)
+                           rounding_unit = rounding_unit, fit_seed = fit_seed, fallback = fallback,
+                           fallback_seed = fallback_seed, pit_seed = pit_seed)
+  fallback_reported <- identical(point$method, "anchorRefine")
+  ci_reason <- ""
+  if (fallback_reported) {
+    ci_reason <- "Fallback intervals are not yet covered by the bootstrap."
+    message(ci_reason)
+  } else if (point$status != "reported") {
+    ci_reason <- "No point interval was reported."
+  }
   existed <- exists(".Random.seed",envir=.GlobalEnv,inherits=FALSE)
   if (existed) previous_seed <- get(".Random.seed",envir=.GlobalEnv,inherits=FALSE)
   on.exit({
@@ -81,19 +91,24 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
                     limited, if (limited == 1L) "draw" else "draws"), call. = FALSE)
   limit_names <- .ri_limit_names(probs)
   ci <- matrix(NA_real_,length(probs),2,dimnames=list(limit_names,c("low","high")))
-  if (point$status=="reported" && sum(ok)>=max(2L,ceiling(.8*n_boot)))
-    ci[,] <- t(vapply(draws[ok,limit_names,drop=FALSE],
-       quantile,numeric(2),probs=c((1-conf)/2,1-(1-conf)/2),names=FALSE))
-  else if(point$status=="reported")
-    warning("Fewer than 80% of bootstrap draws were accepted; confidence limits are unavailable.")
-  list(fit=point,limits=point$limits,method=point$method,probs=point$probs,ci=ci,confidence=conf,bootstrap=draws,
+  if (identical(point$method, "anchoredRI")) {
+    if (sum(ok) >= max(2L, ceiling(.8 * n_boot))) {
+      ci[,] <- t(vapply(draws[ok,limit_names,drop=FALSE],
+         quantile,numeric(2),probs=c((1-conf)/2,1-(1-conf)/2),names=FALSE))
+    } else {
+      ci_reason <- "Fewer than 80% of bootstrap draws were accepted. Confidence limits are unavailable."
+      warning(ci_reason, call. = FALSE)
+    }
+  }
+  list(fit=point,limits=point$limits,method=point$method,probs=point$probs,ci=ci,ci_reason=ci_reason,
+       confidence=conf,bootstrap=draws,
        rounding_unit=point$rounding_unit, optimizer_status=point$optimizer_status,
        optimizer_code=point$optimizer_code, optimizer_message=point$optimizer_message,
        runner_up=point$runner_up,
        status=point$status,declined=point$declined,reason=point$reason,
        recommendation=point$recommendation,safeguard=point$safeguard,
        diagnostics=list(point=point$diagnostics,bootstrap=diagnostics),
-       ci_conditional_on_safeguard=safeguard,
+       ci_conditional_on_safeguard=safeguard && !fallback_reported,
        requested=n_boot,successful=sum(ok),failed=sum(draws$status=="failed"),
        declined_draws=sum(draws$status=="declined"),
        withheld_draws=sum(draws$status=="withheld"),

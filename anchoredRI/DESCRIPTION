@@ -24,7 +24,8 @@ Description: Research software for estimating a reference distribution in one or
 License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 4.1.0)
-Imports: stats, utils, parallel, future.apply, refineR (== 2.0.0)
+Imports: stats, utils, parallel, graphics, ash, future.apply
+Suggests: refineR
 URL: https://amromeo.github.io/anchoredRI/,
     https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI
 SystemRequirements: C++17

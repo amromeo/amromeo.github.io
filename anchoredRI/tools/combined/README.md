@@ -10,8 +10,7 @@ an absolute tolerance of 1e-10. A nonreturn must keep both endpoints missing.
 [Task G decision](https://github.com/amromeo/amromeo.github.io/blob/bd0af4d5eb7b0c7c6657b9389a26bf32377088d3/anchoredRI/tools/combined/DECISION.md)
 
 The Actions workflow builds the package once in the container from the
-audited Task G run. It installs the archived CRAN refineR 2.0.0 build
-and Stage 3 dependencies from the frozen library bundle. Each of the
+audited Task G run. It uses Stage 3 dependencies from the frozen library bundle. The package check includes the external refineR comparator. The audit runs with the external refineR package absent to exercise the vendored fallback. Each of the
 12 jobs installs that same compiled library and pins the BLAS settings.
 `prepare-audit.py` verifies the data against the published checksums.
 `audit-package.R` compares the public function's results with the recorded
