@@ -9,7 +9,25 @@ env:
   OPENBLAS_NUM_THREADS: '1'
   OMP_NUM_THREADS: '1'
 jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 07176a8cc46487ca9b4b427e2b3f917f185c22ae
+          path: pkg
+          sparse-checkout: anchoredRI/downloads
+      - run: |
+          echo 'dc27ca817f37f35beea494f2aaeb2811f2363eeda48e8c3408d0b2cec4e28f8e  pkg/anchoredRI/downloads/anchoredRI_0.3.1.tar.gz' | sha256sum -c -
+          mkdir rlib
+          docker run --rm --platform linux/amd64 -v "$PWD:/work" -w /work -e R_LIBS=/work/rlib rocker/r-ver@sha256:5e8963d73b87865e0ad779df4202555fb1b436ee95dc7d7442450308b8ea77f3 bash -ec 'Rscript -e "install.packages(c(\"digest\",\"jsonlite\"),lib=\"/work/rlib\",repos=\"https://cloud.r-project.org\")"; R CMD INSTALL -l /work/rlib pkg/anchoredRI/downloads/anchoredRI_0.3.1.tar.gz; Rscript -e "library(anchoredRI); library(digest); library(jsonlite)"'
+          tar czf rlib.tgz rlib
+      - uses: actions/upload-artifact@v4
+        with:
+          name: taskg-runtime
+          path: rlib.tgz
   fit:
+    needs: build
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -28,22 +46,15 @@ jobs:
             results/stage3-confirmation-45463873162/task-g-index.csv
             results/stage3-confirmation-45463873162/task-g-manifest.json
           sparse-checkout-cone-mode: false
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
         with:
-          ref: 07176a8cc46487ca9b4b427e2b3f917f185c22ae
-          path: pkg
-          sparse-checkout: anchoredRI/downloads
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: '4.5.0'
+          name: taskg-runtime
+          path: runtime
       - run: |
           python -m pip install pandas
           python anchoredRI/tools/combined/sample.py source/stage3/design-confirmation.csv
           mkdir out
           cp audit.csv out/
-          echo 'dc27ca817f37f35beea494f2aaeb2811f2363eeda48e8c3408d0b2cec4e28f8e  pkg/anchoredRI/downloads/anchoredRI_0.3.1.tar.gz' | sha256sum -c -
-          Rscript -e 'install.packages(c("digest","jsonlite"),repos="https://cloud.r-project.org")'
-          R CMD INSTALL pkg/anchoredRI/downloads/anchoredRI_0.3.1.tar.gz
           cd source
           python - ${{ matrix.group }} <<'PY'
           import pandas as pd,sys,subprocess
@@ -52,7 +63,10 @@ jobs:
           subprocess.run(['git','sparse-checkout','add','--skip-checks',*[root+s for s in a[int(sys.argv[1])::32]]],check=True)
           PY
           cd ..
-          Rscript anchoredRI/tools/combined/fit.R ${{ matrix.mode }} ${{ matrix.group }}
+          tar xzf runtime/rlib.tgz
+          lscpu > out/cpu.txt
+          sha256sum runtime/rlib.tgz > out/runtime.sha256
+          docker run --rm --platform linux/amd64 -v "$PWD:/work" -w /work -e R_LIBS=/work/rlib -e OPENBLAS_CORETYPE=CORE2 -e OPENBLAS_NUM_THREADS=1 -e OMP_NUM_THREADS=1 -e GLIBC_TUNABLES=glibc.cpu.hwcaps=-AVX512F,-AVX2,-AVX,-FMA,-FMA4 rocker/r-ver@sha256:5e8963d73b87865e0ad779df4202555fb1b436ee95dc7d7442450308b8ea77f3 Rscript anchoredRI/tools/combined/fit.R ${{ matrix.mode }} ${{ matrix.group }}
       - uses: actions/upload-artifact@v4
         with:
           name: taskg-${{ matrix.mode }}-${{ matrix.group }}
