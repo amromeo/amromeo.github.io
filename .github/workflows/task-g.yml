@@ -1,0 +1,59 @@
+name: Task G confirmation and paired order audit
+on:
+  push:
+    branches: [study/combined]
+    paths: [.github/workflows/task-g.yml]
+permissions:
+  contents: read
+env:
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+jobs:
+  fit:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [primary, audit]
+        group: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: amromeo/anchorRefine
+          ref: 638e2d3500faa01d4e2816895a95d7a6685567a0
+          path: source
+          sparse-checkout: |
+            stage3/design-confirmation.csv
+            results/stage3-confirmation-45463873162/task-g-index.csv
+            results/stage3-confirmation-45463873162/task-g-manifest.json
+          sparse-checkout-cone-mode: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 07176a8cc46487ca9b4b427e2b3f917f185c22ae
+          path: pkg
+          sparse-checkout: anchoredRI/downloads
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+      - run: |
+          python -m pip install pandas
+          python anchoredRI/tools/combined/sample.py source/stage3/design-confirmation.csv
+          mkdir out
+          cp audit.csv out/
+          echo 'dc27ca817f37f35beea494f2aaeb2811f2363eeda48e8c3408d0b2cec4e28f8e  pkg/anchoredRI/downloads/anchoredRI_0.3.1.tar.gz' | sha256sum -c -
+          Rscript -e 'install.packages(c("digest","jsonlite"),repos="https://cloud.r-project.org")'
+          R CMD INSTALL pkg/anchoredRI/downloads/anchoredRI_0.3.1.tar.gz
+          cd source
+          python - ${{ matrix.group }} <<'PY'
+          import pandas as pd,sys,subprocess
+          root='results/stage3-confirmation-45463873162/'
+          a=sorted(set(pd.read_csv(root+'task-g-index.csv').archive))
+          subprocess.run(['git','sparse-checkout','add','--skip-checks',*[root+s for s in a[int(sys.argv[1])::32]]],check=True)
+          PY
+          cd ..
+          Rscript anchoredRI/tools/combined/fit.R ${{ matrix.mode }} ${{ matrix.group }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: taskg-${{ matrix.mode }}-${{ matrix.group }}
+          path: out/
