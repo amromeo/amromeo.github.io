@@ -1,3 +1,10 @@
+# anchoredRI 0.4.0
+
+- `fit_anchored_ri()` tries the checked anchorRefine Stage 3 post-fit blend when safeguarded anchoredRI declines or withholds an interval. The blend uses the Stage 2 peak-choice fit with weight 0.25. Set `fallback = FALSE` for the anchoredRI-only point fit.
+- The result identifies the reporting method and retains the first decision and the diagnostics from both attempted methods. If neither reports an interval, the result gives the screened-patient advice.
+- The fallback requires refineR 2.0.0 and uses Stage 1's rounding-aware randomized PIT check. Bootstrap intervals continue to use Arm B.
+- The size message records that accuracy between 5,000 and 50,000 routine results has not been tested directly.
+
 # anchoredRI 0.3.1
 
 - Large-dataset messages now recommend refineR; anchorRefine is labeled as in development. No change to fitting or safeguard decisions.

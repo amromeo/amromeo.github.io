@@ -13,7 +13,7 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
       !is.finite(conf) || conf<=0 || conf>=1)
     stop("Use n_boot >= 2, workers >= 1, a nonnegative integer seed, and 0 < conf < 1.")
   point <- fit_anchored_ri(value, setting, anchor, transform, shift_bounds, safeguard, probs,
-                           rounding_unit = rounding_unit, fit_seed = fit_seed)
+                           rounding_unit = rounding_unit, fit_seed = fit_seed, fallback = FALSE)
   existed <- exists(".Random.seed",envir=.GlobalEnv,inherits=FALSE)
   if (existed) previous_seed <- get(".Random.seed",envir=.GlobalEnv,inherits=FALSE)
   on.exit({
@@ -86,7 +86,7 @@ bootstrap_anchored_ri <- function(value, setting, anchor,
        quantile,numeric(2),probs=c((1-conf)/2,1-(1-conf)/2),names=FALSE))
   else if(point$status=="reported")
     warning("Fewer than 80% of bootstrap draws were accepted; confidence limits are unavailable.")
-  list(fit=point,limits=point$limits,probs=point$probs,ci=ci,confidence=conf,bootstrap=draws,
+  list(fit=point,limits=point$limits,method=point$method,probs=point$probs,ci=ci,confidence=conf,bootstrap=draws,
        rounding_unit=point$rounding_unit, optimizer_status=point$optimizer_status,
        optimizer_code=point$optimizer_code, optimizer_message=point$optimizer_message,
        runner_up=point$runner_up,

@@ -43,9 +43,7 @@ stopifnot(continuous$value$rounding_unit == 0,
           identical(continuous$messages, "Inferred rounding unit is 0 (no shared increment found)."))
 
 # Only routine results count toward the size threshold. Check every reporting status.
-size_notice <- paste("RIbench accuracy between 5,000 and 50,000 routine results has not been tested.",
-                     "At 50,000, refineR was more accurate. For datasets this large, use refineR.",
-                     "anchorRefine, which adds screened patients to refineR, is still in development.")
+size_notice <- "RIbench accuracy between 5,000 and 50,000 routine results has not been tested directly."
 routine <- rep(10:20, length.out = 5001)
 at_cutoff <- observe(point(routine[-1L], a, rounding_unit = 1, safeguard = FALSE))
 reported <- observe(point(routine, a, rounding_unit = 1, safeguard = FALSE))
@@ -55,8 +53,17 @@ stopifnot(!length(at_cutoff$messages),
           identical(reported$messages, size_notice), reported$value$status == "reported",
           identical(declined$messages, size_notice), declined$value$status == "declined",
           identical(withheld$messages, size_notice), withheld$value$status == "withheld",
+          identical(reported$value$method, "anchoredRI"),
+          is.null(reported$value$diagnostics$anchorRefine),
+          is.na(declined$value$method), identical(declined$value$anchoredRI_status, "declined"),
+          identical(declined$value$diagnostics$anchorRefine$reason, "invalid_anchor_panel"),
+          is.na(withheld$value$method), identical(withheld$value$anchoredRI_status, "withheld"),
           all(vapply(list(reported, declined, withheld),
                      function(x) x$value$rounding_unit == 1, logical(1))))
+disabled <- observe(point(routine, a, rounding_unit = 1, fallback = FALSE))$value
+stopifnot(identical(disabled$limits, declined$value$limits),
+          identical(disabled$anchoredRI_reason, declined$value$anchoredRI_reason),
+          is.null(disabled$diagnostics$anchorRefine))
 
 boot <- observe(bootstrap_anchored_ri(routine, rep("one", length(routine)), a, "identity",
                                      n_boot = 2, safeguard = FALSE))

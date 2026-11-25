@@ -116,7 +116,7 @@
   result
 }
 
-.arm_b_fit <- function(value, setting, anchor, transform, shift_bounds, rounding_unit, fit_seed) {
+.arm_b_data <- function(value, setting, anchor, transform, shift_bounds, rounding_unit, fit_seed) {
   if (!is.numeric(value) || !is.numeric(anchor) || length(anchor) < 2L ||
       length(value) != length(setting) || !length(unique(setting)) %in% 1:2 ||
       anyNA(setting) || any(!is.finite(c(value, anchor))))
@@ -126,8 +126,18 @@
     stop("shift_bounds applies only to shifted_log or auto.")
   check_integer(fit_seed, "fit_seed", 0L)
   d <- .mixture_data(value, setting, anchor, shift_bounds)
-  unit <- .measurement_unit(d$x, rounding_unit)
-  blog <- if (d$positive) max(.005, .05 * .routine_scale(log(value))) else .005
+  d$unit <- .measurement_unit(d$x, rounding_unit)
+  d
+}
+
+.arm_b_fit <- function(value, setting, anchor, transform, shift_bounds, rounding_unit, fit_seed) {
+  d <- .arm_b_data(value, setting, anchor, transform, shift_bounds, rounding_unit, fit_seed)
+  .arm_b_optimize(d, transform, fit_seed)
+}
+
+.arm_b_optimize <- function(d, transform, fit_seed) {
+  unit <- d$unit
+  blog <- if (d$positive) max(.005, .05 * .routine_scale(log(d$value))) else .005
   rules <- c(unit, .05 * d$spread, .log_sd_factor(blog))
   families <- if (transform == "auto") c("identity", if (d$positive) "log", "shifted_log") else transform
   # A feasible zero shift uses the ordinary log fit as one shifted-log start.

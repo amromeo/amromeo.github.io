@@ -28,13 +28,11 @@ stopifnot(off$status=='reported',!off$safeguard$enabled,!off$declined,
 large <- apply(raw(4),rep(x,length.out=50000),a)
 small <- apply(raw(4),rep(x,length.out=49999),a)
 screening_advice <- "Obtain at least 120 screened patients or verify a suitable published interval with 20 screened patients."
-large_advice <- paste(screening_advice, "For datasets this large, use refineR.",
-                      "anchorRefine, which adds screened patients to refineR, is still in development.")
-stopifnot(identical(large$recommendation, large_advice),
+stopifnot(identical(large$recommendation, screening_advice),
           identical(small$recommendation, screening_advice))
 unavailable <- apply(raw(0),x,rep(0,40))
 stopifnot(unavailable$status=='withheld',unavailable$technical_withholding,all(is.na(unavailable$limits)),
-          identical(decide(unavailable$safeguard, TRUE, 50000L)$recommendation, large_advice),
+          identical(decide(unavailable$safeguard, TRUE, 50000L)$recommendation, screening_advice),
           identical(decide(unavailable$safeguard, TRUE, 49999L)$recommendation, screening_advice))
 # Strict inequalities and one-sided skip, including lower one-sided requests.
 boundary <- check(raw(0),c(raw(0)$limits[1],0,3),a)
