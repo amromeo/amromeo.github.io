@@ -1,5 +1,5 @@
 'use strict';
-const labels={anchored40:'anchoredRI + 40 anchors + services',pooled40:'Pooled mixture + 40 anchors',refineR:'refineR',gmm_largest:'Mixture without anchors (largest component)',gmm_lowest:'Mixture without anchors (lowest-component sensitivity)',direct40:'40 screened alone',direct120:'120 screened alone',direct400:'400 screened alone'};
+const labels={anchored40:'anchoredRI + 40 screened patients + setting labels',pooled40:'Pooled mixture + 40 screened patients',refineR:'refineR',gmm_largest:'Mixture without screened patients (largest component)',gmm_lowest:'Mixture without screened patients (lowest-component sensitivity)',direct40:'40 screened alone',direct120:'120 screened alone',direct400:'400 screened alone'};
 const methods=['anchored40','pooled40','refineR','gmm_largest','gmm_lowest','direct40','direct120','direct400'];
 const overlaps=['separated','moderate','heavy'],names=['Separated','Moderate','Heavy'],fractions=[.1,.3,.5,.7,.9];
 const el=id=>document.getElementById(id),fmt=x=>x===''||x==null||!Number.isFinite(Number(x))?'Unavailable':Number(x).toFixed(2);
@@ -18,7 +18,7 @@ Promise.all([get('assets/stress-grid/results.json'),get('assets/comparison-study
  }).join('')+'</tr>').join('')+'</tbody></table></article>').join('');
  const selected=r=>r.family===family&&r.overlap===el('overlap').value&&+r.affected===+el('affected').value;
  const rr=old.examples.filter(selected),first=rr[0];
- el('truth').textContent='True interval: '+fmt(first.true_lower)+'–'+fmt(first.true_upper)+'. Overall affected fraction: '+(+first.affected*100)+'%; simulated services: '+Math.round((+first.affected-.05)*100)+'% / '+Math.round((+first.affected+.05)*100)+'%.';
+ el('truth').textContent='True interval: '+fmt(first.true_lower)+'–'+fmt(first.true_upper)+'. Share of patients with disease: '+(+first.affected*100)+'%; simulated services: '+Math.round((+first.affected-.05)*100)+'% / '+Math.round((+first.affected+.05)*100)+'%.';
  el('scenario-rows').innerHTML=methods.map(m=>data.summary.find(r=>selected(r)&&r.method===m)).map(r=>'<tr><th scope="row">'+labels[r.method]+'</th><td>'+fmt(r.mean_error)+'%</td><td>'+fmt(r.median_error)+'%</td><td>'+fmt(r.p90_error)+'%</td><td>'+fmt(r.mean_lower_error)+' / '+fmt(r.mean_upper_error)+'</td><td>'+r.large_error_count+'/'+r.attempted+'</td><td>'+r.failed+'</td></tr>').join('');
  el('paired-rows').innerHTML=data.paired.filter(selected).map(r=>'<tr><th scope="row">'+labels[r.method_a]+'<br>vs '+labels[r.method_b]+'</th><td>'+fmt(r.mean_difference)+'</td><td>'+fmt(r.mcse_difference)+'</td><td>'+r.wins_a+'/'+r.finite_pairs+'</td></tr>').join('');
  el('rows').innerHTML=rr.map(r=>'<tr><th scope="row">'+labels[r.method]+'</th><td>'+fmt(r.lower)+'<small>'+fmt(r.lower_ci_low)+'–'+fmt(r.lower_ci_high)+'</small></td><td>'+fmt(r.upper)+'<small>'+fmt(r.upper_ci_low)+'–'+fmt(r.upper_ci_high)+'</small></td><td>'+fmt(r.width_error)+'%</td><td>'+r.bootstrap_successful+'/'+r.bootstrap_requested+'</td></tr>').join('');

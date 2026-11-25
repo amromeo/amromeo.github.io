@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prepared-cohort comparison · anchoredRI</title>
+  <meta name="description" content="Archived comparison of anchoredRI and refineR on prepared cohorts, with saved fits and bootstrap results.">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/guide.css">
+  <link rel="stylesheet" href="assets/guided.css">
+  <script src="assets/guided.js?v=guide" type="module"></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="top"><div class="top-inner">
+  <a class="brand" href="index.html" aria-label="anchoredRI home"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
+  <nav aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="help.html">Package help</a>
+    <a href="earlier-studies.html">Earlier studies</a>
+    <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Source</a>
+  </nav>
+</div></header>
+<main id="content" class="guide-page">
+<p class="archive-banner">This page describes versions 0.1.0 and 0.2.0. The current version is 0.4.0. <a href="evidence.html">See current results</a>.</p>
+<div class="guided-hero">
+    <h1>Prepared-cohort comparison</h1>
+    <p class="lede">Both methods receive the same 5,000 eligible routine results. refineR uses the authors’ bootstrap workflow. anchoredRI also receives 40 independent screened patients and the service labels.</p>
+    <p class="pilot-note">The controls show saved fits from before the reporting checks were added. The four worked examples and the comparison on 220 simulated datasets use the original estimates.</p>
+  </div>
+  <section id="experiment" aria-labelledby="experiment-title">
+    <div class="section-head"><div><p class="kicker">Prepared cohort</p><h2 id="experiment-title">Limits and uncertainty</h2></div><a href="assets/offset/fits.csv" download>Download results</a></div>
+    <div class="guided-workspace">
+      <div class="controls">
+        <label for="profile">Reference distribution</label>
+        <select id="profile"><option value="normal">Normal, separated disease</option><option value="overlap">Normal, overlapping disease</option><option value="lognormal">Right-skewed</option><option value="shifted">Right-skewed and shifted</option></select>
+        <p id="profile-note" class="hint"></p>
+        <label for="dataset">Simulated dataset</label><select id="dataset"><option value="1">Dataset 1</option></select>
+        <dl class="facts"><dt>Routine patients</dt><dd>5,000</dd><dt>Bootstrap resamples</dt><dd>200 per method</dd><dt>Group</dt><dd>One age and sex group</dd><dt>Assay and time period</dt><dd>Stable by construction</dd><dt>Results per patient</dt><dd>One</dd></dl>
+        <p class="hint">Eligibility is decided before fitting. No results are removed because they fall outside an existing interval.</p>
+      </div>
+      <div class="guided-results">
+        <p id="truth-note" class="truth-note"></p>
+        <div id="guided-chart" aria-label="Estimated reference intervals and confidence intervals"><p>Loading fitted results…</p></div>
+        <p class="chart-key">Thick lines show reference intervals. Thin whiskers show 95% confidence intervals for each limit. The shaded band marks the known reference interval.</p>
+        <div class="table-scroll"><table class="result-table"><thead><tr><th>Method</th><th>Lower limit<br><span>95% CI</span></th><th>Upper limit<br><span>95% CI</span></th><th>Larger limit error</th><th>Reference population inside</th></tr></thead><tbody id="result-rows"></tbody></table></div>
+        <p class="chart-key">Error is the larger absolute difference between an estimated endpoint and its known value. <a href="help.html#mean-percentage-error">MPE</a> averages the percentage errors at both endpoints for this dataset. Reference-population coverage has a 95% target. Reference limits and absolute errors use synthetic units.</p>
+        <p id="fit-status" role="status"></p>
+        <p id="anchor-note" class="chart-key"></p>
+        <p class="chart-key"><a id="anchor-selection-link" href="assets/offset/normal-selection.csv" download>Model comparison</a> · <a id="anchor-bootstrap-link" href="assets/offset/normal-bootstrap.csv" download>All 200 version 0.2 bootstrap fits</a></p>
+      </div>
+    </div>
+    <details class="fit-review" open><summary>Inspect the refineR fit</summary><div class="details-body">
+      <p id="fit-note"></p><a id="fit-link" href="assets/guided/normal-01.svg" target="_blank" rel="noopener">Open full-size fit plot</a>
+      <img id="fit-image" src="assets/guided/normal-01.svg" alt="Original refineR diagnostic plot of the routine histogram, fitted reference distribution and estimated limits">
+      <p>Use the chart and table above for the confidence interval around each limit.</p>
+      <p id="default-fit" hidden><a id="default-fit-link" href="assets/guided/shifted-default-01.svg" target="_blank" rel="noopener">Inspect the initial one-parameter Box-Cox fit</a>. The shifted example uses modBoxCox, specified before looking at its error against truth.</p>
+    </div></details>
+  </section>
+  <section class="story" aria-labelledby="validation-title">
+    <div class="section-head"><div><p class="kicker">Fresh datasets</p><h2 id="validation-title">Does the improvement repeat?</h2></div><a href="assets/offset/validation-summary.csv" download>Download summary</a></div>
+    <p>Each row uses 20 newly generated datasets with 5,000 routine patients. The two versions receive the same patients and screened results. The design varies the offset, skew, disease overlap and screened sample size. These runs compare anchoredRI 0.1 with automatic selection in 0.2; refineR was not rerun in this repeated test.</p>
+    <p class="pilot-note">For the scenario matching the fourth example, mean endpoint error fell from 7.12% to 1.04%. All three unshifted scenarios were unchanged. In the shifted scenario with strong disease overlap, error increased from 8.51% to 11.83% on average. All 440 fits returned estimates; numerical success did not prevent that bias.</p>
+    <div class="table-scroll"><table class="result-table"><thead><tr><th>Scenario</th><th>Original MPE</th><th>Updated MPE</th><th>Updated: better / tied / worse</th><th>Successful pairs</th></tr></thead><tbody id="validation-rows"></tbody></table></div>
+    <p id="validation-status" role="status"></p>
+    <p class="chart-key">MPE is averaged across both endpoints and all successful paired datasets. Smaller is better. The win counts compare errors within each pair; ties differ by no more than 0.000001 percentage point. The CSV also reports the Monte Carlo standard error of the paired change, failures, boundary fits and selected families. Twenty datasets per scenario give a preliminary estimate of performance. These point-estimate runs do not measure confidence-interval coverage.</p>
+    <p><a href="assets/offset/validation-fits.csv" download>Every fresh fit</a> · <a href="assets/offset/validation-design.csv" download>Scenario definitions</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/55eee86b3f4111197b0043cc062ef0b781dc2057/anchoredRI/tools/validate-offset.R">Validation script</a></p>
+  </section>
+  <section class="story" aria-labelledby="workflow-title"><div class="section-head"><h2 id="workflow-title">What follows the authors’ guidance</h2></div>
+    <div class="story-grid">
+      <article><h3>A suitable input population</h3><p>Each fit uses one physiological partition from two eligible services. The expected share of patients with disease is 10% or 25%. Both methods use the same routine patients. In a clinical study, assay comparability, age/sex partitions, repeated patients and high-risk services would need actual review.</p></article>
+      <article><h3>The released refineR workflow</h3><p>refineR 2.0.0 runs 200 bootstrap resamples and reports <code>medianBS</code> estimates with 95% CIs. The normal and lognormal examples use BoxCox. The shifted example uses modBoxCox, and its default fit is available for inspection.</p></article>
+      <article><h3>Direct estimates from 120 and 400</h3><p>These rows use the empirical 2.5th and 97.5th percentiles, as in the original paper’s direct-method comparison. The earlier stress page retains its Gaussian mean-and-SD estimates. The 40-, 120- and 400-person groups of screened patients are nested and independent of routine patients.</p></article>
+      <article><h3>Conditions that challenge each method</h3><p>Overlapping disease can bias refineR even when most patients meet the reference criteria. The shifted lognormal example exposes a limitation of anchoredRI 0.1. Version 0.2 estimates the offset jointly with the mixture. It receives no true distribution parameters. Screened labels are perfect in all examples.</p></article>
+    </div>
+    <p>In version 0.2, automatic selection compares normal, lognormal and shifted-lognormal mixtures with one to three components. BIC scores use the original measurement scale and penalize the extra offset parameter. Every bootstrap resamples both services and screened patients, then repeats the entire selection and offset fit. Numerical bounds and model assumptions still matter; the shifted-log model does not estimate a general Box-Cox power.</p>
+    <p><a href="BENCHMARK.md">Full protocol and assumptions</a> · <a href="https://github.com/amromeo/amromeo.github.io/blob/55eee86b3f4111197b0043cc062ef0b781dc2057/anchoredRI/tools/build-offset-benchmark.R">Updated benchmark script</a> · <a href="assets/offset/versions.txt">Software versions</a> · <a href="downloads/anchoredRI_0.4.0.tar.gz" download>Download anchoredRI 0.4.0</a> · <a href="help.html#install">Install instructions</a></p>
+  </section>
+  <section class="credits"><h3>Sources</h3><p><a href="https://pubmed.ncbi.nlm.nih.gov/34362961/">Ammer et al., 2021: original algorithm and evaluation</a><br><a href="https://pubmed.ncbi.nlm.nih.gov/36610416/">Ammer et al., 2023: practical guide</a><br><a href="https://cloud.r-project.org/web/packages/refineR/vignettes/refineR_package.html">refineR package vignette</a></p><p>anchoredRI is an independent research prototype. All examples are synthetic; no CHOP data were used. Clinical performance is unvalidated. This project was fully AI-developed. <a href="stress.html#development">How the project was developed</a>.</p></section>
+<p class="section-links"><a href="website-sources.html#prepared-cohort-comparison">Number-to-source list</a></p>
+</main>
+<footer>
+  <span>anchoredRI 0.4.0 · Research software</span>
+  <span>Fully AI-developed · <a href="stress.html#development">How the project was developed</a></span>
+</footer>
+</body>
+</html>

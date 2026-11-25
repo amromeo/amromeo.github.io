@@ -1,25 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>anchoredRI · Pediatric reference interval simulator</title>
-  <meta name="description" content="Compare a screened-sample mixture model with refineR on shared synthetic pediatric cohorts. An open-source, fully AI-developed R research package.">
-  <meta name="theme-color" content="#f7f8f3">
-  <link rel="stylesheet" href="assets/site.css?v=screened120400">
-  <script src="assets/site.js?v=screened120400" type="module"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clinic/ward simulator · anchoredRI</title>
+  <meta name="description" content="Archived aPTT-like simulator with adjustable clinic and ward mixtures, screening rules and sample sizes.">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/guide.css">
+  <script src="assets/site.js?v=guide" defer></script>
 </head>
 <body>
-  <a class="skip" href="#experiment">Skip to the experiment</a>
-  <header class="top"><div class="top-inner">
-    <a class="brand" href="#top" aria-label="anchoredRI, back to top"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
-    <nav aria-label="Main navigation"><a href="robustness.html">Completed stress study</a><a href="index.html">Prepared cohort</a><a href="#experiment" aria-current="page">Stress tests</a><a href="#method">Method</a><a href="#install">Install</a><a href="help.html">Help</a><a class="source" href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">GitHub <span aria-hidden="true">↗</span></a></nav>
-  </div></header>
-  <main id="top">
-    <div class="hero">
-      <div class="hero-copy"><p class="kicker">Pediatric reference intervals <span> / </span> Original experiment · anchoredRI 0.1.0</p>
-      <h1>Hospital mixture stress tests</h1>
-      <p class="lede">These earlier experiments include small samples and heavily affected hospital mixtures. The default pooled cohort is 61.25% affected, outside refineR’s majority-non-pathological assumption. <a href="index.html">Use the prepared-cohort comparison for the authors’ recommended workflow.</a></p>
-      <p class="archive-note">The controls display saved results from anchoredRI 0.1.0. These fits predate the safeguard. <a href="robustness.html#release-040">Read the 0.4.0 update and Task G results.</a></p></div>
+<a class="skip" href="#top">Skip to content</a>
+<header class="top"><div class="top-inner">
+  <a class="brand" href="index.html" aria-label="anchoredRI home"><span class="mark" aria-hidden="true"><i></i><i></i></span>anchored<span>RI</span></a>
+  <nav aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="evidence.html">Evidence</a>
+    <a href="help.html">Package help</a>
+    <a href="earlier-studies.html">Earlier studies</a>
+    <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Source</a>
+  </nav>
+</div></header>
+<main id="top" class="guide-page">
+<p class="archive-banner">This page describes version 0.1.0. The current version is 0.4.0. <a href="evidence.html">See current results</a>.</p>
+<div class="hero">
+      <div class="hero-copy">
+      <h1>Clinic/ward simulator</h1>
+      <p class="lede">These earlier experiments include small samples and hospital mixtures with many patients with disease. In the default pooled cohort, 61.25% of patients have disease, so fewer than half meet the reference criteria. <a href="prepared-cohort.html">Use the prepared-cohort comparison for the authors’ recommended workflow.</a></p>
+      </div>
       <div class="truth-card"><span class="card-label">Known reference interval</span><p>24.12 <span>–</span> 35.88 <small>s</small></p>
         <div class="truth-ruler" aria-hidden="true"><i></i></div>
         <span>Central 95% of the simulated reference population</span></div>
@@ -75,11 +83,11 @@
         </article>
         <article id="development"><h3>How this project was developed</h3>
           <p><strong>This project was fully AI-developed.</strong> A pediatric laboratory physician posed the question and directed the exploration. OpenAI ChatGPT designed and implemented the statistical prototype, simulations, R package, tests, documentation and website. The code uses conventional statistics and runs locally in R.</p>
-          <p>The first prototype identified a reference group from differences between settings. In simulations, that assumption struggled when disease prevalence was equal in both settings or disease shifted results toward both lower and higher values. The next version added independent screened observations and allowed an additional component.</p>
+          <p>The first prototype identified a reference group from differences between settings. In simulations, that assumption struggled when the share of patients with disease was the same in both settings or disease shifted results toward both lower and higher values. The next version added independently screened patients and allowed an additional component.</p>
         </article>
         <article><h3>What the simulation can establish</h3>
           <p>The generator uses one age group, one assay and a common reference distribution. Its bell-shaped groups of results match the model’s assumptions. All data are synthetic. No CHOP patient data were used, and clinical performance has yet to be established.</p>
-          <p>Forty is a study setting. Performance can change with the analyte, age, size of the reference sample, disease mixture and eligibility criteria. Clinical evaluation would require independent reference individuals, comparison of both reference limits and an assessment of how much the estimates vary between samples.</p>
+          <p>Forty is a study setting. Performance can change with the analyte, age, number of screened patients, disease mixture and eligibility criteria. Clinical evaluation would require independently screened patients, comparison of both reference limits and an assessment of how much the estimates vary between samples.</p>
         </article>
       </div>
       <details><summary>Simulation parameters and reproducibility</summary><div class="details-body">
@@ -91,24 +99,21 @@
     </section>
     <section id="install" class="installation" aria-labelledby="install-title">
       <div><p class="kicker">R package</p><h2 id="install-title">Install anchoredRI 0.4.0</h2>
-        <p>The current package tries safeguarded anchoredRI first, with a checked anchorRefine fallback. Building from source requires R 4.1 or later and a C++17 compiler. External <code>refineR</code> is optional for the separate comparator.</p>
+        <p>Find installation requirements and the tarball instructions in <a href="help.html#install">Package help</a>.</p>
         <p><a href="downloads/anchoredRI_0.4.0.tar.gz" download>Download the 0.4.0 source package</a> · <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Package source</a></p>
         <p>Previous versions · <a href="downloads/anchoredRI_0.3.1.tar.gz" download>0.3.1</a> · <a href="downloads/anchoredRI_0.3.0.tar.gz" download>0.3.0</a> · <a href="downloads/anchoredRI_0.2.0.tar.gz" download>0.2.0</a> · <a href="downloads/anchoredRI_0.1.0.tar.gz" download>0.1.0</a></p></div>
-      <div class="code-box"><div><span>R console</span><button id="copy" type="button">Copy code</button></div><pre><code id="install-code">install.packages("remotes")
+      <div class="code-box"><div><span>R console</span><button id="copy" type="button">Copy code</button></div><pre><code id="install-code">install.packages(c(&quot;remotes&quot;, &quot;ash&quot;, &quot;future.apply&quot;))
 remotes::install_github(
-  "amromeo/amromeo.github.io", ref = "main",
-  subdir = "anchoredRI"
-)
-
-library(anchoredRI)
-d &lt;- simulate_ri_study(n_anchor = 40)
-fit &lt;- fit_anchored_ri(d$routine$value,
-                       d$routine$setting, d$anchor)
-fit$method
-fit$status
-fit$reason
-fit$limits</code></pre><span class="sr-only" role="status" id="copy-status"></span></div>
+  &quot;amromeo/amromeo.github.io&quot;,
+  ref = &quot;anchoredRI-v0.4.0&quot;, subdir = &quot;anchoredRI&quot;
+)</code></pre><span class="sr-only" role="status" id="copy-status"></span></div>
     </section>
-    <section class="credits" aria-labelledby="credit-title"><h3 id="credit-title">Credit and license</h3><p>The published refineR method by Tatjana Ammer and colleagues inspired this investigation. Its independently released R package by Matthias Beck, Tatjana Ammer, Christopher M. Rank and André Schützenmeister supplies both refineR comparisons. This project has no affiliation with the refineR authors.</p><p><a href="https://pubmed.ncbi.nlm.nih.gov/34362961/">Original paper</a> · <a href="https://cran.r-project.org/package=refineR">refineR on CRAN</a> · <a href="LICENSE">GNU GPL v3.0</a></p></section>
-  </main><footer><span>Original results · anchoredRI 0.1.0</span><span>Fully AI-developed · Research software</span></footer>
-</body></html>
+    <section class="credits" aria-labelledby="credit-title"><h3 id="credit-title">Credit and license</h3><p>The published refineR method by Tatjana Ammer and colleagues inspired this investigation. Its independently released R package by Matthias Beck, Tatjana Ammer, Christopher M. Rank and André Schützenmeister supplies both refineR comparisons. This project has no affiliation with the refineR authors.</p><p><a href="https://pubmed.ncbi.nlm.nih.gov/34362961/">Original paper</a> · <a href="https://cloud.r-project.org/web/packages/refineR/index.html">refineR on CRAN</a> · <a href="LICENSE">GNU GPL v3.0</a></p></section>
+<p class="section-links"><a href="website-sources.html#clinicward-simulator">Number-to-source list</a></p>
+</main>
+<footer>
+  <span>anchoredRI 0.4.0 · Research software</span>
+  <span>Fully AI-developed · <a href="stress.html#development">How the project was developed</a></span>
+</footer>
+</body>
+</html>
