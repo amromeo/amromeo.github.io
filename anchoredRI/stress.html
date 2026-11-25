@@ -19,7 +19,7 @@
       <div class="hero-copy"><p class="kicker">Pediatric reference intervals <span> / </span> Original experiment · anchoredRI 0.1.0</p>
       <h1>Hospital mixture stress tests</h1>
       <p class="lede">These earlier experiments include small samples and heavily affected hospital mixtures. The default pooled cohort is 61.25% affected, outside refineR’s majority-non-pathological assumption. <a href="index.html">Use the prepared-cohort comparison for the authors’ recommended workflow.</a></p>
-      <p class="archive-note">The controls display saved results from anchoredRI 0.1.0. These fits predate the safeguard. <a href="robustness.html#package-update">Read the 0.3.0 update and RIbench results.</a></p></div>
+      <p class="archive-note">The controls display saved results from anchoredRI 0.1.0. These fits predate the safeguard. <a href="robustness.html#release-040">Read the 0.4.0 update and Task G results.</a></p></div>
       <div class="truth-card"><span class="card-label">Known reference interval</span><p>24.12 <span>–</span> 35.88 <small>s</small></p>
         <div class="truth-ruler" aria-hidden="true"><i></i></div>
         <span>Central 95% of the simulated reference population</span></div>
@@ -90,10 +90,10 @@
       </div></details>
     </section>
     <section id="install" class="installation" aria-labelledby="install-title">
-      <div><p class="kicker">R package</p><h2 id="install-title">Install anchoredRI 0.3.1</h2>
-        <p>The current package uses up to five components and applies the safeguard by default. Building from source requires R 4.1 or later and a C++17 compiler. Install <code>refineR</code> separately to run the comparator.</p>
-        <p><a href="downloads/anchoredRI_0.3.1.tar.gz" download>Download the 0.3.1 source package</a> · <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Package source</a></p>
-        <p>Previous versions · <a href="downloads/anchoredRI_0.3.0.tar.gz" download>0.3.0</a> · <a href="downloads/anchoredRI_0.2.0.tar.gz" download>0.2.0</a> · <a href="downloads/anchoredRI_0.1.0.tar.gz" download>0.1.0</a></p></div>
+      <div><p class="kicker">R package</p><h2 id="install-title">Install anchoredRI 0.4.0</h2>
+        <p>The current package tries safeguarded anchoredRI first, with a checked anchorRefine fallback. Building from source requires R 4.1 or later and a C++17 compiler. External <code>refineR</code> is optional for the separate comparator.</p>
+        <p><a href="downloads/anchoredRI_0.4.0.tar.gz" download>Download the 0.4.0 source package</a> · <a href="https://github.com/amromeo/amromeo.github.io/tree/main/anchoredRI">Package source</a></p>
+        <p>Previous versions · <a href="downloads/anchoredRI_0.3.1.tar.gz" download>0.3.1</a> · <a href="downloads/anchoredRI_0.3.0.tar.gz" download>0.3.0</a> · <a href="downloads/anchoredRI_0.2.0.tar.gz" download>0.2.0</a> · <a href="downloads/anchoredRI_0.1.0.tar.gz" download>0.1.0</a></p></div>
       <div class="code-box"><div><span>R console</span><button id="copy" type="button">Copy code</button></div><pre><code id="install-code">install.packages("remotes")
 remotes::install_github(
   "amromeo/amromeo.github.io", ref = "main",
@@ -104,6 +104,7 @@ library(anchoredRI)
 d &lt;- simulate_ri_study(n_anchor = 40)
 fit &lt;- fit_anchored_ri(d$routine$value,
                        d$routine$setting, d$anchor)
+fit$method
 fit$status
 fit$reason
 fit$limits</code></pre><span class="sr-only" role="status" id="copy-status"></span></div>
