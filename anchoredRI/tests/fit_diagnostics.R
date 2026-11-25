@@ -19,7 +19,7 @@ point <- function(x, a, ...) fit_anchored_ri(x, rep("one", length(x)), a, "ident
 x <- rep(c(-4, -2, 0, 2, 4), each = 5)
 a <- c(-3, -1, 0, 1, 3)
 for (step in c(0.5, 5, 10)) {
-  seen <- observe(point(x * step, a * step))
+  seen <- observe(point(x * step, a * step, fallback = FALSE))
   fit <- seen$value
   stopifnot(identical(fit$rounding_unit, step),
             identical(seen$messages, paste0("Inferred rounding unit is ", step, ".")),
@@ -30,7 +30,7 @@ for (step in c(0.5, 5, 10)) {
             nzchar(fit$optimizer_message))
 }
 for (unit in c(0, 0.5)) {
-  supplied <- observe(point(x, a, rounding_unit = unit))
+  supplied <- observe(point(x, a, rounding_unit = unit, fallback = FALSE))
   stopifnot(identical(supplied$value$rounding_unit, unit), !length(supplied$messages))
 }
 infer <- getFromNamespace(".measurement_unit", "anchoredRI")
@@ -38,7 +38,7 @@ for (step in c(2e-4, 2.5, 5000, 1e-8))
   stopifnot(infer(c(-3, 0, 1, 2) * step, NULL) == step)
 large_decimal <- (1e11 + 1:7) / 20
 stopifnot(infer(large_decimal, NULL) == 0.05, infer(large_decimal, 0.05) == 0.05)
-continuous <- observe(point(x * sqrt(2), a * sqrt(2)))
+continuous <- observe(point(x * sqrt(2), a * sqrt(2), fallback = FALSE))
 stopifnot(continuous$value$rounding_unit == 0,
           identical(continuous$messages, "Inferred rounding unit is 0 (no shared increment found)."))
 
