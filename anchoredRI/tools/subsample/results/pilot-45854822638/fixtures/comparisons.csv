@@ -1,0 +1,849 @@
+comparison,case,field,reference,observed,difference,tolerance,passed
+fixtures,first,unique checks,247,247,,,True
+fixtures,first,A 1 sampler,TRUE,TRUE,,,True
+fixtures,first,A 50 sampler,TRUE,TRUE,,,True
+fixtures,first,B 1 sampler,TRUE,TRUE,,,True
+fixtures,first,B 50 sampler,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 reference,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 transform,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 components,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 weights,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 shift,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 selection,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 bic_original,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 candidate_limits,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 candidate_shift,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 candidate_at_bound,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 selected_bic,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 runner_up,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 limits,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 safeguard,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 status,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 reason,TRUE,TRUE,,,True
+fixtures,first,public fit vs cap 5 raw limits,TRUE,TRUE,,,True
+fixtures,first,public reporting method,TRUE,TRUE,,,True
+fixtures,first,public reporting anchoredRI_status,TRUE,TRUE,,,True
+fixtures,first,public reporting anchoredRI_reason,TRUE,TRUE,,,True
+fixtures,first,unit weights BIC total weight,TRUE,TRUE,,,True
+fixtures,first,unit weights fifteen candidates,TRUE,TRUE,,,True
+fixtures,first,unit weights identity 1 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,first,unit weights identity 1 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,first,unit weights log 1 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,first,unit weights log 1 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,unit weights shifted_log 1 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,first,unit weights shifted_log 1 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,first,unit weights identity 2 ll direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,first,unit weights identity 2 bic direct,TRUE,TRUE,2.91038304567337e-11,,True
+fixtures,first,unit weights log 2 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,unit weights log 2 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,first,unit weights shifted_log 2 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,first,unit weights shifted_log 2 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,unit weights identity 3 ll direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,first,unit weights identity 3 bic direct,TRUE,TRUE,2.91038304567337e-11,,True
+fixtures,first,unit weights log 3 ll direct,TRUE,TRUE,0,,True
+fixtures,first,unit weights log 3 bic direct,TRUE,TRUE,0,,True
+fixtures,first,unit weights shifted_log 3 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,first,unit weights shifted_log 3 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,unit weights identity 4 ll direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,first,unit weights identity 4 bic direct,TRUE,TRUE,2.91038304567337e-11,,True
+fixtures,first,unit weights log 4 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,unit weights log 4 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,first,unit weights shifted_log 4 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,first,unit weights shifted_log 4 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,first,unit weights identity 5 ll direct,TRUE,TRUE,1.81898940354586e-11,,True
+fixtures,first,unit weights identity 5 bic direct,TRUE,TRUE,3.63797880709171e-11,,True
+fixtures,first,unit weights log 5 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,first,unit weights log 5 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,first,unit weights shifted_log 5 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,first,unit weights shifted_log 5 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,ordinary likelihood identity 1,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood identity 2,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood identity 3,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood identity 4,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood identity 5,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood log 1,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood log 2,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood log 3,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood log 4,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood log 5,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood shifted_log 1,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood shifted_log 2,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood shifted_log 3,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood shifted_log 4,TRUE,TRUE,0,,True
+fixtures,first,ordinary likelihood shifted_log 5,TRUE,TRUE,0,,True
+fixtures,first,unit weights capped reuse candidate IDs,TRUE,TRUE,,,True
+fixtures,first,unit weights capped reuse identity 1,TRUE,TRUE,,,True
+fixtures,first,unit weights capped reuse log 1,TRUE,TRUE,,,True
+fixtures,first,unit weights capped reuse shifted_log 1,TRUE,TRUE,,,True
+fixtures,first,unit weights capped reuse identity 2,TRUE,TRUE,,,True
+fixtures,first,unit weights capped reuse log 2,TRUE,TRUE,,,True
+fixtures,first,unit weights capped reuse shifted_log 2,TRUE,TRUE,,,True
+fixtures,first,unit weights capped reuse identity 3,TRUE,TRUE,,,True
+fixtures,first,unit weights capped reuse log 3,TRUE,TRUE,,,True
+fixtures,first,unit weights capped reuse shifted_log 3,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 reference,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 transform,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 components,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 weights,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 shift,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 selection,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 bic_original,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 candidate_limits,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 candidate_shift,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 candidate_at_bound,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 selected_bic,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 runner_up,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 limits,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 safeguard,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 status,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 reason,TRUE,TRUE,,,True
+fixtures,first,ordinary independent cap 3 raw limits,TRUE,TRUE,,,True
+fixtures,first,full 3 usable first stage,TRUE,TRUE,,,True
+fixtures,first,full 3 export raw_lower,TRUE,TRUE,,,True
+fixtures,first,full 3 export raw_upper,TRUE,TRUE,,,True
+fixtures,first,full 3 export lower,TRUE,TRUE,,,True
+fixtures,first,full 3 export upper,TRUE,TRUE,,,True
+fixtures,first,full 3 export share,TRUE,TRUE,,,True
+fixtures,first,full 3 export lrt_flag,TRUE,TRUE,,,True
+fixtures,first,full 3 export lower_flag,TRUE,TRUE,,,True
+fixtures,first,full 3 export first-stage p,TRUE,TRUE,,,True
+fixtures,first,full 5 usable first stage,TRUE,TRUE,,,True
+fixtures,first,full 5 export raw_lower,TRUE,TRUE,,,True
+fixtures,first,full 5 export raw_upper,TRUE,TRUE,,,True
+fixtures,first,full 5 export lower,TRUE,TRUE,,,True
+fixtures,first,full 5 export upper,TRUE,TRUE,,,True
+fixtures,first,full 5 export share,TRUE,TRUE,,,True
+fixtures,first,full 5 export lrt_flag,TRUE,TRUE,,,True
+fixtures,first,full 5 export lower_flag,TRUE,TRUE,,,True
+fixtures,first,full 5 export first-stage p,TRUE,TRUE,,,True
+fixtures,first,W BIC total weight,TRUE,TRUE,,,True
+fixtures,first,W fifteen candidates,TRUE,TRUE,,,True
+fixtures,first,W identity 1 ll direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,first,W identity 1 bic direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,first,W log 1 ll direct,TRUE,TRUE,9.09494701772928e-12,,True
+fixtures,first,W log 1 bic direct,TRUE,TRUE,1.81898940354586e-11,,True
+fixtures,first,W shifted_log 1 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,first,W shifted_log 1 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,W identity 2 ll direct,TRUE,TRUE,0,,True
+fixtures,first,W identity 2 bic direct,TRUE,TRUE,0,,True
+fixtures,first,W log 2 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,first,W log 2 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,W shifted_log 2 ll direct,TRUE,TRUE,9.09494701772928e-12,,True
+fixtures,first,W shifted_log 2 bic direct,TRUE,TRUE,1.81898940354586e-11,,True
+fixtures,first,W identity 3 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,first,W identity 3 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,W log 3 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,W log 3 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,first,W shifted_log 3 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,W shifted_log 3 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,first,W identity 4 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,first,W identity 4 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,W log 4 ll direct,TRUE,TRUE,0,,True
+fixtures,first,W log 4 bic direct,TRUE,TRUE,0,,True
+fixtures,first,W shifted_log 4 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,first,W shifted_log 4 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,first,W identity 5 ll direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,first,W identity 5 bic direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,first,W log 5 ll direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,first,W log 5 bic direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,first,W shifted_log 5 ll direct,TRUE,TRUE,0,,True
+fixtures,first,W shifted_log 5 bic direct,TRUE,TRUE,0,,True
+fixtures,first,Gaussian analytic mean,TRUE,TRUE,2.20666152017657e-10,,True
+fixtures,first,Gaussian analytic SD,TRUE,TRUE,2.79021250548794e-11,,True
+fixtures,first,weighted capped reuse candidate IDs,TRUE,TRUE,,,True
+fixtures,first,weighted capped reuse identity 1,TRUE,TRUE,,,True
+fixtures,first,weighted capped reuse log 1,TRUE,TRUE,,,True
+fixtures,first,weighted capped reuse shifted_log 1,TRUE,TRUE,,,True
+fixtures,first,weighted capped reuse identity 2,TRUE,TRUE,,,True
+fixtures,first,weighted capped reuse log 2,TRUE,TRUE,,,True
+fixtures,first,weighted capped reuse shifted_log 2,TRUE,TRUE,,,True
+fixtures,first,weighted capped reuse identity 3,TRUE,TRUE,,,True
+fixtures,first,weighted capped reuse log 3,TRUE,TRUE,,,True
+fixtures,first,weighted capped reuse shifted_log 3,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 reference,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 transform,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 components,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 weights,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 shift,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 selection,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 bic_original,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 candidate_limits,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 candidate_shift,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 candidate_at_bound,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 selected_bic,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 runner_up,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 limits,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 safeguard,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 status,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 reason,TRUE,TRUE,,,True
+fixtures,first,W independent cap 3 raw limits,TRUE,TRUE,,,True
+fixtures,first,W 3 usable first stage,TRUE,TRUE,,,True
+fixtures,first,W 3 export raw_lower,TRUE,TRUE,,,True
+fixtures,first,W 3 export raw_upper,TRUE,TRUE,,,True
+fixtures,first,W 3 export lower,TRUE,TRUE,,,True
+fixtures,first,W 3 export upper,TRUE,TRUE,,,True
+fixtures,first,W 3 export share,TRUE,TRUE,,,True
+fixtures,first,W 3 export lrt_flag,TRUE,TRUE,,,True
+fixtures,first,W 3 export lower_flag,TRUE,TRUE,,,True
+fixtures,first,W 3 export first-stage p,TRUE,TRUE,,,True
+fixtures,first,W 5 usable first stage,TRUE,TRUE,,,True
+fixtures,first,W 5 export raw_lower,TRUE,TRUE,,,True
+fixtures,first,W 5 export raw_upper,TRUE,TRUE,,,True
+fixtures,first,W 5 export lower,TRUE,TRUE,,,True
+fixtures,first,W 5 export upper,TRUE,TRUE,,,True
+fixtures,first,W 5 export share,TRUE,TRUE,,,True
+fixtures,first,W 5 export lrt_flag,TRUE,TRUE,,,True
+fixtures,first,W 5 export lower_flag,TRUE,TRUE,,,True
+fixtures,first,W 5 export first-stage p,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage reference,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage transform,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage components,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage weights,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage shift,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage selection,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage bic_original,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage candidate_limits,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage candidate_shift,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage candidate_at_bound,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage selected_bic,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage runner_up,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage limits,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage safeguard,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage status,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage reason,TRUE,TRUE,,,True
+fixtures,first,public CRP first stage raw limits,TRUE,TRUE,,,True
+fixtures,first,CRP skips lower check 3,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 3 usable first stage,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 3 export raw_lower,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 3 export raw_upper,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 3 export lower,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 3 export upper,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 3 export share,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 3 export lrt_flag,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 3 export lower_flag,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 3 export first-stage p,TRUE,TRUE,,,True
+fixtures,first,CRP skips lower check 5,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 5 usable first stage,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 5 export raw_lower,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 5 export raw_upper,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 5 export lower,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 5 export upper,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 5 export share,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 5 export lrt_flag,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 5 export lower_flag,TRUE,TRUE,,,True
+fixtures,first,CRP subsample 5 export first-stage p,TRUE,TRUE,,,True
+fixtures,first,median of 50,TRUE,TRUE,,,True
+fixtures,first,passing-only median,TRUE,TRUE,,,True
+fixtures,first,invalid paired endpoints,TRUE,TRUE,,,True
+fixtures,first,upper-only median,TRUE,TRUE,,,True
+fixtures,first,zero passing fits,TRUE,TRUE,,,True
+fixtures,first,unavailable median overrides statistical decline,TRUE,TRUE,,,True
+fixtures,first,majority declines/unresolved 25 0,TRUE,TRUE,,,True
+fixtures,first,majority declines/unresolved 26 0,TRUE,TRUE,,,True
+fixtures,first,majority declines/unresolved 25 1,TRUE,TRUE,,,True
+fixtures,first,majority declines/unresolved 26 1,TRUE,TRUE,,,True
+fixtures,first,majority declines/unresolved 24 1,TRUE,TRUE,,,True
+fixtures,first,majority declines/unresolved 0 50,TRUE,TRUE,,,True
+fixtures,first,both statistical flags can coexist,TRUE,TRUE,,,True
+fixtures,first,lookup withheld package despite usable raw median,TRUE,TRUE,,,True
+fixtures,first,both caps and both definitions look up the withheld standard full record,TRUE,TRUE,,,True
+fixtures,same,unique checks,247,247,,,True
+fixtures,same,A 1 sampler,TRUE,TRUE,,,True
+fixtures,same,A 50 sampler,TRUE,TRUE,,,True
+fixtures,same,B 1 sampler,TRUE,TRUE,,,True
+fixtures,same,B 50 sampler,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 reference,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 transform,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 components,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 weights,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 shift,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 selection,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 bic_original,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 candidate_limits,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 candidate_shift,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 candidate_at_bound,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 selected_bic,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 runner_up,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 limits,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 safeguard,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 status,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 reason,TRUE,TRUE,,,True
+fixtures,same,public fit vs cap 5 raw limits,TRUE,TRUE,,,True
+fixtures,same,public reporting method,TRUE,TRUE,,,True
+fixtures,same,public reporting anchoredRI_status,TRUE,TRUE,,,True
+fixtures,same,public reporting anchoredRI_reason,TRUE,TRUE,,,True
+fixtures,same,unit weights BIC total weight,TRUE,TRUE,,,True
+fixtures,same,unit weights fifteen candidates,TRUE,TRUE,,,True
+fixtures,same,unit weights identity 1 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,same,unit weights identity 1 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,same,unit weights log 1 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,same,unit weights log 1 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,unit weights shifted_log 1 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,same,unit weights shifted_log 1 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,same,unit weights identity 2 ll direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,same,unit weights identity 2 bic direct,TRUE,TRUE,2.91038304567337e-11,,True
+fixtures,same,unit weights log 2 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,unit weights log 2 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,same,unit weights shifted_log 2 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,same,unit weights shifted_log 2 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,unit weights identity 3 ll direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,same,unit weights identity 3 bic direct,TRUE,TRUE,2.91038304567337e-11,,True
+fixtures,same,unit weights log 3 ll direct,TRUE,TRUE,0,,True
+fixtures,same,unit weights log 3 bic direct,TRUE,TRUE,0,,True
+fixtures,same,unit weights shifted_log 3 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,same,unit weights shifted_log 3 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,unit weights identity 4 ll direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,same,unit weights identity 4 bic direct,TRUE,TRUE,2.91038304567337e-11,,True
+fixtures,same,unit weights log 4 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,unit weights log 4 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,same,unit weights shifted_log 4 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,same,unit weights shifted_log 4 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,same,unit weights identity 5 ll direct,TRUE,TRUE,1.81898940354586e-11,,True
+fixtures,same,unit weights identity 5 bic direct,TRUE,TRUE,3.63797880709171e-11,,True
+fixtures,same,unit weights log 5 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,same,unit weights log 5 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,same,unit weights shifted_log 5 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,same,unit weights shifted_log 5 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,ordinary likelihood identity 1,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood identity 2,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood identity 3,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood identity 4,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood identity 5,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood log 1,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood log 2,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood log 3,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood log 4,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood log 5,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood shifted_log 1,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood shifted_log 2,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood shifted_log 3,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood shifted_log 4,TRUE,TRUE,0,,True
+fixtures,same,ordinary likelihood shifted_log 5,TRUE,TRUE,0,,True
+fixtures,same,unit weights capped reuse candidate IDs,TRUE,TRUE,,,True
+fixtures,same,unit weights capped reuse identity 1,TRUE,TRUE,,,True
+fixtures,same,unit weights capped reuse log 1,TRUE,TRUE,,,True
+fixtures,same,unit weights capped reuse shifted_log 1,TRUE,TRUE,,,True
+fixtures,same,unit weights capped reuse identity 2,TRUE,TRUE,,,True
+fixtures,same,unit weights capped reuse log 2,TRUE,TRUE,,,True
+fixtures,same,unit weights capped reuse shifted_log 2,TRUE,TRUE,,,True
+fixtures,same,unit weights capped reuse identity 3,TRUE,TRUE,,,True
+fixtures,same,unit weights capped reuse log 3,TRUE,TRUE,,,True
+fixtures,same,unit weights capped reuse shifted_log 3,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 reference,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 transform,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 components,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 weights,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 shift,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 selection,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 bic_original,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 candidate_limits,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 candidate_shift,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 candidate_at_bound,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 selected_bic,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 runner_up,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 limits,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 safeguard,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 status,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 reason,TRUE,TRUE,,,True
+fixtures,same,ordinary independent cap 3 raw limits,TRUE,TRUE,,,True
+fixtures,same,full 3 usable first stage,TRUE,TRUE,,,True
+fixtures,same,full 3 export raw_lower,TRUE,TRUE,,,True
+fixtures,same,full 3 export raw_upper,TRUE,TRUE,,,True
+fixtures,same,full 3 export lower,TRUE,TRUE,,,True
+fixtures,same,full 3 export upper,TRUE,TRUE,,,True
+fixtures,same,full 3 export share,TRUE,TRUE,,,True
+fixtures,same,full 3 export lrt_flag,TRUE,TRUE,,,True
+fixtures,same,full 3 export lower_flag,TRUE,TRUE,,,True
+fixtures,same,full 3 export first-stage p,TRUE,TRUE,,,True
+fixtures,same,full 5 usable first stage,TRUE,TRUE,,,True
+fixtures,same,full 5 export raw_lower,TRUE,TRUE,,,True
+fixtures,same,full 5 export raw_upper,TRUE,TRUE,,,True
+fixtures,same,full 5 export lower,TRUE,TRUE,,,True
+fixtures,same,full 5 export upper,TRUE,TRUE,,,True
+fixtures,same,full 5 export share,TRUE,TRUE,,,True
+fixtures,same,full 5 export lrt_flag,TRUE,TRUE,,,True
+fixtures,same,full 5 export lower_flag,TRUE,TRUE,,,True
+fixtures,same,full 5 export first-stage p,TRUE,TRUE,,,True
+fixtures,same,W BIC total weight,TRUE,TRUE,,,True
+fixtures,same,W fifteen candidates,TRUE,TRUE,,,True
+fixtures,same,W identity 1 ll direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,same,W identity 1 bic direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,same,W log 1 ll direct,TRUE,TRUE,9.09494701772928e-12,,True
+fixtures,same,W log 1 bic direct,TRUE,TRUE,1.81898940354586e-11,,True
+fixtures,same,W shifted_log 1 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,same,W shifted_log 1 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,W identity 2 ll direct,TRUE,TRUE,0,,True
+fixtures,same,W identity 2 bic direct,TRUE,TRUE,0,,True
+fixtures,same,W log 2 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,same,W log 2 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,W shifted_log 2 ll direct,TRUE,TRUE,9.09494701772928e-12,,True
+fixtures,same,W shifted_log 2 bic direct,TRUE,TRUE,1.81898940354586e-11,,True
+fixtures,same,W identity 3 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,same,W identity 3 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,W log 3 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,W log 3 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,same,W shifted_log 3 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,W shifted_log 3 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,same,W identity 4 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,same,W identity 4 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,W log 4 ll direct,TRUE,TRUE,0,,True
+fixtures,same,W log 4 bic direct,TRUE,TRUE,0,,True
+fixtures,same,W shifted_log 4 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,same,W shifted_log 4 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,same,W identity 5 ll direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,same,W identity 5 bic direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,same,W log 5 ll direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,same,W log 5 bic direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,same,W shifted_log 5 ll direct,TRUE,TRUE,0,,True
+fixtures,same,W shifted_log 5 bic direct,TRUE,TRUE,0,,True
+fixtures,same,Gaussian analytic mean,TRUE,TRUE,2.20666152017657e-10,,True
+fixtures,same,Gaussian analytic SD,TRUE,TRUE,2.79021250548794e-11,,True
+fixtures,same,weighted capped reuse candidate IDs,TRUE,TRUE,,,True
+fixtures,same,weighted capped reuse identity 1,TRUE,TRUE,,,True
+fixtures,same,weighted capped reuse log 1,TRUE,TRUE,,,True
+fixtures,same,weighted capped reuse shifted_log 1,TRUE,TRUE,,,True
+fixtures,same,weighted capped reuse identity 2,TRUE,TRUE,,,True
+fixtures,same,weighted capped reuse log 2,TRUE,TRUE,,,True
+fixtures,same,weighted capped reuse shifted_log 2,TRUE,TRUE,,,True
+fixtures,same,weighted capped reuse identity 3,TRUE,TRUE,,,True
+fixtures,same,weighted capped reuse log 3,TRUE,TRUE,,,True
+fixtures,same,weighted capped reuse shifted_log 3,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 reference,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 transform,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 components,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 weights,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 shift,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 selection,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 bic_original,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 candidate_limits,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 candidate_shift,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 candidate_at_bound,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 selected_bic,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 runner_up,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 limits,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 safeguard,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 status,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 reason,TRUE,TRUE,,,True
+fixtures,same,W independent cap 3 raw limits,TRUE,TRUE,,,True
+fixtures,same,W 3 usable first stage,TRUE,TRUE,,,True
+fixtures,same,W 3 export raw_lower,TRUE,TRUE,,,True
+fixtures,same,W 3 export raw_upper,TRUE,TRUE,,,True
+fixtures,same,W 3 export lower,TRUE,TRUE,,,True
+fixtures,same,W 3 export upper,TRUE,TRUE,,,True
+fixtures,same,W 3 export share,TRUE,TRUE,,,True
+fixtures,same,W 3 export lrt_flag,TRUE,TRUE,,,True
+fixtures,same,W 3 export lower_flag,TRUE,TRUE,,,True
+fixtures,same,W 3 export first-stage p,TRUE,TRUE,,,True
+fixtures,same,W 5 usable first stage,TRUE,TRUE,,,True
+fixtures,same,W 5 export raw_lower,TRUE,TRUE,,,True
+fixtures,same,W 5 export raw_upper,TRUE,TRUE,,,True
+fixtures,same,W 5 export lower,TRUE,TRUE,,,True
+fixtures,same,W 5 export upper,TRUE,TRUE,,,True
+fixtures,same,W 5 export share,TRUE,TRUE,,,True
+fixtures,same,W 5 export lrt_flag,TRUE,TRUE,,,True
+fixtures,same,W 5 export lower_flag,TRUE,TRUE,,,True
+fixtures,same,W 5 export first-stage p,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage reference,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage transform,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage components,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage weights,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage shift,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage selection,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage bic_original,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage candidate_limits,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage candidate_shift,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage candidate_at_bound,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage selected_bic,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage runner_up,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage limits,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage safeguard,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage status,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage reason,TRUE,TRUE,,,True
+fixtures,same,public CRP first stage raw limits,TRUE,TRUE,,,True
+fixtures,same,CRP skips lower check 3,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 3 usable first stage,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 3 export raw_lower,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 3 export raw_upper,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 3 export lower,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 3 export upper,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 3 export share,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 3 export lrt_flag,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 3 export lower_flag,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 3 export first-stage p,TRUE,TRUE,,,True
+fixtures,same,CRP skips lower check 5,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 5 usable first stage,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 5 export raw_lower,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 5 export raw_upper,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 5 export lower,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 5 export upper,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 5 export share,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 5 export lrt_flag,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 5 export lower_flag,TRUE,TRUE,,,True
+fixtures,same,CRP subsample 5 export first-stage p,TRUE,TRUE,,,True
+fixtures,same,median of 50,TRUE,TRUE,,,True
+fixtures,same,passing-only median,TRUE,TRUE,,,True
+fixtures,same,invalid paired endpoints,TRUE,TRUE,,,True
+fixtures,same,upper-only median,TRUE,TRUE,,,True
+fixtures,same,zero passing fits,TRUE,TRUE,,,True
+fixtures,same,unavailable median overrides statistical decline,TRUE,TRUE,,,True
+fixtures,same,majority declines/unresolved 25 0,TRUE,TRUE,,,True
+fixtures,same,majority declines/unresolved 26 0,TRUE,TRUE,,,True
+fixtures,same,majority declines/unresolved 25 1,TRUE,TRUE,,,True
+fixtures,same,majority declines/unresolved 26 1,TRUE,TRUE,,,True
+fixtures,same,majority declines/unresolved 24 1,TRUE,TRUE,,,True
+fixtures,same,majority declines/unresolved 0 50,TRUE,TRUE,,,True
+fixtures,same,both statistical flags can coexist,TRUE,TRUE,,,True
+fixtures,same,lookup withheld package despite usable raw median,TRUE,TRUE,,,True
+fixtures,same,both caps and both definitions look up the withheld standard full record,TRUE,TRUE,,,True
+fixtures,other,unique checks,247,247,,,True
+fixtures,other,A 1 sampler,TRUE,TRUE,,,True
+fixtures,other,A 50 sampler,TRUE,TRUE,,,True
+fixtures,other,B 1 sampler,TRUE,TRUE,,,True
+fixtures,other,B 50 sampler,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 reference,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 transform,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 components,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 weights,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 shift,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 selection,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 bic_original,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 candidate_limits,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 candidate_shift,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 candidate_at_bound,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 selected_bic,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 runner_up,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 limits,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 safeguard,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 status,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 reason,TRUE,TRUE,,,True
+fixtures,other,public fit vs cap 5 raw limits,TRUE,TRUE,,,True
+fixtures,other,public reporting method,TRUE,TRUE,,,True
+fixtures,other,public reporting anchoredRI_status,TRUE,TRUE,,,True
+fixtures,other,public reporting anchoredRI_reason,TRUE,TRUE,,,True
+fixtures,other,unit weights BIC total weight,TRUE,TRUE,,,True
+fixtures,other,unit weights fifteen candidates,TRUE,TRUE,,,True
+fixtures,other,unit weights identity 1 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,other,unit weights identity 1 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,other,unit weights log 1 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,other,unit weights log 1 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,unit weights shifted_log 1 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,other,unit weights shifted_log 1 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,other,unit weights identity 2 ll direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,other,unit weights identity 2 bic direct,TRUE,TRUE,2.91038304567337e-11,,True
+fixtures,other,unit weights log 2 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,unit weights log 2 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,other,unit weights shifted_log 2 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,other,unit weights shifted_log 2 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,unit weights identity 3 ll direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,other,unit weights identity 3 bic direct,TRUE,TRUE,2.91038304567337e-11,,True
+fixtures,other,unit weights log 3 ll direct,TRUE,TRUE,0,,True
+fixtures,other,unit weights log 3 bic direct,TRUE,TRUE,0,,True
+fixtures,other,unit weights shifted_log 3 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,other,unit weights shifted_log 3 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,unit weights identity 4 ll direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,other,unit weights identity 4 bic direct,TRUE,TRUE,2.91038304567337e-11,,True
+fixtures,other,unit weights log 4 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,unit weights log 4 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,other,unit weights shifted_log 4 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,other,unit weights shifted_log 4 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,other,unit weights identity 5 ll direct,TRUE,TRUE,1.81898940354586e-11,,True
+fixtures,other,unit weights identity 5 bic direct,TRUE,TRUE,3.63797880709171e-11,,True
+fixtures,other,unit weights log 5 ll direct,TRUE,TRUE,5.45696821063757e-12,,True
+fixtures,other,unit weights log 5 bic direct,TRUE,TRUE,1.09139364212751e-11,,True
+fixtures,other,unit weights shifted_log 5 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,other,unit weights shifted_log 5 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,ordinary likelihood identity 1,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood identity 2,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood identity 3,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood identity 4,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood identity 5,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood log 1,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood log 2,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood log 3,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood log 4,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood log 5,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood shifted_log 1,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood shifted_log 2,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood shifted_log 3,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood shifted_log 4,TRUE,TRUE,0,,True
+fixtures,other,ordinary likelihood shifted_log 5,TRUE,TRUE,0,,True
+fixtures,other,unit weights capped reuse candidate IDs,TRUE,TRUE,,,True
+fixtures,other,unit weights capped reuse identity 1,TRUE,TRUE,,,True
+fixtures,other,unit weights capped reuse log 1,TRUE,TRUE,,,True
+fixtures,other,unit weights capped reuse shifted_log 1,TRUE,TRUE,,,True
+fixtures,other,unit weights capped reuse identity 2,TRUE,TRUE,,,True
+fixtures,other,unit weights capped reuse log 2,TRUE,TRUE,,,True
+fixtures,other,unit weights capped reuse shifted_log 2,TRUE,TRUE,,,True
+fixtures,other,unit weights capped reuse identity 3,TRUE,TRUE,,,True
+fixtures,other,unit weights capped reuse log 3,TRUE,TRUE,,,True
+fixtures,other,unit weights capped reuse shifted_log 3,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 reference,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 transform,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 components,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 weights,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 shift,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 selection,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 bic_original,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 candidate_limits,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 candidate_shift,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 candidate_at_bound,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 selected_bic,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 runner_up,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 limits,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 safeguard,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 status,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 reason,TRUE,TRUE,,,True
+fixtures,other,ordinary independent cap 3 raw limits,TRUE,TRUE,,,True
+fixtures,other,full 3 usable first stage,TRUE,TRUE,,,True
+fixtures,other,full 3 export raw_lower,TRUE,TRUE,,,True
+fixtures,other,full 3 export raw_upper,TRUE,TRUE,,,True
+fixtures,other,full 3 export lower,TRUE,TRUE,,,True
+fixtures,other,full 3 export upper,TRUE,TRUE,,,True
+fixtures,other,full 3 export share,TRUE,TRUE,,,True
+fixtures,other,full 3 export lrt_flag,TRUE,TRUE,,,True
+fixtures,other,full 3 export lower_flag,TRUE,TRUE,,,True
+fixtures,other,full 3 export first-stage p,TRUE,TRUE,,,True
+fixtures,other,full 5 usable first stage,TRUE,TRUE,,,True
+fixtures,other,full 5 export raw_lower,TRUE,TRUE,,,True
+fixtures,other,full 5 export raw_upper,TRUE,TRUE,,,True
+fixtures,other,full 5 export lower,TRUE,TRUE,,,True
+fixtures,other,full 5 export upper,TRUE,TRUE,,,True
+fixtures,other,full 5 export share,TRUE,TRUE,,,True
+fixtures,other,full 5 export lrt_flag,TRUE,TRUE,,,True
+fixtures,other,full 5 export lower_flag,TRUE,TRUE,,,True
+fixtures,other,full 5 export first-stage p,TRUE,TRUE,,,True
+fixtures,other,W BIC total weight,TRUE,TRUE,,,True
+fixtures,other,W fifteen candidates,TRUE,TRUE,,,True
+fixtures,other,W identity 1 ll direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,other,W identity 1 bic direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,other,W log 1 ll direct,TRUE,TRUE,9.09494701772928e-12,,True
+fixtures,other,W log 1 bic direct,TRUE,TRUE,1.81898940354586e-11,,True
+fixtures,other,W shifted_log 1 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,other,W shifted_log 1 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,W identity 2 ll direct,TRUE,TRUE,0,,True
+fixtures,other,W identity 2 bic direct,TRUE,TRUE,0,,True
+fixtures,other,W log 2 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,other,W log 2 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,W shifted_log 2 ll direct,TRUE,TRUE,9.09494701772928e-12,,True
+fixtures,other,W shifted_log 2 bic direct,TRUE,TRUE,1.81898940354586e-11,,True
+fixtures,other,W identity 3 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,other,W identity 3 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,W log 3 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,W log 3 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,other,W shifted_log 3 ll direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,W shifted_log 3 bic direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,other,W identity 4 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,other,W identity 4 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,W log 4 ll direct,TRUE,TRUE,0,,True
+fixtures,other,W log 4 bic direct,TRUE,TRUE,0,,True
+fixtures,other,W shifted_log 4 ll direct,TRUE,TRUE,1.81898940354586e-12,,True
+fixtures,other,W shifted_log 4 bic direct,TRUE,TRUE,3.63797880709171e-12,,True
+fixtures,other,W identity 5 ll direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,other,W identity 5 bic direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,other,W log 5 ll direct,TRUE,TRUE,7.27595761418343e-12,,True
+fixtures,other,W log 5 bic direct,TRUE,TRUE,1.45519152283669e-11,,True
+fixtures,other,W shifted_log 5 ll direct,TRUE,TRUE,0,,True
+fixtures,other,W shifted_log 5 bic direct,TRUE,TRUE,0,,True
+fixtures,other,Gaussian analytic mean,TRUE,TRUE,2.20666152017657e-10,,True
+fixtures,other,Gaussian analytic SD,TRUE,TRUE,2.79021250548794e-11,,True
+fixtures,other,weighted capped reuse candidate IDs,TRUE,TRUE,,,True
+fixtures,other,weighted capped reuse identity 1,TRUE,TRUE,,,True
+fixtures,other,weighted capped reuse log 1,TRUE,TRUE,,,True
+fixtures,other,weighted capped reuse shifted_log 1,TRUE,TRUE,,,True
+fixtures,other,weighted capped reuse identity 2,TRUE,TRUE,,,True
+fixtures,other,weighted capped reuse log 2,TRUE,TRUE,,,True
+fixtures,other,weighted capped reuse shifted_log 2,TRUE,TRUE,,,True
+fixtures,other,weighted capped reuse identity 3,TRUE,TRUE,,,True
+fixtures,other,weighted capped reuse log 3,TRUE,TRUE,,,True
+fixtures,other,weighted capped reuse shifted_log 3,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 reference,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 transform,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 components,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 weights,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 shift,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 selection,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 bic_original,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 candidate_limits,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 candidate_shift,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 candidate_at_bound,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 selected_bic,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 runner_up,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 limits,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 safeguard,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 status,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 reason,TRUE,TRUE,,,True
+fixtures,other,W independent cap 3 raw limits,TRUE,TRUE,,,True
+fixtures,other,W 3 usable first stage,TRUE,TRUE,,,True
+fixtures,other,W 3 export raw_lower,TRUE,TRUE,,,True
+fixtures,other,W 3 export raw_upper,TRUE,TRUE,,,True
+fixtures,other,W 3 export lower,TRUE,TRUE,,,True
+fixtures,other,W 3 export upper,TRUE,TRUE,,,True
+fixtures,other,W 3 export share,TRUE,TRUE,,,True
+fixtures,other,W 3 export lrt_flag,TRUE,TRUE,,,True
+fixtures,other,W 3 export lower_flag,TRUE,TRUE,,,True
+fixtures,other,W 3 export first-stage p,TRUE,TRUE,,,True
+fixtures,other,W 5 usable first stage,TRUE,TRUE,,,True
+fixtures,other,W 5 export raw_lower,TRUE,TRUE,,,True
+fixtures,other,W 5 export raw_upper,TRUE,TRUE,,,True
+fixtures,other,W 5 export lower,TRUE,TRUE,,,True
+fixtures,other,W 5 export upper,TRUE,TRUE,,,True
+fixtures,other,W 5 export share,TRUE,TRUE,,,True
+fixtures,other,W 5 export lrt_flag,TRUE,TRUE,,,True
+fixtures,other,W 5 export lower_flag,TRUE,TRUE,,,True
+fixtures,other,W 5 export first-stage p,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage reference,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage transform,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage components,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage weights,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage shift,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage selection,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage bic_original,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage candidate_limits,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage candidate_shift,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage candidate_at_bound,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage selected_bic,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage runner_up,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage limits,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage safeguard,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage status,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage reason,TRUE,TRUE,,,True
+fixtures,other,public CRP first stage raw limits,TRUE,TRUE,,,True
+fixtures,other,CRP skips lower check 3,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 3 usable first stage,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 3 export raw_lower,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 3 export raw_upper,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 3 export lower,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 3 export upper,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 3 export share,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 3 export lrt_flag,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 3 export lower_flag,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 3 export first-stage p,TRUE,TRUE,,,True
+fixtures,other,CRP skips lower check 5,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 5 usable first stage,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 5 export raw_lower,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 5 export raw_upper,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 5 export lower,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 5 export upper,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 5 export share,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 5 export lrt_flag,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 5 export lower_flag,TRUE,TRUE,,,True
+fixtures,other,CRP subsample 5 export first-stage p,TRUE,TRUE,,,True
+fixtures,other,median of 50,TRUE,TRUE,,,True
+fixtures,other,passing-only median,TRUE,TRUE,,,True
+fixtures,other,invalid paired endpoints,TRUE,TRUE,,,True
+fixtures,other,upper-only median,TRUE,TRUE,,,True
+fixtures,other,zero passing fits,TRUE,TRUE,,,True
+fixtures,other,unavailable median overrides statistical decline,TRUE,TRUE,,,True
+fixtures,other,majority declines/unresolved 25 0,TRUE,TRUE,,,True
+fixtures,other,majority declines/unresolved 26 0,TRUE,TRUE,,,True
+fixtures,other,majority declines/unresolved 25 1,TRUE,TRUE,,,True
+fixtures,other,majority declines/unresolved 26 1,TRUE,TRUE,,,True
+fixtures,other,majority declines/unresolved 24 1,TRUE,TRUE,,,True
+fixtures,other,majority declines/unresolved 0 50,TRUE,TRUE,,,True
+fixtures,other,both statistical flags can coexist,TRUE,TRUE,,,True
+fixtures,other,lookup withheld package despite usable raw median,TRUE,TRUE,,,True
+fixtures,other,both caps and both definitions look up the withheld standard full record,TRUE,TRUE,,,True
+same-host,host,boot_id,8d16696e-6093-435e-a5ab-d6d2a892a9d7,8d16696e-6093-435e-a5ab-d6d2a892a9d7,,,True
+same-host,runtime,R,R version 4.5.0 (2025-04-11),R version 4.5.0 (2025-04-11),,,True
+same-host,runtime,package,0.4.0,0.4.0,,,True
+cross-host,host,boot_id,8d16696e-6093-435e-a5ab-d6d2a892a9d7,12d5d9b4-6709-4a0c-a864-92b7acebd11f,,,True
+cross-host,runtime,R,R version 4.5.0 (2025-04-11),R version 4.5.0 (2025-04-11),,,True
+cross-host,runtime,package,0.4.0,0.4.0,,,True
+fixtures,independent invocations,invocation UUID count,3,3,,,True
+same-host,all,science.rds,aa6a1fcf8ed2418cf90e00550428185bd820d9c56179177cb19ce77026b5f3ae,aa6a1fcf8ed2418cf90e00550428185bd820d9c56179177cb19ce77026b5f3ae,,,True
+same-host,all,fits.csv,f0b3e0831a7d0c101c07450b19105ab312a6308d4ff7f0bb5bd14fd379644119,f0b3e0831a7d0c101c07450b19105ab312a6308d4ff7f0bb5bd14fd379644119,,,True
+same-host,all,positions.csv,e4fc51d8dfbed3db63ae095c69e6a6e8edf5ad6cd5b59a540dd6c53a1d9879ca,e4fc51d8dfbed3db63ae095c69e6a6e8edf5ad6cd5b59a540dd6c53a1d9879ca,,,True
+same-host,all,checks.csv,c81030539b87be034b59a0a0a0a6548ab9235012ba26c0fd41a15a8688b94a73,c81030539b87be034b59a0a0a0a6548ab9235012ba26c0fd41a15a8688b94a73,,,True
+cross-host,all,positions.csv,e4fc51d8dfbed3db63ae095c69e6a6e8edf5ad6cd5b59a540dd6c53a1d9879ca,e4fc51d8dfbed3db63ae095c69e6a6e8edf5ad6cd5b59a540dd6c53a1d9879ca,,,True
+cross-host,first,complete fit roster,"['CRP subsample 3', 'CRP subsample 5', 'W 3', 'W 5', 'full 3', 'full 5']","['CRP subsample 3', 'CRP subsample 5', 'W 3', 'W 5', 'full 3', 'full 5']",,,True
+cross-host,other,complete fit roster,"['CRP subsample 3', 'CRP subsample 5', 'W 3', 'W 5', 'full 3', 'full 5']","['CRP subsample 3', 'CRP subsample 5', 'W 3', 'W 5', 'full 3', 'full 5']",,,True
+cross-host,CRP subsample 3,shape,upper,upper,,,True
+cross-host,CRP subsample 3,transform,identity,identity,,,True
+cross-host,CRP subsample 3,components,2,2,,,True
+cross-host,CRP subsample 3,first_status,reported,reported,,,True
+cross-host,CRP subsample 3,final_status,reported,reported,,,True
+cross-host,CRP subsample 3,method,anchoredRI,anchoredRI,,,True
+cross-host,CRP subsample 3,lrt_flag,FALSE,FALSE,,,True
+cross-host,CRP subsample 3,lower_flag,FALSE,FALSE,,,True
+cross-host,CRP subsample 3,lower_skipped,TRUE,TRUE,,,True
+cross-host,CRP subsample 3,reference span > 0,,14.2729710651542,,,True
+cross-host,CRP subsample 3,raw_lower missingness,,,,,True
+cross-host,CRP subsample 3,raw_upper,14.2729710651542,14.2729710651542,0.0,0.0142729710651542,True
+cross-host,CRP subsample 3,lower missingness,,,,,True
+cross-host,CRP subsample 3,upper,14.2729710651542,14.2729710651542,0.0,0.0142729710651542,True
+cross-host,CRP subsample 3,lrt_p,0.981877862833719,0.981877862833719,0.0,0.0001,True
+cross-host,CRP subsample 5,shape,upper,upper,,,True
+cross-host,CRP subsample 5,transform,shifted_log,shifted_log,,,True
+cross-host,CRP subsample 5,components,5,5,,,True
+cross-host,CRP subsample 5,first_status,declined,declined,,,True
+cross-host,CRP subsample 5,final_status,declined,declined,,,True
+cross-host,CRP subsample 5,method,,,,,True
+cross-host,CRP subsample 5,lrt_flag,TRUE,TRUE,,,True
+cross-host,CRP subsample 5,lower_flag,FALSE,FALSE,,,True
+cross-host,CRP subsample 5,lower_skipped,TRUE,TRUE,,,True
+cross-host,CRP subsample 5,reference span > 0,,15.9384180998455,,,True
+cross-host,CRP subsample 5,raw_lower missingness,,,,,True
+cross-host,CRP subsample 5,raw_upper,15.9384180998455,15.9384180998455,0.0,0.0159384180998455,True
+cross-host,CRP subsample 5,lower missingness,,,,,True
+cross-host,CRP subsample 5,upper missingness,,,,,True
+cross-host,CRP subsample 5,lrt_p,0.0033066241481295,0.0033066241481295,0.0,0.0001,True
+cross-host,W 3,shape,two,two,,,True
+cross-host,W 3,transform,identity,identity,,,True
+cross-host,W 3,components,2,2,,,True
+cross-host,W 3,first_status,reported,reported,,,True
+cross-host,W 3,final_status,reported,reported,,,True
+cross-host,W 3,method,anchoredRI,anchoredRI,,,True
+cross-host,W 3,lrt_flag,FALSE,FALSE,,,True
+cross-host,W 3,lower_flag,FALSE,FALSE,,,True
+cross-host,W 3,lower_skipped,FALSE,FALSE,,,True
+cross-host,W 3,reference span > 0,,5.523303916631141,,,True
+cross-host,W 3,raw_lower,9.24664964746876,9.24664964746876,0.0,0.005523303916631141,True
+cross-host,W 3,raw_upper,14.7699535640999,14.7699535640999,0.0,0.005523303916631141,True
+cross-host,W 3,lower,9.24664964746876,9.24664964746876,0.0,0.005523303916631141,True
+cross-host,W 3,upper,14.7699535640999,14.7699535640999,0.0,0.005523303916631141,True
+cross-host,W 3,lrt_p,0.99851194642389,0.99851194642389,0.0,0.0001,True
+cross-host,W 5,shape,two,two,,,True
+cross-host,W 5,transform,shifted_log,shifted_log,,,True
+cross-host,W 5,components,4,4,,,True
+cross-host,W 5,first_status,declined,declined,,,True
+cross-host,W 5,final_status,declined,declined,,,True
+cross-host,W 5,method,,,,,True
+cross-host,W 5,lrt_flag,TRUE,TRUE,,,True
+cross-host,W 5,lower_flag,FALSE,FALSE,,,True
+cross-host,W 5,lower_skipped,FALSE,FALSE,,,True
+cross-host,W 5,reference span > 0,,8.48045835675931,,,True
+cross-host,W 5,raw_lower,9.06523555796679,9.06523555796679,0.0,0.008480458356759311,True
+cross-host,W 5,raw_upper,17.5456939147261,17.5456939147261,0.0,0.008480458356759311,True
+cross-host,W 5,lower missingness,,,,,True
+cross-host,W 5,upper missingness,,,,,True
+cross-host,W 5,lrt_p,0.0051107060162933,0.0051107060162933,0.0,0.0001,True
+cross-host,full 3,shape,two,two,,,True
+cross-host,full 3,transform,identity,identity,,,True
+cross-host,full 3,components,2,2,,,True
+cross-host,full 3,first_status,reported,reported,,,True
+cross-host,full 3,final_status,reported,reported,,,True
+cross-host,full 3,method,anchoredRI,anchoredRI,,,True
+cross-host,full 3,lrt_flag,FALSE,FALSE,,,True
+cross-host,full 3,lower_flag,FALSE,FALSE,,,True
+cross-host,full 3,lower_skipped,FALSE,FALSE,,,True
+cross-host,full 3,reference span > 0,,5.52323427230124,,,True
+cross-host,full 3,raw_lower,9.24670089285546,9.24670089285546,0.0,0.00552323427230124,True
+cross-host,full 3,raw_upper,14.7699351651567,14.7699351651567,0.0,0.00552323427230124,True
+cross-host,full 3,lower,9.24670089285546,9.24670089285546,0.0,0.00552323427230124,True
+cross-host,full 3,upper,14.7699351651567,14.7699351651567,0.0,0.00552323427230124,True
+cross-host,full 3,lrt_p,0.998504673457729,0.998504673457729,0.0,0.0001,True
+cross-host,full 5,shape,two,two,,,True
+cross-host,full 5,transform,shifted_log,shifted_log,,,True
+cross-host,full 5,components,5,5,,,True
+cross-host,full 5,first_status,reported,reported,,,True
+cross-host,full 5,final_status,reported,reported,,,True
+cross-host,full 5,method,anchoredRI,anchoredRI,,,True
+cross-host,full 5,lrt_flag,FALSE,FALSE,,,True
+cross-host,full 5,lower_flag,FALSE,FALSE,,,True
+cross-host,full 5,lower_skipped,FALSE,FALSE,,,True
+cross-host,full 5,reference span > 0,,6.704965237139062,,,True
+cross-host,full 5,raw_lower,9.72247495492084,9.72247495492084,0.0,0.006704965237139062,True
+cross-host,full 5,raw_upper,16.4274401920599,16.4274401920599,0.0,0.006704965237139062,True
+cross-host,full 5,lower,9.72247495492084,9.72247495492084,0.0,0.006704965237139062,True
+cross-host,full 5,upper,16.4274401920599,16.4274401920599,0.0,0.006704965237139062,True
+cross-host,full 5,lrt_p,0.162959729344456,0.162959729344456,0.0,0.0001,True

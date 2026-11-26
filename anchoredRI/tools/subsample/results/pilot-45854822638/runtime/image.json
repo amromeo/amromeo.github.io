@@ -1,0 +1,81 @@
+[
+    {
+        "Id": "sha256:2ce42f88d12012b1cf39ab691893a70ac09e392b0984f683e6989b18ad7ec146",
+        "RepoTags": [],
+        "RepoDigests": [
+            "rocker/r-ver@sha256:5e8963d73b87865e0ad779df4202555fb1b436ee95dc7d7442450308b8ea77f3"
+        ],
+        "Parent": "",
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2025-06-13T10:05:33.325737795Z",
+        "DockerVersion": "",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "R_VERSION=4.5.0",
+                "R_HOME=/usr/local/lib/R",
+                "TZ=Etc/UTC",
+                "CRAN=https://p3m.dev/cran/__linux__/noble/2025-06-12",
+                "LANG=en_US.UTF-8"
+            ],
+            "Cmd": [
+                "R"
+            ],
+            "ArgsEscaped": true,
+            "Image": "",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {
+                "org.opencontainers.image.authors": "Carl Boettiger <cboettig@ropensci.org>",
+                "org.opencontainers.image.base.name": "docker.io/library/ubuntu:noble",
+                "org.opencontainers.image.description": "Reproducible builds to fixed version of R",
+                "org.opencontainers.image.licenses": "GPL-2.0-or-later",
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.revision": "07c155e242a3320c49c2990f69d4d140dc3fd09f",
+                "org.opencontainers.image.source": "https://github.com/rocker-org/rocker-versioned2",
+                "org.opencontainers.image.title": "rocker/r-ver",
+                "org.opencontainers.image.vendor": "Rocker Project",
+                "org.opencontainers.image.version": "R-4.5.0"
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 924382555,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/03a11cc290435c9b790fb19b3baf6769b449da7b2756a2b6e73b01fd7e6f225f/diff:/var/lib/docker/overlay2/cfb4c1cccfdb7c2783280be6c27d0004dcab335dbd761c5f42b55ff57ffaad99/diff:/var/lib/docker/overlay2/e8dab388c69661e034f3394c4e737b183914c4fa296621194e129dbb61db5108/diff:/var/lib/docker/overlay2/95861d35a64ef0a8612fa5ca03972a47fdfeb9d919822d1fffe99f5e73706cd7/diff:/var/lib/docker/overlay2/09892db3221a62c8108881e7fc4f09ec9ac2d5c0fff26e478c9c7cf5df0448ae/diff:/var/lib/docker/overlay2/5519a16e73b1dd280cb3c529a99123ff044941e6f2eb80e7a19105f1abce4fd5/diff",
+                "MergedDir": "/var/lib/docker/overlay2/88711aaa6c4e7a399917d9cbf5a0ac026d9b8a5a5049cae2ec22b7a6e0b70bf1/merged",
+                "UpperDir": "/var/lib/docker/overlay2/88711aaa6c4e7a399917d9cbf5a0ac026d9b8a5a5049cae2ec22b7a6e0b70bf1/diff",
+                "WorkDir": "/var/lib/docker/overlay2/88711aaa6c4e7a399917d9cbf5a0ac026d9b8a5a5049cae2ec22b7a6e0b70bf1/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:a8346d259389bc6221b4f3c61bad4e48087c5b82308e8f53ce703cfc8333c7b3",
+                "sha256:1124ae0a46deb78de0180c363ca3e2c6c3d9e00ecd8cef733697745da065d706",
+                "sha256:95c7550c014de780dbc80a89dfa593df8a8aa608bee6240830581b8bd6dca9dc",
+                "sha256:1100c3ddbe300aaaa13da188e8a145e7c3b2342ded16f52d3c2c5f31d64127aa",
+                "sha256:7b6e561cee0b561eb073a53359764f8f84d40da3151d4cec61feddfe4f282be2",
+                "sha256:637ac69fe1a2cee94e8ed708a77453b0072e284ff28bb6064a242b6f1a1eb1ba",
+                "sha256:14d37773855348bff047c4951bedbda18b7b201db54574538471c070892bf743"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
+        }
+    }
+]

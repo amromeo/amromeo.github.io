@@ -1,0 +1,20 @@
+{
+  "study": {
+    "attempts": 1440,
+    "passed": 1354,
+    "cpu_s": 1125.894,
+    "fit_elapsed_s": 1126.022,
+    "comparable_shares": 1440,
+    "mean_share_diff_pp": 0.03952756460545419,
+    "max_abs_share_diff_pp": 96.74577569314553
+  },
+  "archived_seed": {
+    "attempts": 86,
+    "passed": 37,
+    "cpu_s": 71.461,
+    "fit_elapsed_s": 71.476,
+    "comparable_shares": 86,
+    "mean_share_diff_pp": 1.0405470935561125,
+    "max_abs_share_diff_pp": 96.74533183564357
+  }
+}

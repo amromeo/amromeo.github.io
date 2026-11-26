@@ -1,0 +1,42 @@
+{
+  "comparisons": 848,
+  "failures": 0,
+  "max_cross_host_endpoint_difference_per_reference_width": 0.0,
+  "max_cross_host_absolute_lrt_p_difference": 0.0,
+  "max_cross_host_share_difference_percentage_points": 0.0,
+  "hosts": [
+    {
+      "boot_id": "8d16696e-6093-435e-a5ab-d6d2a892a9d7",
+      "host": "e9a6b2126620",
+      "pid": "8",
+      "invocation": "e033134f-b1e6-43e4-bfce-9ff05873b386",
+      "job": "fixtures",
+      "run": "45854822638",
+      "attempt": "1",
+      "R": "R version 4.5.0 (2025-04-11)",
+      "package": "0.4.0"
+    },
+    {
+      "boot_id": "8d16696e-6093-435e-a5ab-d6d2a892a9d7",
+      "host": "34aae246492c",
+      "pid": "8",
+      "invocation": "29095d9e-f8e1-422e-8a71-b31781a034e2",
+      "job": "fixtures",
+      "run": "45854822638",
+      "attempt": "1",
+      "R": "R version 4.5.0 (2025-04-11)",
+      "package": "0.4.0"
+    },
+    {
+      "boot_id": "12d5d9b4-6709-4a0c-a864-92b7acebd11f",
+      "host": "f454d4dfbe79",
+      "pid": "8",
+      "invocation": "ae7c88cb-87ab-4a91-9799-52367befc61f",
+      "job": "fixtures",
+      "run": "45854822638",
+      "attempt": "1",
+      "R": "R version 4.5.0 (2025-04-11)",
+      "package": "0.4.0"
+    }
+  ]
+}
