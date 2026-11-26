@@ -1,0 +1,3 @@
+bank,common_returns,policy_mean_d,package_mean_d,mean_policy_minus_package,median_policy_minus_package,policy_wins,exact_ties,policy_losses
+A,1423,0.130773772358203,0.1476139778274494,-0.016840205469246396,0.0,572,297,554
+B,1423,0.1310612963100153,0.1476139778274494,-0.016552681517434074,0.0,558,297,568
