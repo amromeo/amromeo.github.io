@@ -1,0 +1,7 @@
+"case","shape","transform","components","first_status","final_status","method","lrt_flag","lower_flag","lower_skipped","lrt_p","share","shift","raw_lower","raw_upper","lower","upper"
+"full 3","two","identity",2,"reported","reported","anchoredRI",FALSE,FALSE,FALSE,0.998504673457729,0.680950413479368,0,9.24670089285546,14.7699351651567,9.24670089285546,14.7699351651567
+"full 5","two","shifted_log",5,"reported","reported","anchoredRI",FALSE,FALSE,FALSE,0.162959729344456,0.381972229915615,8.4970348,9.72247495492084,16.4274401920599,9.72247495492084,16.4274401920599
+"W 3","two","identity",2,"reported","reported","anchoredRI",FALSE,FALSE,FALSE,0.99851194642389,0.680950994351582,0,9.24664964746876,14.7699535640999,9.24664964746876,14.7699535640999
+"W 5","two","shifted_log",4,"declined","declined",,TRUE,FALSE,FALSE,0.0051107060162933,0.145357903681436,8.4970348,9.06523555796679,17.5456939147261,,
+"CRP subsample 3","upper","identity",2,"reported","reported","anchoredRI",FALSE,FALSE,TRUE,0.981877862833719,0.679509660491536,0,,14.2729710651542,,14.2729710651542
+"CRP subsample 5","upper","shifted_log",5,"declined","declined",,TRUE,FALSE,TRUE,0.0033066241481295,0.116025954840906,8.49740545,,15.9384180998455,,

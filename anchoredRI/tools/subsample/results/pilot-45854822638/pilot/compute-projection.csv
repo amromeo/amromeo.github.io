@@ -1,0 +1,14 @@
+item,jobs,wall_seconds,cpu_seconds
+Measured archive,48,2385.0,1237.377
+Measured archivecheck,1,7.0,0.183
+Measured build,1,29.0,3.179
+Measured failed build (CPU lower bound),1,27.0,2.213
+Measured failed pilot (CPU lower bound),6,190.0,1.7510000000000001
+Measured fixturecheck,1,8.0,0.027
+Measured fixtures,2,64.0,17.227
+Measured pilot,20,6122.0,5641.784
+Measured recovery preflight,1,33.0,0.52
+Measured report,1,86.0,1.303
+Projected remaining per-Index work,1420,399775.795,399746.614
+Projected per-job overhead,1420,34886.20499999999,820.05000000001
+Projected final reporting,1,25.0,1.303

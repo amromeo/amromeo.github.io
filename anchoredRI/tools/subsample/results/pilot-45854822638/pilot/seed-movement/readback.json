@@ -1,0 +1,640 @@
+{
+  "full": {
+    "results": {
+      "reported": 19,
+      "declined": 1
+    },
+    "fallback": [
+      [
+        "4968",
+        "CRP",
+        "declined",
+        "reported",
+        "reported",
+        "anchorRefine"
+      ],
+      [
+        "5017",
+        "CRP",
+        "declined",
+        "reported",
+        "reported",
+        "anchorRefine"
+      ],
+      [
+        "3279",
+        "GGT",
+        "declined",
+        "reported",
+        "reported",
+        "anchorRefine"
+      ],
+      [
+        "4384",
+        "IgE",
+        "declined",
+        "reported",
+        "reported",
+        "anchorRefine"
+      ],
+      [
+        "2734",
+        "LACT",
+        "declined",
+        "reported",
+        "reported",
+        "anchorRefine"
+      ],
+      [
+        "5510",
+        "LDH",
+        "declined",
+        "declined",
+        "declined",
+        ""
+      ]
+    ],
+    "extremes": {
+      "standard_raw": [
+        [
+          "5510",
+          "lower",
+          52.251
+        ]
+      ],
+      "package": [],
+      "W5": [],
+      "W3": []
+    }
+  },
+  "summary": {
+    "5_all": {
+      "changed": [],
+      "gained": [],
+      "lost": [],
+      "both_release": 19,
+      "available": 40,
+      "min_contributors": 50,
+      "max_contributors": 50,
+      "zero": [],
+      "extremes": [],
+      "d_gt5": [],
+      "released_extremes": [],
+      "raw_lower": {
+        "n": 18,
+        "median": 0.007202202422609508,
+        "q90": 0.03116829379093964,
+        "q95": 0.046371010938484655,
+        "max": 0.0936471873929699,
+        "largest": [
+          {
+            "cap": "5",
+            "definition": "all",
+            "Index": "5510",
+            "analyte": "LDH",
+            "side": "lower",
+            "delta_units": -1.0256764910795368,
+            "delta_z": 0.0936471873929699,
+            "both": true
+          },
+          {
+            "cap": "5",
+            "definition": "all",
+            "Index": "5498",
+            "analyte": "LDH",
+            "side": "lower",
+            "delta_units": -0.4186355671710942,
+            "delta_z": 0.03802815627004618,
+            "both": true
+          }
+        ]
+      },
+      "raw_upper": {
+        "n": 20,
+        "median": 0.0081723545425793,
+        "q90": 0.04096431910653973,
+        "q95": 0.055580624110979034,
+        "max": 0.05615082537851199,
+        "largest": [
+          {
+            "cap": "5",
+            "definition": "all",
+            "Index": "5017",
+            "analyte": "CRP",
+            "side": "upper",
+            "delta_units": -0.3306362324973331,
+            "delta_z": 0.05615082537851199,
+            "both": false
+          },
+          {
+            "cap": "5",
+            "definition": "all",
+            "Index": "5510",
+            "analyte": "LDH",
+            "side": "upper",
+            "delta_units": -1.9195654163171696,
+            "delta_z": 0.055550613517950986,
+            "both": true
+          }
+        ]
+      },
+      "both_lower": {
+        "n": 18,
+        "median": 0.007202202422609508,
+        "q90": 0.03116829379093964,
+        "q95": 0.046371010938484655,
+        "max": 0.0936471873929699,
+        "largest": [
+          {
+            "cap": "5",
+            "definition": "all",
+            "Index": "5510",
+            "analyte": "LDH",
+            "side": "lower",
+            "delta_units": -1.0256764910795368,
+            "delta_z": 0.0936471873929699,
+            "both": true
+          },
+          {
+            "cap": "5",
+            "definition": "all",
+            "Index": "5498",
+            "analyte": "LDH",
+            "side": "lower",
+            "delta_units": -0.4186355671710942,
+            "delta_z": 0.03802815627004618,
+            "both": true
+          }
+        ]
+      },
+      "both_upper": {
+        "n": 19,
+        "median": 0.007040068404026004,
+        "q90": 0.02922472147953687,
+        "q95": 0.04096431910653967,
+        "max": 0.055550613517950986,
+        "largest": [
+          {
+            "cap": "5",
+            "definition": "all",
+            "Index": "5510",
+            "analyte": "LDH",
+            "side": "upper",
+            "delta_units": -1.9195654163171696,
+            "delta_z": 0.055550613517950986,
+            "both": true
+          },
+          {
+            "cap": "5",
+            "definition": "all",
+            "Index": "2734",
+            "analyte": "LACT",
+            "side": "upper",
+            "delta_units": 0.02666855996586559,
+            "delta_z": -0.039343619727494006,
+            "both": true
+          }
+        ]
+      }
+    },
+    "5_passing": {
+      "changed": [],
+      "gained": [],
+      "lost": [],
+      "both_release": 19,
+      "available": 38,
+      "min_contributors": 0,
+      "max_contributors": 50,
+      "zero": [
+        [
+          "5017",
+          "A"
+        ],
+        [
+          "5017",
+          "B"
+        ]
+      ],
+      "extremes": [],
+      "d_gt5": [],
+      "released_extremes": [],
+      "raw_lower": {
+        "n": 18,
+        "median": 0.006551506537816804,
+        "q90": 0.02721783576111851,
+        "q95": 0.029673877732229396,
+        "max": 0.037865186086892155,
+        "largest": [
+          {
+            "cap": "5",
+            "definition": "passing",
+            "Index": "5498",
+            "analyte": "LDH",
+            "side": "lower",
+            "delta_units": -0.4168514314213496,
+            "delta_z": 0.037865186086892155,
+            "both": true
+          },
+          {
+            "cap": "5",
+            "definition": "passing",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "lower",
+            "delta_units": 0.005175507450607519,
+            "delta_z": -0.028228352728465397,
+            "both": true
+          }
+        ]
+      },
+      "raw_upper": {
+        "n": 19,
+        "median": 0.007040068404026004,
+        "q90": 0.023129154586488156,
+        "q95": 0.02908476244999208,
+        "max": 0.056599010427032026,
+        "largest": [
+          {
+            "cap": "5",
+            "definition": "passing",
+            "Index": "5510",
+            "analyte": "LDH",
+            "side": "upper",
+            "delta_units": 2.022470292567874,
+            "delta_z": -0.056599010427032026,
+            "both": true
+          },
+          {
+            "cap": "5",
+            "definition": "passing",
+            "Index": "5498",
+            "analyte": "LDH",
+            "side": "upper",
+            "delta_units": -0.8546178610980633,
+            "delta_z": 0.0260276237858766,
+            "both": true
+          }
+        ]
+      },
+      "both_lower": {
+        "n": 18,
+        "median": 0.006551506537816804,
+        "q90": 0.02721783576111851,
+        "q95": 0.029673877732229396,
+        "max": 0.037865186086892155,
+        "largest": [
+          {
+            "cap": "5",
+            "definition": "passing",
+            "Index": "5498",
+            "analyte": "LDH",
+            "side": "lower",
+            "delta_units": -0.4168514314213496,
+            "delta_z": 0.037865186086892155,
+            "both": true
+          },
+          {
+            "cap": "5",
+            "definition": "passing",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "lower",
+            "delta_units": 0.005175507450607519,
+            "delta_z": -0.028228352728465397,
+            "both": true
+          }
+        ]
+      },
+      "both_upper": {
+        "n": 19,
+        "median": 0.007040068404026004,
+        "q90": 0.023129154586488156,
+        "q95": 0.02908476244999208,
+        "max": 0.056599010427032026,
+        "largest": [
+          {
+            "cap": "5",
+            "definition": "passing",
+            "Index": "5510",
+            "analyte": "LDH",
+            "side": "upper",
+            "delta_units": 2.022470292567874,
+            "delta_z": -0.056599010427032026,
+            "both": true
+          },
+          {
+            "cap": "5",
+            "definition": "passing",
+            "Index": "5498",
+            "analyte": "LDH",
+            "side": "upper",
+            "delta_units": -0.8546178610980633,
+            "delta_z": 0.0260276237858766,
+            "both": true
+          }
+        ]
+      }
+    },
+    "3_all": {
+      "changed": [
+        [
+          "2734",
+          "LACT",
+          {
+            "A": "declined",
+            "B": "reported"
+          },
+          27,
+          19
+        ]
+      ],
+      "gained": [
+        "2734"
+      ],
+      "lost": [],
+      "both_release": 17,
+      "available": 40,
+      "min_contributors": 50,
+      "max_contributors": 50,
+      "zero": [],
+      "extremes": [],
+      "d_gt5": [],
+      "released_extremes": [],
+      "raw_lower": {
+        "n": 18,
+        "median": 0.0060692173472770925,
+        "q90": 0.02338852265333121,
+        "q95": 0.0337872506832873,
+        "max": 0.039516230362373006,
+        "largest": [
+          {
+            "cap": "3",
+            "definition": "all",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "lower",
+            "delta_units": 0.00688597580882927,
+            "delta_z": -0.039516230362373006,
+            "both": true
+          },
+          {
+            "cap": "3",
+            "definition": "all",
+            "Index": "905",
+            "analyte": "Ca",
+            "side": "lower",
+            "delta_units": -0.0029301971316781916,
+            "delta_z": 0.03277625426933101,
+            "both": true
+          }
+        ]
+      },
+      "raw_upper": {
+        "n": 20,
+        "median": 0.008880062371481992,
+        "q90": 0.019329766766124527,
+        "q95": 0.024089099923085572,
+        "max": 0.07717971370618598,
+        "largest": [
+          {
+            "cap": "3",
+            "definition": "all",
+            "Index": "2734",
+            "analyte": "LACT",
+            "side": "upper",
+            "delta_units": -0.07242586860163014,
+            "delta_z": 0.07717971370618598,
+            "both": false
+          },
+          {
+            "cap": "3",
+            "definition": "all",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "upper",
+            "delta_units": -0.021181158881769857,
+            "delta_z": 0.021294857092396036,
+            "both": true
+          }
+        ]
+      },
+      "both_lower": {
+        "n": 16,
+        "median": 0.004926571837771794,
+        "q90": 0.023650049123278373,
+        "q95": 0.034461248292591506,
+        "max": 0.039516230362373006,
+        "largest": [
+          {
+            "cap": "3",
+            "definition": "all",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "lower",
+            "delta_units": 0.00688597580882927,
+            "delta_z": -0.039516230362373006,
+            "both": true
+          },
+          {
+            "cap": "3",
+            "definition": "all",
+            "Index": "905",
+            "analyte": "Ca",
+            "side": "lower",
+            "delta_units": -0.0029301971316781916,
+            "delta_z": 0.03277625426933101,
+            "both": true
+          }
+        ]
+      },
+      "both_upper": {
+        "n": 17,
+        "median": 0.008149440216540987,
+        "q90": 0.01886338204358122,
+        "q95": 0.019548110135710246,
+        "max": 0.021294857092396036,
+        "largest": [
+          {
+            "cap": "3",
+            "definition": "all",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "upper",
+            "delta_units": -0.021181158881769857,
+            "delta_z": 0.021294857092396036,
+            "both": true
+          },
+          {
+            "cap": "3",
+            "definition": "all",
+            "Index": "3220",
+            "analyte": "GGT",
+            "side": "upper",
+            "delta_units": -0.3971953738583949,
+            "delta_z": 0.0191114233965388,
+            "both": true
+          }
+        ]
+      }
+    },
+    "3_passing": {
+      "changed": [
+        [
+          "2734",
+          "LACT",
+          {
+            "A": "declined",
+            "B": "reported"
+          },
+          27,
+          19
+        ]
+      ],
+      "gained": [
+        "2734"
+      ],
+      "lost": [],
+      "both_release": 17,
+      "available": 36,
+      "min_contributors": 0,
+      "max_contributors": 50,
+      "zero": [
+        [
+          "4968",
+          "A"
+        ],
+        [
+          "4968",
+          "B"
+        ],
+        [
+          "5510",
+          "A"
+        ],
+        [
+          "5510",
+          "B"
+        ]
+      ],
+      "extremes": [],
+      "d_gt5": [],
+      "released_extremes": [],
+      "raw_lower": {
+        "n": 17,
+        "median": 0.004570367981025388,
+        "q90": 0.03491327602236741,
+        "q95": 0.03839829299401219,
+        "max": 0.039516230362373006,
+        "largest": [
+          {
+            "cap": "3",
+            "definition": "passing",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "lower",
+            "delta_units": 0.00688597580882927,
+            "delta_z": -0.039516230362373006,
+            "both": true
+          },
+          {
+            "cap": "3",
+            "definition": "passing",
+            "Index": "2734",
+            "analyte": "LACT",
+            "side": "lower",
+            "delta_units": 0.0068255604499593,
+            "delta_z": -0.03811880865192199,
+            "both": false
+          }
+        ]
+      },
+      "raw_upper": {
+        "n": 18,
+        "median": 0.007982742651579014,
+        "q90": 0.017810878463115614,
+        "q95": 0.019438938450917383,
+        "max": 0.021294857092396036,
+        "largest": [
+          {
+            "cap": "3",
+            "definition": "passing",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "upper",
+            "delta_units": -0.021181158881769857,
+            "delta_z": 0.021294857092396036,
+            "both": true
+          },
+          {
+            "cap": "3",
+            "definition": "passing",
+            "Index": "3220",
+            "analyte": "GGT",
+            "side": "upper",
+            "delta_units": -0.3971953738583949,
+            "delta_z": 0.0191114233965388,
+            "both": true
+          }
+        ]
+      },
+      "both_lower": {
+        "n": 16,
+        "median": 0.004313271703724529,
+        "q90": 0.023650049123278373,
+        "q95": 0.034461248292591506,
+        "max": 0.039516230362373006,
+        "largest": [
+          {
+            "cap": "3",
+            "definition": "passing",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "lower",
+            "delta_units": 0.00688597580882927,
+            "delta_z": -0.039516230362373006,
+            "both": true
+          },
+          {
+            "cap": "3",
+            "definition": "passing",
+            "Index": "905",
+            "analyte": "Ca",
+            "side": "lower",
+            "delta_units": -0.0029301971316781916,
+            "delta_z": 0.03277625426933101,
+            "both": true
+          }
+        ]
+      },
+      "both_upper": {
+        "n": 17,
+        "median": 0.008149440216540987,
+        "q90": 0.017996670596461782,
+        "q95": 0.019548110135710246,
+        "max": 0.021294857092396036,
+        "largest": [
+          {
+            "cap": "3",
+            "definition": "passing",
+            "Index": "2711",
+            "analyte": "LACT",
+            "side": "upper",
+            "delta_units": -0.021181158881769857,
+            "delta_z": 0.021294857092396036,
+            "both": true
+          },
+          {
+            "cap": "3",
+            "definition": "passing",
+            "Index": "3220",
+            "analyte": "GGT",
+            "side": "upper",
+            "delta_units": -0.3971953738583949,
+            "delta_z": 0.0191114233965388,
+            "both": true
+          }
+        ]
+      }
+    }
+  }
+}

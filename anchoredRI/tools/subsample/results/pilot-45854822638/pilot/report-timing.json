@@ -1,0 +1,16 @@
+{
+  "actions_job": "https://github.com/amromeo/amromeo.github.io/actions/runs/45856233843/job/140040008446",
+  "run_id": 45856233843,
+  "started_at": "2026-11-26T16:19:05Z",
+  "completed_at": "2026-11-26T16:20:31Z",
+  "wall_seconds": 86.0,
+  "cpu_seconds": 1.303,
+  "recovery_polling_wall_seconds": 61.0,
+  "preliminary_final_report_allowance": {
+    "item": "Projected final reporting",
+    "jobs": "1",
+    "wall_seconds": "120.0",
+    "cpu_seconds": "30.0"
+  },
+  "pilot_scores_sha256": "8d13922332d796a36ef6c9af6fb7a0471ac0d152c46b5fe048cce231b585df36"
+}

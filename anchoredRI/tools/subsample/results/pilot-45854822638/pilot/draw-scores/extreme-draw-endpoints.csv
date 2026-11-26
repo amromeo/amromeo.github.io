@@ -1,0 +1,3 @@
+Index,Analyte,cap,seed_set,draw,components,transform,first_status,first_reason,lrt_flag,lower_flag,p,d,endpoint,estimate,truth,signed_z
+5510,LDH,5,A,8,5,identity,declined,routine data disagree with the screened sample,TRUE,FALSE,0.0002730851322768073,26.7901944979594,lower,74.029724500161279,135,52.250520164377
+5510,LDH,5,A,40,5,identity,declined,routine data disagree with the screened sample,TRUE,FALSE,0.00011806190875108504,26.8632059368415,lower,73.828757880415978,135,52.250520164377
