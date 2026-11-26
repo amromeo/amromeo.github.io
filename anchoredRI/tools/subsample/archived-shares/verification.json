@@ -1,0 +1,26 @@
+{
+  "result": "PASS",
+  "reference_revisions": {
+    "amromeo/amromeo.github.io": "8bcd49c3c7977c50982524b9dbc48d16bdfa5914",
+    "amromeo/anchorRefine": "638e2d3500faa01d4e2816895a95d7a6685567a0"
+  },
+  "datasets": 1440,
+  "realized_component_counts_match": 1440,
+  "records_checked": 2880,
+  "fields_per_record_including_keys": 30,
+  "aggregate_rows_checked": {
+    "by-components.csv": 10,
+    "by-components-and-fraction.csv": 80,
+    "gap-bands.csv": 40
+  },
+  "max_absolute_difference_aggregate": 1.4210854715202004e-14,
+  "count_discrepancies": 0,
+  "artifact_sha256": {
+    "by-components-and-fraction.csv": "16b5a7753d981ffd11f1914e96bbf69938461e01ec232be517faab30cca919a5",
+    "by-components.csv": "da9233032f507e6bc6a6643e9a8967c5ed6f934ebbb7b35e1c824611403b735c",
+    "count-discrepancies.csv": "d75cb4e331c464b02aeaea7709ed85a83d63857b69c0fe99d061ba7a3d1ef612",
+    "fits.csv": "6bf8da4b423a5d46a97cc1fd5704d5708f2a724ce5f2235eb662e7593c5ef8af",
+    "gap-bands.csv": "99ea2a30206abc41fa594f56924f8f55fdb1248cd121e08a47bcc580b3999ddf"
+  },
+  "method": "Independent joins of archived fits, selected component estimates, requested endpoint deviations, design and observed sample manifests. Separate pandas and SciPy calculations check count conversion, flags, ranks, quantiles and each statistic; no fits."
+}

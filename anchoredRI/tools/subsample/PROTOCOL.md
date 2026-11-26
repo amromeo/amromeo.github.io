@@ -2,7 +2,7 @@
 
 **Proposed for review, 26 November 2026.** At N = 50,000, full-data anchoredRI Arm B selected four or five mixture components on 1,300 of 1,440 RIbench datasets (90.3%). Its first-stage safeguards declined 305 (21.2%). Reducing the routine sample from nominal 50,000 to 5,000 gives the same 40 anchors about ten times their relative weight in the likelihood. BIC may then select fewer components, and the anchors may have more influence on the healthy component’s limits. We will test whether taking the median of 50 such fits improves the limits, and whether giving all routine observations a combined weight of 5,000 achieves a similar result. RIbench informed this idea. Adoption would require independent confirmation data and a prespecified rule for which sample sizes between 5,000 and 50,000 should use the method. [Task E component counts and decline rates](https://github.com/amromeo/amromeo.github.io/blob/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/large/results/REPORT.md)
 
-The archived component-share analysis is authorized now and will be published as a separate short report. New fits, the timing pilot and the full benchmark await approval. Study files belong in `anchoredRI/tools/subsample/` on `study/subsample`.
+The archived component-share analysis is complete. New fits, the timing pilot and the full benchmark await approval. Study files belong in `anchoredRI/tools/subsample/` on `study/subsample`. [Archived component-share report](archived-shares/REPORT.md)
 
 ## First results table. What happens when the full-data first stage releases or declines?
 

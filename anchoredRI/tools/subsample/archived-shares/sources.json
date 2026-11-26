@@ -1,0 +1,21 @@
+[
+  {
+    "repository": "amromeo/amromeo.github.io",
+    "revision": "8bcd49c3c7977c50982524b9dbc48d16bdfa5914",
+    "files": {
+      "anchoredRI/tools/boxcox/accuracy/large/results/selected-component-parameters.csv": "e77e0fa6e6329f168ba01227069819eedc7bd436e987b3a20437d22cbde7958c",
+      "anchoredRI/tools/boxcox/accuracy/large/results/armB-fits.csv": "87dce1dadba2917bd2bf160beab1933bd9d58966291ccae4b8dd6011c42fdef7",
+      "anchoredRI/tools/boxcox/accuracy/large/results/baseline-fits.csv": "cab045a054d0651dbe0b20c8e5d8602957e521284d2b98b21c4256bc26fe960a",
+      "anchoredRI/tools/boxcox/accuracy/large/results/ribench-outcomes.csv": "05badc90db1757901244616f2364fe591926b69e7d7135f6f3b640debda72716"
+    }
+  },
+  {
+    "repository": "amromeo/anchorRefine",
+    "revision": "638e2d3500faa01d4e2816895a95d7a6685567a0",
+    "files": {
+      "stage1/large/testsets.csv": "177cd392896cb300bf4aaa35a959e46bb3ee48d510beff8cf9957f6643a66e39",
+      "stage2/ribench/design-large.csv": "e7b3b9b0673211f84534c11f2125a00eaad3295b8180772e419d6de7c0faa267",
+      "vendor/RIbench_1.0.2.tar.gz": "5703783160e2ed6bef1891d44c1401cfa0303820c46eb0f3e56f213c2ae3dd35"
+    }
+  }
+]
