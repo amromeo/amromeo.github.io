@@ -76,6 +76,7 @@ case "$phase" in
     pilot)
         restore
         prepare --ids "$1"
+        container timer-verification Rscript --vanilla "$study/timer-check.R" output/timer-check.csv
         container pilot Rscript --vanilla "$study/pilot.R" inputs output/records "$1"
         ;;
     fixture-report)
@@ -100,7 +101,15 @@ SHIM
         chmod +x tmp-work/bin/Rscript
         export PATH="$PWD/tmp-work/bin:$PATH"
         prepare --metadata-only
-        python3 "$study/job-account.py" jobs.json incoming output/jobs.csv
+        if [[ ${TASK_H_RECOVERY:-0} == 1 ]]; then
+            python3 "$study/recovery-account.py" \
+                --run 45854626824 jobs-aborted.json first-aborted \
+                --run 45854822638 jobs-original.json incoming \
+                --run "$GITHUB_RUN_ID" jobs-recovery.json recovered --out output/accounting
+            cp output/accounting/jobs.csv output/jobs.csv
+        else
+            python3 "$study/job-account.py" jobs.json incoming output/jobs.csv
+        fi
         measure pilot-report python3 "$study/pilot-report.py" all-records inputs output/pilot-report --roster "$study/pilot-roster.csv" --jobs output/jobs.csv --concurrency 20 --indices-per-job 1 --report-wall-seconds 120 --report-cpu-seconds 30
         ;;
     *) exit 2 ;;

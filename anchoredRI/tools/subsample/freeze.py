@@ -25,7 +25,8 @@ def sha(path):
 
 def files():
     sources = [path for path in study.iterdir() if path.is_file() and path not in (manifest, launch)]
-    sources.extend([workflow, study / "archived-shares" / "fits.csv"])
+    sources.extend([workflow, study / "archived-shares" / "fits.csv",
+                    study / "results/pilot-45854822638/runtime/runtime.sha256"])
     sources.extend(Path(p) for p in git("ls-files", "--", *package).splitlines())
     return sorted(set(sources))
 

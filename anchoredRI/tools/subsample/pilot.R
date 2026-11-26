@@ -17,27 +17,31 @@ h_measure <- function(work) {
   list(value = value, time = h_clock() - start)
 }
 
-h_public <- function(case, pit_seed) {
-  # Observe the time inside the actual fallback, including early returns. This
-  # temporary hook only reads proc.time and is removed before any other fit.
-  ns <- asNamespace("anchoredRI")
+# The fallback installs its own on.exit RNG cleanup. Measure its entry, then
+# the public return, which also includes assignment of the reporting fields.
+h_observe_fallback <- function(public_call, where) {
   timer <- new.env(parent = emptyenv())
   old <- options(taskH.fallback.timer = timer)
   on.exit(options(old), add = TRUE)
-  suppressMessages(trace(".fit_anchor_refine", where = ns, print = FALSE,
-    tracer = quote(assign("start", proc.time(), envir = getOption("taskH.fallback.timer"))),
-    exit = quote(assign("end", proc.time(), envir = getOption("taskH.fallback.timer")))))
-  on.exit(suppressMessages(untrace(".fit_anchor_refine", where = ns)), add = TRUE)
-  fit <- anchoredRI::fit_anchored_ri(case$value, rep("pooled", length(case$value)), case$anchor,
-         transform = "auto", safeguard = TRUE, probs = case$probs, rounding_unit = case$rounding_unit,
-         fit_seed = 1L, fallback = TRUE, fallback_seed = 123L, pit_seed = pit_seed)
+  suppressMessages(trace(".fit_anchor_refine", where = where, print = FALSE,
+    tracer = quote(assign("start", proc.time(), envir = getOption("taskH.fallback.timer")))))
+  on.exit(suppressMessages(untrace(".fit_anchor_refine", where = where)), add = TRUE)
+  fit <- force(public_call)
+  returned <- proc.time()
   spent <- if (is.null(timer$start)) numeric() else {
-    stopifnot(!is.null(timer$end))
-    delta <- timer$end - timer$start
+    delta <- returned - timer$start
     c(wall_seconds = unname(delta[3]), cpu_seconds = unname(sum(delta[c(1, 2, 4, 5)])))
   }
   stopifnot((length(spent) > 0L) == !is.null(fit$diagnostics$anchorRefine))
   list(fits = list("5" = fit), fallback_time = spent)
+}
+
+h_public <- function(case, pit_seed) {
+  h_observe_fallback(
+    anchoredRI::fit_anchored_ri(case$value, rep("pooled", length(case$value)), case$anchor,
+      transform = "auto", safeguard = TRUE, probs = case$probs, rounding_unit = case$rounding_unit,
+      fit_seed = 1L, fallback = TRUE, fallback_seed = 123L, pit_seed = pit_seed),
+    asNamespace("anchoredRI"))
 }
 
 h_csv <- function(x, path) {
