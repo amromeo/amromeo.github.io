@@ -1,0 +1,14 @@
+package,version
+anchoredRI,0.4.0
+RColorBrewer,1.1-3
+RIbench,1.0.2
+ash,1.0-15
+data.table,1.16.4
+digest,0.6.39
+future.apply,1.21.0
+future,1.82.0
+getopt,1.21.1
+globals,0.20.0
+listenv,1.1.0
+optparse,1.8.2
+parallelly,1.50.0

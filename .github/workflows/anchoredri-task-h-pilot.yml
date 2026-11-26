@@ -1,0 +1,271 @@
+name: Task H verification and timing pilot
+on:
+  push:
+    branches: [study/subsample]
+    paths: [anchoredRI/tools/subsample/launch-pilot.json]
+
+permissions:
+  contents: read
+  actions: read
+env:
+  STUDY: anchoredRI/tools/subsample
+
+jobs:
+  build:
+    name: build-single
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    outputs:
+      pilot_ids: ${{ steps.roster.outputs.ids }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - run: |
+          bash "$STUDY/hosted.sh" build
+      - id: roster
+        run: |
+          python3 - <<'PYTHON' >> "$GITHUB_OUTPUT"
+          import csv,json,os
+          with open(os.environ["STUDY"] + "/pilot-roster.csv") as stream:
+              print("ids=" + json.dumps([int(r["Index"]) for r in csv.DictReader(stream)]))
+          PYTHON
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: runtime
+          path: |
+            runtime.tgz
+            runtime.sha256
+          if-no-files-found: error
+          compression-level: 1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: receipt-build
+          path: |
+            output/
+          if-no-files-found: error
+          compression-level: 1
+  fixtures:
+    name: fixtures-${{ matrix.host }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    needs: build
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        host: [primary, other]
+    env:
+      TASK_H_KEY: ${{ matrix.host }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: runtime
+      - run: |
+          if [[ "$TASK_H_KEY" == primary ]]; then
+            bash "$STUDY/hosted.sh" fixtures first second
+          else
+            bash "$STUDY/hosted.sh" fixtures other
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: fixtures-${{ matrix.host }}
+          path: |
+            output/
+          if-no-files-found: error
+          compression-level: 1
+  fixturecheck:
+    name: fixturecheck-single
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    needs: fixtures
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: fixtures-*
+          path: incoming
+      - run: |
+          bash "$STUDY/hosted.sh" fixture-report
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: fixturecheck
+          path: |
+            output/
+          if-no-files-found: error
+          compression-level: 1
+  archive:
+    name: archive-${{ matrix.shard }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    needs: fixturecheck
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+    env:
+      TASK_H_KEY: ${{ matrix.shard }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: runtime
+      - run: |
+          bash "$STUDY/hosted.sh" audit "$TASK_H_KEY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: archive-${{ matrix.shard }}
+          path: |
+            output/
+          if-no-files-found: error
+          compression-level: 1
+  archivecheck:
+    name: archivecheck-single
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    needs: archive
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: archive-*
+          path: incoming
+      - run: |
+          bash "$STUDY/hosted.sh" audit-report
+          cat output/verification/AUDIT.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: archivecheck
+          path: |
+            output/
+          if-no-files-found: error
+          compression-level: 1
+  pilot:
+    name: pilot-${{ matrix.index }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    needs: [build, archivecheck]
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        index: ${{ fromJSON(needs.build.outputs.pilot_ids) }}
+    env:
+      TASK_H_KEY: ${{ matrix.index }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: runtime
+      - run: |
+          bash "$STUDY/hosted.sh" pilot "$TASK_H_KEY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pilot-${{ matrix.index }}
+          path: |
+            output/
+          if-no-files-found: error
+          compression-level: 1
+  report:
+    name: report-single
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    needs: pilot
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          path: incoming
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp incoming/runtime/runtime.* .
+          mkdir -p all-records
+          for job in incoming/pilot-*; do cp -al "$job"/records/. all-records/; done
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/attempts/$GITHUB_RUN_ATTEMPT/jobs?per_page=100" > jobs.json
+          bash "$STUDY/hosted.sh" report
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pilot-report
+          path: |
+            output/
+          if-no-files-found: error
+          compression-level: 1
