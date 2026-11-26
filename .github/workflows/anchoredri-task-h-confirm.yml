@@ -1,0 +1,205 @@
+name: Task H independent confirmation
+on:
+  push:
+    branches: [study/subsample]
+    paths: [anchoredRI/tools/subsample/confirmation/launch.json]
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  CONFIRM: anchoredRI/tools/subsample/confirmation
+  STUDY: anchoredRI/tools/subsample
+
+jobs:
+  preflight:
+    name: Verify freeze, recover original input identities
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      actions: read
+      contents: write
+    outputs:
+      matrix: ${{ steps.freeze.outputs.matrix }}
+      input_id: ${{ steps.inputs.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - id: freeze
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$CONFIRM/schedule.py" validate
+      - run: bash "$CONFIRM/hosted-confirm.sh" setup
+      - name: Verify the archive before extracting only original input references
+        run: python3 "$CONFIRM/prepare-inputs.py" inputs --hosted
+      - id: inputs
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: confirm-inputs-a${{ github.run_attempt }}
+          path: inputs/
+          if-no-files-found: error
+          compression-level: 1
+
+  fixtures:
+    name: Route fixtures on ${{ matrix.host }} runner
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        host: [primary, other]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            anchoredRI/tools/subsample/confirmation
+            anchoredRI/tools/subsample/results/pilot-45854822638/runtime
+      - name: Restore pinned runtime and run fixture
+        env:
+          FIXTURE_HOST: ${{ matrix.host }}
+        run: |
+          bash "$CONFIRM/hosted-confirm.sh" setup
+          bash "$CONFIRM/hosted-confirm.sh" fixture "$FIXTURE_HOST"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: confirm-fixtures-${{ matrix.host }}-a${{ github.run_attempt }}
+          path: fixture-output/
+          if-no-files-found: error
+
+  fixture_audit:
+    name: Compare independent fixture hosts and preserve verification
+    needs: [preflight, fixtures]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      actions: read
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      INPUT_ARTIFACT_ID: ${{ needs.preflight.outputs.input_id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            anchoredRI/tools/subsample/confirmation
+            anchoredRI/tools/subsample/results/pilot-45854822638/runtime
+      - run: |
+          bash "$CONFIRM/hosted-confirm.sh" setup
+          python3 "$CONFIRM/schedule.py" inputs
+          python3 "$CONFIRM/schedule.py" fixtures
+          bash "$STUDY/full-hosted.sh" r "$CONFIRM/compare-fixtures.R" cross fixtures/primary/first fixtures/other/first | tee fixtures/checks.txt
+          python3 "$CONFIRM/schedule.py" publish verification
+        shell: bash
+
+  fit:
+    name: Fit and verify block ${{ matrix.padded }}
+    needs: [preflight, fixture_audit]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: true
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.preflight.outputs.matrix) }}
+    env:
+      BLOCK: ${{ matrix.block }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            anchoredRI/tools/subsample/confirmation
+            anchoredRI/tools/subsample/results/pilot-45854822638/runtime
+      - name: Restore the frozen runtime and original input metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_ARTIFACT_ID: ${{ needs.preflight.outputs.input_id }}
+        run: |
+          bash "$CONFIRM/hosted-confirm.sh" setup
+          python3 "$CONFIRM/schedule.py" inputs
+      - name: Restore previously verified case checkpoints
+        if: github.run_attempt > 1
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$CONFIRM/schedule.py" restore "$BLOCK"
+      - name: Case 1
+        uses: ./anchoredRI/tools/subsample/confirmation/slot
+        with:
+          block: ${{ matrix.block }}
+          slot: '1'
+      - name: Case 2
+        uses: ./anchoredRI/tools/subsample/confirmation/slot
+        with:
+          block: ${{ matrix.block }}
+          slot: '2'
+      - name: Case 3
+        uses: ./anchoredRI/tools/subsample/confirmation/slot
+        with:
+          block: ${{ matrix.block }}
+          slot: '3'
+      - name: Case 4
+        uses: ./anchoredRI/tools/subsample/confirmation/slot
+        with:
+          block: ${{ matrix.block }}
+          slot: '4'
+      - name: Case 5
+        uses: ./anchoredRI/tools/subsample/confirmation/slot
+        with:
+          block: ${{ matrix.block }}
+          slot: '5'
+      - name: Case 6
+        uses: ./anchoredRI/tools/subsample/confirmation/slot
+        with:
+          block: ${{ matrix.block }}
+          slot: '6'
+      - name: Case 7
+        uses: ./anchoredRI/tools/subsample/confirmation/slot
+        with:
+          block: ${{ matrix.block }}
+          slot: '7'
+      - name: Case 8
+        uses: ./anchoredRI/tools/subsample/confirmation/slot
+        with:
+          block: ${{ matrix.block }}
+          slot: '8'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: confirm-block-g${{ matrix.group }}-b${{ matrix.padded }}-a${{ github.run_attempt }}
+          path: blockdata/
+          if-no-files-found: error
+          compression-level: 1
+
+  bundle:
+    name: Preserve verified confirmation group ${{ matrix.group }}
+    needs: fit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      actions: read
+      contents: write
+    strategy:
+      fail-fast: true
+      matrix:
+        group: ['01', '02', '03', '04', '05', '06', '07', '08']
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: anchoredRI/tools/subsample/confirmation
+      - name: Check transport, saved cases and release digests
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GROUP: ${{ matrix.group }}
+        run: python3 "$CONFIRM/schedule.py" publish "$GROUP"

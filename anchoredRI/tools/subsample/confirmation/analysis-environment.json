@@ -1,0 +1,8 @@
+{
+  "role": "Final tables and paired cell bootstrap",
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "scipy": "1.17.0",
+  "bootstrap_rng": "numpy.random.Generator(PCG64(37000000))",
+  "R": "4.5.0, compiled package and container pinned in launch receipt"
+}

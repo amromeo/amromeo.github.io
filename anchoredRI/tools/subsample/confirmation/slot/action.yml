@@ -1,0 +1,32 @@
+name: Fit, verify and checkpoint one confirmation case
+description: Restore completed cases when a runner interruption is retried.
+inputs:
+  block:
+    required: true
+    description: Launch block number
+  slot:
+    required: true
+    description: Position within the block
+runs:
+  using: composite
+  steps:
+    - id: original
+      shell: bash
+      env:
+        BLOCK: ${{ inputs.block }}
+        SLOT: ${{ inputs.slot }}
+      run: |
+        set -euo pipefail
+        j=$(python3 "$CONFIRM/schedule.py" case "$BLOCK" "$SLOT")
+        echo "j=$j" >> "$GITHUB_OUTPUT"
+        if [[ ! -e blockdata/$j/job.json ]]; then
+          bash "$CONFIRM/hosted-confirm.sh" case "$j"
+          echo "new=true" >> "$GITHUB_OUTPUT"
+        fi
+    - if: steps.original.outputs.new == 'true'
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: confirm-case-j${{ steps.original.outputs.j }}-a${{ github.run_attempt }}
+        path: blockdata/${{ steps.original.outputs.j }}/
+        if-no-files-found: error
+        compression-level: 1
