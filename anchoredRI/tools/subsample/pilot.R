@@ -53,13 +53,17 @@ h_csv <- function(x, path) {
   utils::write.csv(x, path, row.names = FALSE, na = "")
 }
 
-h_pilot <- function(input_dir, output_dir, Index) {
+h_pilot <- function(input_dir, output_dir, Index, approved_ids = NULL) {
   begin <- h_clock()
   preflight <- h_measure({
     stopifnot(as.character(getRversion()) == "4.5.0",
               as.character(utils::packageVersion("anchoredRI")) == "0.4.0")
-    roster <- read.csv(file.path(.h_dir, "pilot-roster.csv"))
-    stopifnot(nrow(roster) == 20L, !anyDuplicated(roster$Index), Index %in% roster$Index)
+    if (is.null(approved_ids)) {
+      roster <- read.csv(file.path(.h_dir, "pilot-roster.csv"))
+      stopifnot(nrow(roster) == 20L, !anyDuplicated(roster$Index))
+      approved_ids <- roster$Index
+    }
+    stopifnot(Index %in% approved_ids)
     case <- h_read_case(input_dir, Index)
     n <- length(case$value)
     stopifnot(n >= 5000L, length(case$anchor) == 40L)

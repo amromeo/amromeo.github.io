@@ -1,0 +1,38 @@
+name: Fit and retain one Task H index
+description: Fit or resume the frozen slot, verify it and retain it before starting the next slot.
+inputs:
+  block:
+    description: Block number
+    required: true
+  padded:
+    description: Three-digit block number
+    required: true
+  group:
+    description: Two-digit durable bundle number
+    required: true
+  slot:
+    description: Position within the block
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Fit and verify slot
+      shell: bash
+      env:
+        BLOCK: ${{ inputs.block }}
+        SLOT: ${{ inputs.slot }}
+      run: python3 "$STUDY/full-schedule.py" slot "$BLOCK" "$SLOT"
+    - name: Seal recoverable records
+      if: always()
+      shell: bash
+      env:
+        BLOCK: ${{ inputs.block }}
+        SLOT: ${{ inputs.slot }}
+      run: python3 "$STUDY/full-schedule.py" checkpoint "$BLOCK" "$SLOT"
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      if: ${{ always() && hashFiles(format('full-slots/s{0}/slot.json', inputs.slot)) != '' }}
+      with:
+        name: task-h-g${{ inputs.group }}-b${{ inputs.padded }}-s${{ inputs.slot }}-a${{ github.run_attempt }}
+        path: full-slots/s${{ inputs.slot }}/
+        if-no-files-found: error
+        compression-level: 1

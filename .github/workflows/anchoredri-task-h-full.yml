@@ -1,0 +1,201 @@
+name: Task H full RIbench cohort
+on:
+  push:
+    branches: [study/subsample]
+    paths: [anchoredRI/tools/subsample/launch-full.json]
+
+permissions:
+  contents: read
+  actions: read
+env:
+  STUDY: anchoredRI/tools/subsample
+
+jobs:
+  verify:
+    name: Verify freeze and 178-block roster
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    outputs:
+      matrix: ${{ steps.roster.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - id: roster
+        run: |
+          python3 "$STUDY/full-freeze.py" verify
+          python3 "$STUDY/full-schedule.py" matrix > blocks.json
+          echo "matrix=$(cat blocks.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Verify the saved pilot fixture without fitting
+        run: bash "$STUDY/full-hosted.sh" smoke
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: full-preflight-a${{ github.run_attempt }}
+          path: preflight/verified/
+          if-no-files-found: error
+      - name: Restore preflight artifact by ID and verify its ZIP digest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$STUDY/full-transfer.py" smoke "full-preflight-a$GITHUB_RUN_ATTEMPT"
+      - name: Verify the artifact round trip
+        run: diff -r preflight/verified preflight/returned
+
+      - name: Publish verified pilot bundle on the frozen draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 "$STUDY/full-bundle.py" pilot . bundles
+          python3 "$STUDY/full-schedule.py" upload pilot
+
+  fit:
+    name: Fit block ${{ matrix.padded }}
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: true
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.verify.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - name: Restore earlier attempts of this block
+        if: github.run_attempt > 1
+        env:
+          BLOCK: ${{ matrix.block }}
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$STUDY/full-transfer.py" prior "$BLOCK"
+      - name: Restore pinned runtime and original vectors
+        env:
+          BLOCK: ${{ matrix.block }}
+        run: bash "$STUDY/full-hosted.sh" setup "$BLOCK"
+      - name: Slot 1
+        uses: ./anchoredRI/tools/subsample/full-slot
+        with:
+          block: ${{ matrix.block }}
+          padded: ${{ matrix.padded }}
+          group: ${{ matrix.group }}
+          slot: "1"
+      - name: Slot 2
+        uses: ./anchoredRI/tools/subsample/full-slot
+        with:
+          block: ${{ matrix.block }}
+          padded: ${{ matrix.padded }}
+          group: ${{ matrix.group }}
+          slot: "2"
+      - name: Slot 3
+        uses: ./anchoredRI/tools/subsample/full-slot
+        with:
+          block: ${{ matrix.block }}
+          padded: ${{ matrix.padded }}
+          group: ${{ matrix.group }}
+          slot: "3"
+      - name: Slot 4
+        uses: ./anchoredRI/tools/subsample/full-slot
+        with:
+          block: ${{ matrix.block }}
+          padded: ${{ matrix.padded }}
+          group: ${{ matrix.group }}
+          slot: "4"
+      - name: Slot 5
+        if: matrix.block != 178
+        uses: ./anchoredRI/tools/subsample/full-slot
+        with:
+          block: ${{ matrix.block }}
+          padded: ${{ matrix.padded }}
+          group: ${{ matrix.group }}
+          slot: "5"
+      - name: Slot 6
+        if: matrix.block != 178
+        uses: ./anchoredRI/tools/subsample/full-slot
+        with:
+          block: ${{ matrix.block }}
+          padded: ${{ matrix.padded }}
+          group: ${{ matrix.group }}
+          slot: "6"
+      - name: Slot 7
+        if: matrix.block != 178
+        uses: ./anchoredRI/tools/subsample/full-slot
+        with:
+          block: ${{ matrix.block }}
+          padded: ${{ matrix.padded }}
+          group: ${{ matrix.group }}
+          slot: "7"
+      - name: Slot 8
+        if: matrix.block != 178
+        uses: ./anchoredRI/tools/subsample/full-slot
+        with:
+          block: ${{ matrix.block }}
+          padded: ${{ matrix.padded }}
+          group: ${{ matrix.group }}
+          slot: "8"
+
+      - name: Assemble completed slot artifacts into one transport snapshot
+        env:
+          BLOCK: ${{ matrix.block }}
+        run: python3 "$STUDY/full-transfer.py" snapshot "$BLOCK"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: task-h-block-g${{ matrix.group }}-b${{ matrix.padded }}-a${{ github.run_attempt }}
+          path: block-snapshot/
+          if-no-files-found: error
+          compression-level: 1
+
+  bundle:
+    name: Publish verified bundle ${{ matrix.group }}
+    needs: fit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+      actions: read
+    strategy:
+      fail-fast: true
+      max-parallel: 8
+      matrix:
+        group: ["01", "02", "03", "04", "05", "06", "07", "08"]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout: |
+            .github/workflows
+            anchoredRI/tools/subsample
+            anchoredRI/R
+            anchoredRI/inst
+            anchoredRI/man
+            anchoredRI/src
+      - name: Fetch and verify all block snapshots for this bundle
+        env:
+          GROUP: ${{ matrix.group }}
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$STUDY/full-transfer.py" group "$GROUP"
+      - name: Check and publish immutable release assets
+        env:
+          GROUP: ${{ matrix.group }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 "$STUDY/full-bundle.py" "$GROUP" incoming bundles
+          python3 "$STUDY/full-schedule.py" upload "$GROUP"
