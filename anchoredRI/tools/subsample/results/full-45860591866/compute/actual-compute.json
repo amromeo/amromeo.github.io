@@ -1,0 +1,8 @@
+{
+  "full_run_occupied_runner_hours": 106.96194444444444,
+  "first_job_start_to_last_job_end_hours": 5.778333333333333,
+  "full_run_dataset_process_cpu_hours": 104.27316361111112,
+  "full_run_dataset_wall_hours": 104.28076666666666,
+  "complete_cohort_dataset_process_cpu_hours": 105.8371175,
+  "workflow_attempts": 1
+}

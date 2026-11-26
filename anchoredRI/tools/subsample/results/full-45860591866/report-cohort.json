@@ -1,0 +1,8 @@
+{
+  "datasets": 1440,
+  "raw_methods": 241,
+  "release_methods": 47,
+  "individual_fit_scores": 293760,
+  "cohort": "full",
+  "historical_field_differences_on_authoritative_cohort": {}
+}

@@ -1,0 +1,5 @@
+fit_type,seed_set,attempts,both_selected,selected_count_changed,selected_count_equal,missing_either_count
+W,,1440,1440,1033,407,0
+full,,1440,1440,1300,140,0
+subsample,A,72000,72000,51982,20018,0
+subsample,B,72000,72000,52011,19989,0

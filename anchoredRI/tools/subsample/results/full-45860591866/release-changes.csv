@@ -1,0 +1,241 @@
+candidate,reference,contrast,candidate_status,reference_status,candidate_route,reference_route,datasets
+W3,W5,cap 3 minus standard,declined,declined,,,49
+W3,W5,cap 3 minus standard,declined,reported,,,251
+W3,W5,cap 3 minus standard,reported,declined,,,21
+W3,W5,cap 3 minus standard,reported,reported,,,1119
+W3_full,W5_full,cap 3 minus standard,declined,declined,,,183
+W3_full,W5_full,cap 3 minus standard,declined,reported,,,188
+W3_full,W5_full,cap 3 minus standard,reported,declined,,,131
+W3_full,W5_full,cap 3 minus standard,reported,reported,,,938
+W3_majority_A,W5_majority_A,cap 3 minus standard,declined,declined,,,36
+W3_majority_A,W5_majority_A,cap 3 minus standard,declined,reported,,,231
+W3_majority_A,W5_majority_A,cap 3 minus standard,reported,declined,,,16
+W3_majority_A,W5_majority_A,cap 3 minus standard,reported,reported,,,1157
+W3_majority_B,W5_majority_B,cap 3 minus standard,declined,declined,,,46
+W3_majority_B,W5_majority_B,cap 3 minus standard,declined,reported,,,225
+W3_majority_B,W5_majority_B,cap 3 minus standard,reported,declined,,,15
+W3_majority_B,W5_majority_B,cap 3 minus standard,reported,reported,,,1154
+full3_raw,standard_raw,cap 3 minus standard,declined,declined,,,183
+full3_raw,standard_raw,cap 3 minus standard,declined,reported,,,188
+full3_raw,standard_raw,cap 3 minus standard,reported,declined,,,131
+full3_raw,standard_raw,cap 3 minus standard,reported,reported,,,938
+median_3_A_all_full,median_5_A_all_full,cap 3 minus standard,declined,declined,,,183
+median_3_A_all_full,median_5_A_all_full,cap 3 minus standard,declined,reported,,,188
+median_3_A_all_full,median_5_A_all_full,cap 3 minus standard,reported,declined,,,131
+median_3_A_all_full,median_5_A_all_full,cap 3 minus standard,reported,reported,,,938
+median_3_A_all_majority,median_3_A_all_full,majority minus full gate,declined,declined,,,265
+median_3_A_all_majority,median_3_A_all_full,majority minus full gate,declined,reported,,,2
+median_3_A_all_majority,median_3_A_all_full,majority minus full gate,reported,declined,,,106
+median_3_A_all_majority,median_3_A_all_full,majority minus full gate,reported,reported,,,1067
+median_3_A_all_majority,median_5_A_all_majority,cap 3 minus standard,declined,declined,,,36
+median_3_A_all_majority,median_5_A_all_majority,cap 3 minus standard,declined,reported,,,231
+median_3_A_all_majority,median_5_A_all_majority,cap 3 minus standard,reported,declined,,,16
+median_3_A_all_majority,median_5_A_all_majority,cap 3 minus standard,reported,reported,,,1157
+median_3_A_passing_full,median_3_A_all_full,passing minus all,declined,declined,,,223
+median_3_A_passing_full,median_3_A_all_full,passing minus all,reported,reported,,,1069
+median_3_A_passing_full,median_3_A_all_full,passing minus all,withheld,declined,,,148
+median_3_A_passing_full,median_5_A_passing_full,cap 3 minus standard,declined,declined,,,52
+median_3_A_passing_full,median_5_A_passing_full,cap 3 minus standard,declined,reported,,,171
+median_3_A_passing_full,median_5_A_passing_full,cap 3 minus standard,reported,declined,,,125
+median_3_A_passing_full,median_5_A_passing_full,cap 3 minus standard,reported,reported,,,938
+median_3_A_passing_full,median_5_A_passing_full,cap 3 minus standard,reported,withheld,,,6
+median_3_A_passing_full,median_5_A_passing_full,cap 3 minus standard,withheld,declined,,,127
+median_3_A_passing_full,median_5_A_passing_full,cap 3 minus standard,withheld,reported,,,17
+median_3_A_passing_full,median_5_A_passing_full,cap 3 minus standard,withheld,withheld,,,4
+median_3_A_passing_majority,median_3_A_all_majority,passing minus all,declined,declined,,,119
+median_3_A_passing_majority,median_3_A_all_majority,passing minus all,reported,reported,,,1173
+median_3_A_passing_majority,median_3_A_all_majority,passing minus all,withheld,declined,,,148
+median_3_A_passing_majority,median_3_A_passing_full,majority minus full gate,declined,declined,,,117
+median_3_A_passing_majority,median_3_A_passing_full,majority minus full gate,declined,reported,,,2
+median_3_A_passing_majority,median_3_A_passing_full,majority minus full gate,reported,declined,,,106
+median_3_A_passing_majority,median_3_A_passing_full,majority minus full gate,reported,reported,,,1067
+median_3_A_passing_majority,median_3_A_passing_full,majority minus full gate,withheld,withheld,,,148
+median_3_A_passing_majority,median_5_A_passing_majority,cap 3 minus standard,declined,declined,,,7
+median_3_A_passing_majority,median_5_A_passing_majority,cap 3 minus standard,declined,reported,,,112
+median_3_A_passing_majority,median_5_A_passing_majority,cap 3 minus standard,reported,declined,,,10
+median_3_A_passing_majority,median_5_A_passing_majority,cap 3 minus standard,reported,reported,,,1157
+median_3_A_passing_majority,median_5_A_passing_majority,cap 3 minus standard,reported,withheld,,,6
+median_3_A_passing_majority,median_5_A_passing_majority,cap 3 minus standard,withheld,declined,,,25
+median_3_A_passing_majority,median_5_A_passing_majority,cap 3 minus standard,withheld,reported,,,119
+median_3_A_passing_majority,median_5_A_passing_majority,cap 3 minus standard,withheld,withheld,,,4
+median_3_B_all_full,median_3_A_all_full,bank B minus A,declined,declined,,,371
+median_3_B_all_full,median_3_A_all_full,bank B minus A,reported,reported,,,1069
+median_3_B_all_full,median_5_B_all_full,cap 3 minus standard,declined,declined,,,183
+median_3_B_all_full,median_5_B_all_full,cap 3 minus standard,declined,reported,,,188
+median_3_B_all_full,median_5_B_all_full,cap 3 minus standard,reported,declined,,,131
+median_3_B_all_full,median_5_B_all_full,cap 3 minus standard,reported,reported,,,938
+median_3_B_all_majority,median_3_A_all_majority,bank B minus A,declined,declined,,,260
+median_3_B_all_majority,median_3_A_all_majority,bank B minus A,declined,reported,,,11
+median_3_B_all_majority,median_3_A_all_majority,bank B minus A,reported,declined,,,7
+median_3_B_all_majority,median_3_A_all_majority,bank B minus A,reported,reported,,,1162
+median_3_B_all_majority,median_3_B_all_full,majority minus full gate,declined,declined,,,270
+median_3_B_all_majority,median_3_B_all_full,majority minus full gate,declined,reported,,,1
+median_3_B_all_majority,median_3_B_all_full,majority minus full gate,reported,declined,,,101
+median_3_B_all_majority,median_3_B_all_full,majority minus full gate,reported,reported,,,1068
+median_3_B_all_majority,median_5_B_all_majority,cap 3 minus standard,declined,declined,,,46
+median_3_B_all_majority,median_5_B_all_majority,cap 3 minus standard,declined,reported,,,225
+median_3_B_all_majority,median_5_B_all_majority,cap 3 minus standard,reported,declined,,,15
+median_3_B_all_majority,median_5_B_all_majority,cap 3 minus standard,reported,reported,,,1154
+median_3_B_passing_full,median_3_A_passing_full,bank B minus A,declined,declined,,,214
+median_3_B_passing_full,median_3_A_passing_full,bank B minus A,declined,withheld,,,12
+median_3_B_passing_full,median_3_A_passing_full,bank B minus A,reported,reported,,,1069
+median_3_B_passing_full,median_3_A_passing_full,bank B minus A,withheld,declined,,,9
+median_3_B_passing_full,median_3_A_passing_full,bank B minus A,withheld,withheld,,,136
+median_3_B_passing_full,median_3_B_all_full,passing minus all,declined,declined,,,226
+median_3_B_passing_full,median_3_B_all_full,passing minus all,reported,reported,,,1069
+median_3_B_passing_full,median_3_B_all_full,passing minus all,withheld,declined,,,145
+median_3_B_passing_full,median_5_B_passing_full,cap 3 minus standard,declined,declined,,,56
+median_3_B_passing_full,median_5_B_passing_full,cap 3 minus standard,declined,reported,,,170
+median_3_B_passing_full,median_5_B_passing_full,cap 3 minus standard,reported,declined,,,127
+median_3_B_passing_full,median_5_B_passing_full,cap 3 minus standard,reported,reported,,,938
+median_3_B_passing_full,median_5_B_passing_full,cap 3 minus standard,reported,withheld,,,4
+median_3_B_passing_full,median_5_B_passing_full,cap 3 minus standard,withheld,declined,,,124
+median_3_B_passing_full,median_5_B_passing_full,cap 3 minus standard,withheld,reported,,,18
+median_3_B_passing_full,median_5_B_passing_full,cap 3 minus standard,withheld,withheld,,,3
+median_3_B_passing_majority,median_3_A_passing_majority,bank B minus A,declined,declined,,,103
+median_3_B_passing_majority,median_3_A_passing_majority,bank B minus A,declined,reported,,,11
+median_3_B_passing_majority,median_3_A_passing_majority,bank B minus A,declined,withheld,,,12
+median_3_B_passing_majority,median_3_A_passing_majority,bank B minus A,reported,declined,,,7
+median_3_B_passing_majority,median_3_A_passing_majority,bank B minus A,reported,reported,,,1162
+median_3_B_passing_majority,median_3_A_passing_majority,bank B minus A,withheld,declined,,,9
+median_3_B_passing_majority,median_3_A_passing_majority,bank B minus A,withheld,withheld,,,136
+median_3_B_passing_majority,median_3_B_all_majority,passing minus all,declined,declined,,,126
+median_3_B_passing_majority,median_3_B_all_majority,passing minus all,reported,reported,,,1169
+median_3_B_passing_majority,median_3_B_all_majority,passing minus all,withheld,declined,,,145
+median_3_B_passing_majority,median_3_B_passing_full,majority minus full gate,declined,declined,,,125
+median_3_B_passing_majority,median_3_B_passing_full,majority minus full gate,declined,reported,,,1
+median_3_B_passing_majority,median_3_B_passing_full,majority minus full gate,reported,declined,,,101
+median_3_B_passing_majority,median_3_B_passing_full,majority minus full gate,reported,reported,,,1068
+median_3_B_passing_majority,median_3_B_passing_full,majority minus full gate,withheld,withheld,,,145
+median_3_B_passing_majority,median_5_B_passing_majority,cap 3 minus standard,declined,declined,,,14
+median_3_B_passing_majority,median_5_B_passing_majority,cap 3 minus standard,declined,reported,,,112
+median_3_B_passing_majority,median_5_B_passing_majority,cap 3 minus standard,reported,declined,,,11
+median_3_B_passing_majority,median_5_B_passing_majority,cap 3 minus standard,reported,reported,,,1154
+median_3_B_passing_majority,median_5_B_passing_majority,cap 3 minus standard,reported,withheld,,,4
+median_3_B_passing_majority,median_5_B_passing_majority,cap 3 minus standard,withheld,declined,,,29
+median_3_B_passing_majority,median_5_B_passing_majority,cap 3 minus standard,withheld,reported,,,113
+median_3_B_passing_majority,median_5_B_passing_majority,cap 3 minus standard,withheld,withheld,,,3
+median_5_A_all_majority,median_5_A_all_full,majority minus full gate,declined,declined,,,51
+median_5_A_all_majority,median_5_A_all_full,majority minus full gate,declined,reported,,,1
+median_5_A_all_majority,median_5_A_all_full,majority minus full gate,reported,declined,,,263
+median_5_A_all_majority,median_5_A_all_full,majority minus full gate,reported,reported,,,1125
+median_5_A_passing_full,median_5_A_all_full,passing minus all,declined,declined,,,304
+median_5_A_passing_full,median_5_A_all_full,passing minus all,reported,reported,,,1126
+median_5_A_passing_full,median_5_A_all_full,passing minus all,withheld,declined,,,10
+median_5_A_passing_majority,median_5_A_all_majority,passing minus all,declined,declined,,,42
+median_5_A_passing_majority,median_5_A_all_majority,passing minus all,reported,reported,,,1388
+median_5_A_passing_majority,median_5_A_all_majority,passing minus all,withheld,declined,,,10
+median_5_A_passing_majority,median_5_A_passing_full,majority minus full gate,declined,declined,,,41
+median_5_A_passing_majority,median_5_A_passing_full,majority minus full gate,declined,reported,,,1
+median_5_A_passing_majority,median_5_A_passing_full,majority minus full gate,reported,declined,,,263
+median_5_A_passing_majority,median_5_A_passing_full,majority minus full gate,reported,reported,,,1125
+median_5_A_passing_majority,median_5_A_passing_full,majority minus full gate,withheld,withheld,,,10
+median_5_B_all_full,median_5_A_all_full,bank B minus A,declined,declined,,,314
+median_5_B_all_full,median_5_A_all_full,bank B minus A,reported,reported,,,1126
+median_5_B_all_majority,median_5_A_all_majority,bank B minus A,declined,declined,,,52
+median_5_B_all_majority,median_5_A_all_majority,bank B minus A,declined,reported,,,9
+median_5_B_all_majority,median_5_A_all_majority,bank B minus A,reported,reported,,,1379
+median_5_B_all_majority,median_5_B_all_full,majority minus full gate,declined,declined,,,58
+median_5_B_all_majority,median_5_B_all_full,majority minus full gate,declined,reported,,,3
+median_5_B_all_majority,median_5_B_all_full,majority minus full gate,reported,declined,,,256
+median_5_B_all_majority,median_5_B_all_full,majority minus full gate,reported,reported,,,1123
+median_5_B_passing_full,median_5_A_passing_full,bank B minus A,declined,declined,,,302
+median_5_B_passing_full,median_5_A_passing_full,bank B minus A,declined,withheld,,,5
+median_5_B_passing_full,median_5_A_passing_full,bank B minus A,reported,reported,,,1126
+median_5_B_passing_full,median_5_A_passing_full,bank B minus A,withheld,declined,,,2
+median_5_B_passing_full,median_5_A_passing_full,bank B minus A,withheld,withheld,,,5
+median_5_B_passing_full,median_5_B_all_full,passing minus all,declined,declined,,,307
+median_5_B_passing_full,median_5_B_all_full,passing minus all,reported,reported,,,1126
+median_5_B_passing_full,median_5_B_all_full,passing minus all,withheld,declined,,,7
+median_5_B_passing_majority,median_5_A_passing_majority,bank B minus A,declined,declined,,,40
+median_5_B_passing_majority,median_5_A_passing_majority,bank B minus A,declined,reported,,,9
+median_5_B_passing_majority,median_5_A_passing_majority,bank B minus A,declined,withheld,,,5
+median_5_B_passing_majority,median_5_A_passing_majority,bank B minus A,reported,reported,,,1379
+median_5_B_passing_majority,median_5_A_passing_majority,bank B minus A,withheld,declined,,,2
+median_5_B_passing_majority,median_5_A_passing_majority,bank B minus A,withheld,withheld,,,5
+median_5_B_passing_majority,median_5_B_all_majority,passing minus all,declined,declined,,,54
+median_5_B_passing_majority,median_5_B_all_majority,passing minus all,reported,reported,,,1379
+median_5_B_passing_majority,median_5_B_all_majority,passing minus all,withheld,declined,,,7
+median_5_B_passing_majority,median_5_B_passing_full,majority minus full gate,declined,declined,,,51
+median_5_B_passing_majority,median_5_B_passing_full,majority minus full gate,declined,reported,,,3
+median_5_B_passing_majority,median_5_B_passing_full,majority minus full gate,reported,declined,,,256
+median_5_B_passing_majority,median_5_B_passing_full,majority minus full gate,reported,reported,,,1123
+median_5_B_passing_majority,median_5_B_passing_full,majority minus full gate,withheld,withheld,,,7
+policy_3_A_all,policy_5_A_all,cap 3 minus standard,declined,declined,full_nonreturn,full_nonreturn,4
+policy_3_A_all,policy_5_A_all,cap 3 minus standard,declined,reported,full_nonreturn,median,6
+policy_3_A_all,policy_5_A_all,cap 3 minus standard,reported,reported,full_fallback,full_fallback,31
+policy_3_A_all,policy_5_A_all,cap 3 minus standard,reported,reported,full_fallback,median,119
+policy_3_A_all,policy_5_A_all,cap 3 minus standard,reported,reported,full_first_stage,full_first_stage,1
+policy_3_A_all,policy_5_A_all,cap 3 minus standard,reported,reported,full_first_stage,median,106
+policy_3_A_all,policy_5_A_all,cap 3 minus standard,reported,reported,median,full_fallback,16
+policy_3_A_all,policy_5_A_all,cap 3 minus standard,reported,reported,median,median,1157
+policy_3_A_passing,policy_3_A_all,passing minus all,declined,declined,full_nonreturn,full_nonreturn,10
+policy_3_A_passing,policy_3_A_all,passing minus all,reported,reported,full_fallback,full_fallback,150
+policy_3_A_passing,policy_3_A_all,passing minus all,reported,reported,full_first_stage,full_first_stage,107
+policy_3_A_passing,policy_3_A_all,passing minus all,reported,reported,median,median,1173
+policy_3_A_passing,policy_5_A_passing,cap 3 minus standard,declined,declined,full_nonreturn,full_nonreturn,4
+policy_3_A_passing,policy_5_A_passing,cap 3 minus standard,declined,reported,full_nonreturn,median,6
+policy_3_A_passing,policy_5_A_passing,cap 3 minus standard,reported,reported,full_fallback,full_fallback,31
+policy_3_A_passing,policy_5_A_passing,cap 3 minus standard,reported,reported,full_fallback,median,119
+policy_3_A_passing,policy_5_A_passing,cap 3 minus standard,reported,reported,full_first_stage,full_first_stage,1
+policy_3_A_passing,policy_5_A_passing,cap 3 minus standard,reported,reported,full_first_stage,median,106
+policy_3_A_passing,policy_5_A_passing,cap 3 minus standard,reported,reported,median,full_fallback,16
+policy_3_A_passing,policy_5_A_passing,cap 3 minus standard,reported,reported,median,median,1157
+policy_3_B_all,policy_3_A_all,bank B minus A,declined,declined,full_nonreturn,full_nonreturn,10
+policy_3_B_all,policy_3_A_all,bank B minus A,reported,reported,full_fallback,full_fallback,149
+policy_3_B_all,policy_3_A_all,bank B minus A,reported,reported,full_fallback,median,3
+policy_3_B_all,policy_3_A_all,bank B minus A,reported,reported,full_first_stage,full_first_stage,101
+policy_3_B_all,policy_3_A_all,bank B minus A,reported,reported,full_first_stage,median,8
+policy_3_B_all,policy_3_A_all,bank B minus A,reported,reported,median,full_fallback,1
+policy_3_B_all,policy_3_A_all,bank B minus A,reported,reported,median,full_first_stage,6
+policy_3_B_all,policy_3_A_all,bank B minus A,reported,reported,median,median,1162
+policy_3_B_all,policy_5_B_all,cap 3 minus standard,declined,declined,full_nonreturn,full_nonreturn,5
+policy_3_B_all,policy_5_B_all,cap 3 minus standard,declined,reported,full_nonreturn,median,5
+policy_3_B_all,policy_5_B_all,cap 3 minus standard,reported,reported,full_fallback,full_fallback,38
+policy_3_B_all,policy_5_B_all,cap 3 minus standard,reported,reported,full_fallback,median,114
+policy_3_B_all,policy_5_B_all,cap 3 minus standard,reported,reported,full_first_stage,full_first_stage,3
+policy_3_B_all,policy_5_B_all,cap 3 minus standard,reported,reported,full_first_stage,median,106
+policy_3_B_all,policy_5_B_all,cap 3 minus standard,reported,reported,median,full_fallback,15
+policy_3_B_all,policy_5_B_all,cap 3 minus standard,reported,reported,median,median,1154
+policy_3_B_passing,policy_3_A_passing,bank B minus A,declined,declined,full_nonreturn,full_nonreturn,10
+policy_3_B_passing,policy_3_A_passing,bank B minus A,reported,reported,full_fallback,full_fallback,149
+policy_3_B_passing,policy_3_A_passing,bank B minus A,reported,reported,full_fallback,median,3
+policy_3_B_passing,policy_3_A_passing,bank B minus A,reported,reported,full_first_stage,full_first_stage,101
+policy_3_B_passing,policy_3_A_passing,bank B minus A,reported,reported,full_first_stage,median,8
+policy_3_B_passing,policy_3_A_passing,bank B minus A,reported,reported,median,full_fallback,1
+policy_3_B_passing,policy_3_A_passing,bank B minus A,reported,reported,median,full_first_stage,6
+policy_3_B_passing,policy_3_A_passing,bank B minus A,reported,reported,median,median,1162
+policy_3_B_passing,policy_3_B_all,passing minus all,declined,declined,full_nonreturn,full_nonreturn,10
+policy_3_B_passing,policy_3_B_all,passing minus all,reported,reported,full_fallback,full_fallback,152
+policy_3_B_passing,policy_3_B_all,passing minus all,reported,reported,full_first_stage,full_first_stage,109
+policy_3_B_passing,policy_3_B_all,passing minus all,reported,reported,median,median,1169
+policy_3_B_passing,policy_5_B_passing,cap 3 minus standard,declined,declined,full_nonreturn,full_nonreturn,5
+policy_3_B_passing,policy_5_B_passing,cap 3 minus standard,declined,reported,full_nonreturn,median,5
+policy_3_B_passing,policy_5_B_passing,cap 3 minus standard,reported,reported,full_fallback,full_fallback,38
+policy_3_B_passing,policy_5_B_passing,cap 3 minus standard,reported,reported,full_fallback,median,114
+policy_3_B_passing,policy_5_B_passing,cap 3 minus standard,reported,reported,full_first_stage,full_first_stage,3
+policy_3_B_passing,policy_5_B_passing,cap 3 minus standard,reported,reported,full_first_stage,median,106
+policy_3_B_passing,policy_5_B_passing,cap 3 minus standard,reported,reported,median,full_fallback,15
+policy_3_B_passing,policy_5_B_passing,cap 3 minus standard,reported,reported,median,median,1154
+policy_5_A_passing,policy_5_A_all,passing minus all,declined,declined,full_nonreturn,full_nonreturn,4
+policy_5_A_passing,policy_5_A_all,passing minus all,reported,reported,full_fallback,full_fallback,47
+policy_5_A_passing,policy_5_A_all,passing minus all,reported,reported,full_first_stage,full_first_stage,1
+policy_5_A_passing,policy_5_A_all,passing minus all,reported,reported,median,median,1388
+policy_5_B_all,policy_5_A_all,bank B minus A,declined,declined,full_nonreturn,full_nonreturn,4
+policy_5_B_all,policy_5_A_all,bank B minus A,declined,reported,full_nonreturn,median,1
+policy_5_B_all,policy_5_A_all,bank B minus A,reported,reported,full_fallback,full_fallback,47
+policy_5_B_all,policy_5_A_all,bank B minus A,reported,reported,full_fallback,median,6
+policy_5_B_all,policy_5_A_all,bank B minus A,reported,reported,full_first_stage,full_first_stage,1
+policy_5_B_all,policy_5_A_all,bank B minus A,reported,reported,full_first_stage,median,2
+policy_5_B_all,policy_5_A_all,bank B minus A,reported,reported,median,median,1379
+policy_5_B_passing,policy_5_A_passing,bank B minus A,declined,declined,full_nonreturn,full_nonreturn,4
+policy_5_B_passing,policy_5_A_passing,bank B minus A,declined,reported,full_nonreturn,median,1
+policy_5_B_passing,policy_5_A_passing,bank B minus A,reported,reported,full_fallback,full_fallback,47
+policy_5_B_passing,policy_5_A_passing,bank B minus A,reported,reported,full_fallback,median,6
+policy_5_B_passing,policy_5_A_passing,bank B minus A,reported,reported,full_first_stage,full_first_stage,1
+policy_5_B_passing,policy_5_A_passing,bank B minus A,reported,reported,full_first_stage,median,2
+policy_5_B_passing,policy_5_A_passing,bank B minus A,reported,reported,median,median,1379
+policy_5_B_passing,policy_5_B_all,passing minus all,declined,declined,full_nonreturn,full_nonreturn,5
+policy_5_B_passing,policy_5_B_all,passing minus all,reported,reported,full_fallback,full_fallback,53
+policy_5_B_passing,policy_5_B_all,passing minus all,reported,reported,full_first_stage,full_first_stage,3
+policy_5_B_passing,policy_5_B_all,passing minus all,reported,reported,median,median,1379

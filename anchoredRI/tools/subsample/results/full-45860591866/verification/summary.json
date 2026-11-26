@@ -1,0 +1,24 @@
+{
+  "mode": "full cohort",
+  "datasets": 1440,
+  "original_pilots": 20,
+  "new_datasets": 1420,
+  "overlapping_ids": 0,
+  "verified_record_files": 12960,
+  "counts": {
+    "models": 293760,
+    "draws": 144000,
+    "position_indices": 720000000,
+    "sample_seed_checks": 144000,
+    "medians": 11520,
+    "decisions": 69120
+  },
+  "max_abs_component_sum_error": 2.22044604925031e-16,
+  "max_abs_recomputed_p_difference": 2.54241072639161e-14,
+  "full_transferred_file_recheck": true,
+  "output_sha256": {
+    "verified-datasets.csv": "78d15403944c81756a4850a2cf77a5f9bdbe5ef3bc52641fd859bce1e00972cb",
+    "file-hashes.csv": "f09924475a9b4410962d0f7c64b2c54705902e516feb7f3f2dfbb48bc022ad8d",
+    "observations.csv": "f22bf8507a6686ff1397e0ee1a6082aee1b3889bfd6836d3eb507a079f17472a"
+  }
+}
