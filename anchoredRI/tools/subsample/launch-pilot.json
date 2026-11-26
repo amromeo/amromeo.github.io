@@ -1,6 +1,6 @@
 {
   "approved_protocol": "e5a4577c1fe73869c6a24ce64c8759f190de3197",
-  "implementation_commit": "c4834857c88869bf1b41f5351aa775672ecc8941",
-  "manifest_sha256": "0a4b3ea147e95b7086540507748f58f96ddb2ceb53a75d68dfd41d88e1fdcd65",
+  "implementation_commit": "43c8834f2bf6e321a2a4371075d7880162903974",
+  "manifest_sha256": "6ad06353c81e3a0129a522398d44fbaa3512639c5bf923953cee8c0171b13107",
   "scope": "fixture verification, full-data cap-3 archive agreement and exception replays, timing of the frozen 20 pilot IDs"
 }
