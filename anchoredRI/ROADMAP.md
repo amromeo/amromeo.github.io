@@ -1,6 +1,6 @@
 # anchoredRI roadmap
 
-Last updated: November 25, 2026 · Current version: 0.4.0
+Last updated: November 27, 2026 · Current version: 0.4.0
 
 This file records where the project stands, the decisions already made, and the studies still to do. Update it when a study finishes or a plan changes. Each study keeps its own protocol and report.
 
@@ -41,6 +41,7 @@ This file records where the project stands, the decisions already made, and the 
 | 8 | Same answer on every computer | Can model selection be made stable across computers? | Not started | Later |
 | 9 | Real pediatric data | Does it work on real CHOP data, judged against independently screened children? | Not started | Later (start planning now) |
 | 10 | Order chosen from the data | Should large datasets that look mostly free of disease try the fallback first? | Not started | Later |
+| 11 | Healthy results across two components | Can 40 screened patients identify when two fitted components together give more accurate reference limits? | Not started | Later |
 
 ### 1. Website revision
 
@@ -119,6 +120,14 @@ The package always tries anchoredRI first. On RIbench, with 20% or fewer patient
 **Plan.** Use the first fit's estimate of the share of routine results outside the reference group, together with dataset size, to decide which method to try first. Measure how well that estimate tracks the true share, especially when disease overlaps heavily with the reference group. Choose the rule and its cut-offs on new development data. Then test it against the fixed anchoredRI-first order on new confirmation data not used in Task G.
 
 **Done when** the rule beats the fixed order on independent confirmation data without losing accuracy when disease is common, or we keep the fixed order and record why.
+
+### 11. Healthy results across two components
+
+The first-stage fit takes its reference limits from component 1. In RIbench datasets with no designed pathology, 29 of 46 five-component fits placed an extra component’s center within the middle 50% of the true healthy distribution. This suggests the model can split healthy results across components. Disease can also overlap the healthy center. [Task H component report](https://github.com/amromeo/amromeo.github.io/blob/67bc6c4b877141f5c2d897422ec22cd83db51c4a/anchoredRI/tools/subsample/review/component-centers/REPORT.md)
+
+**Plan.** Use fresh development data to test whether the 40 screened results can distinguish a split healthy group from overlapping disease. Develop a rule that uses the observed data to choose between component 1 alone and the combined distribution of component 1 and one other component. Freeze the rule and compare it with the current package on independent confirmation data, including cases where disease overlaps the healthy center.
+
+**Done when** the confirmation study reports how the rule changes endpoint error, the share of datasets receiving an interval, and the number of extreme endpoints, including in the overlapping-disease cases.
 
 ## Known limits with no study planned yet
 
