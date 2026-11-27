@@ -1,0 +1,3 @@
+bank,primary,lower_observed_mean_error,improved_accuracy,no_worse,accuracy_gate,coverage_and_extremes_gate,all_assignment_gate,step_c_evidence,complete_four_step_gate
+A,True,False,False,False,fail,pass,fail,insufficient evidence,fail
+B,False,False,False,False,fail,pass,fail,insufficient evidence,fail

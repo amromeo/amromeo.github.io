@@ -1,0 +1,18 @@
+{
+  "datasets": 1440,
+  "record_files": 8640,
+  "counts": {
+    "n_models": 145440,
+    "n_draws": 144000,
+    "n_positions": 720000000,
+    "n_routes": 2880
+  },
+  "technical_first_stage_fits": 0,
+  "max_abs_lrt_p_difference": 1.31006316905768e-14,
+  "max_abs_limit_difference": 3.5527136788005e-15,
+  "max_abs_component_sum_error": 2.22044604925031e-16,
+  "output_sha256": {
+    "verified-datasets.csv": "daafefc9fd55afa98935fbe7e3f179be29d72a406916eca959fdaa72f420d3df",
+    "file-hashes.csv": "d2cff48d3a977a9647be3715a3ec494e49dae0d33157beb5d828ef55656f942f"
+  }
+}

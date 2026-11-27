@@ -1,0 +1,19 @@
+{
+  "evaluations": 8640,
+  "missing_endpoint_scores": 36,
+  "infinite_endpoint_scores": 0,
+  "max_absolute_finite_z_difference": 5.329070518200751e-15,
+  "datasets": 1440,
+  "cells": 180,
+  "banks": 2,
+  "draws": 144000,
+  "full_fit_records": 1440,
+  "reconstructed_routes": 2880,
+  "input_hash_pairs_matched": 1440,
+  "source_design_sha256": "5f4a78f982c3a882c8cadb742ada0f9b191e7a4ba658651fa5a69dddc48652c7",
+  "source_generator_sha256": "b6b754278afb630ff707b154eff48e8517dd60b52f36a410db558b0401215964",
+  "reference_hashes_sha256": "dc784a43495bb58e29c34d4a7a0dedcde28e2300319553db9db52368c9dfbcc2",
+  "bootstrap_draws": 2000,
+  "bootstrap_seed": 37000000,
+  "numpy_version": "2.3.5"
+}

@@ -1,0 +1,4 @@
+j,family,fraction,disease,seed_pattern,step_A,step_B,majority_A,majority_B,package_status,package_reason,fallback_reason
+733,lognormal,0.6,right_shoulder,neither,d,d,declined,declined,declined,routine data disagree with the screened sample,p_below_threshold
+2464,power_0.5,0.25,right_shoulder,neither,d,d,declined,declined,declined,routine data disagree with the screened sample,p_below_threshold
+2634,power_0.5,0.6,left_shoulder,neither,d,d,declined,declined,declined,routine data disagree with the screened sample,p_below_threshold

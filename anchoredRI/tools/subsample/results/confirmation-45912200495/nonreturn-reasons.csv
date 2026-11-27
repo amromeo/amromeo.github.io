@@ -1,0 +1,3 @@
+bank,first_reason,package_status,package_reason,fallback_status,fallback_reason,step,majority,n
+A,routine data disagree with the screened sample,declined,routine data disagree with the screened sample,declined,p_below_threshold,d,declined,3
+B,routine data disagree with the screened sample,declined,routine data disagree with the screened sample,declined,p_below_threshold,d,declined,3
