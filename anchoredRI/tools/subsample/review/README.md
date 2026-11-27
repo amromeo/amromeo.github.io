@@ -6,6 +6,6 @@ With seed set A, the policy returned 1,436 intervals. Mean endpoint error on ret
 
 The 934 full-data fits selecting five components underestimated the healthy share by an average of 18.639 percentage points. Integrating the generating healthy distribution and the fitted first component at the true reference limits placed 18.296 points of this net deficit inside and 0.343 points outside. As a fraction of true healthy mass in each region, the shortfall was 27.8% inside and 9.9% outside. The evidence places most of the shortfall within the reference interval. It leaves open whether it concentrates near the endpoints within that interval. [Tail decomposition, rounding sensitivity and per-dataset results](tail/REPORT.md)
 
-Work on Arm W and the three-component variants ends with the published Task H results. The proposed independent confirmation evaluates only the revised policy against the full package on anchorRefine’s Stage 2 synthetic datasets at N = 50,000. It awaits review. [Existing Task H results](../results/full-45860591866/REPORT.md) · [Proposed confirmation protocol](../confirmation/PROTOCOL.md)
+Task H closed on 27 November 2026. The revised policy failed independent confirmation on anchorRefine’s Stage 2 synthetic datasets at N = 50,000. Arm W and the three-component variants concluded with the RIbench analysis. [Confirmation report](../results/confirmation-45912200495/REPORT.md) · [RIbench results](../results/full-45860591866/REPORT.md) · [Study summary](../SUPPLEMENT.md)
 
 [SHA-256 checksums for the review files](SHA256SUMS)

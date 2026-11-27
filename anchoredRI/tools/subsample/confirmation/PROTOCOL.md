@@ -1,5 +1,7 @@
 # Task H confirmation of the subsampling policy at N = 50,000
 
+**Final decision, 27 November 2026.** The subsampling policy failed independent confirmation under both seed sets. It reported intervals on exactly the same datasets as the full package and increased mean endpoint error. Step c recovered none of three package nonreturns, giving insufficient evidence under the ten-recovery rule. Task H is closed. [Confirmation report](../results/confirmation-45912200495/REPORT.md) · [Protocol frozen before fitting](https://github.com/amromeo/amromeo.github.io/blob/140bd4372d9741c70c76999d2b47e998fac17e9d/anchoredRI/tools/subsample/confirmation/PROTOCOL.md)
+
 **Approved for execution, 26 November 2026.** The question is whether replacing a full-data first-stage interval with the subsample median improves accuracy on datasets the package already serves, and whether the median can safely return an interval when the package withholds one. The comparator is the public anchoredRI 0.4.0 package, including its fallback. The policy, its routing order and its 50-draw median come from the RIbench review. This document fixes the confirmation cohort, scoring and success criteria before any Task H calculation on that cohort. [RIbench review](../review/README.md) · [Frozen package](https://github.com/amromeo/amromeo.github.io/tree/fe8105ac6961f1b45bbfbe034648938f227c4726/anchoredRI)
 
 ## Independent data and inputs

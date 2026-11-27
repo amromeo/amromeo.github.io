@@ -18,6 +18,19 @@ Of the 436 fits with a center in the true central 50%, 337 had one, 97 had two a
 
 Even at 0% designed pathology, 29 of 46 five-component fits placed an extra center in the true central 50%. Those centers carried a combined 49.65% mean routine weight on those 29 datasets. The generating design comprised 99.9% healthy observations and 0.1% uniform background. This supports the hypothesis that the mixture can describe a single healthy distribution with several components. With disease present, an overlapping pathological component could also have a center in this region. Component weights sum to one, which itself links a large extra weight with a smaller weight for component 1. These comparisons cannot assign individual healthy observations to a particular fitted component or determine the cause of a specific error.
 
+## RIbench component findings by first-stage decision
+
+A central extra component means at least one of components 2–5 was centered in the interquartile interval of the true healthy distribution. Shortfall is the true healthy share minus component 1’s fitted routine share, in percentage points. The error d is the uncapped mean absolute endpoint z error for the first-stage interval, measured before any fallback.
+
+| First-stage decision | Central extra component | Fits | Mean component-1 shortfall (percentage points) | Mean first-stage d |
+|---|---|---:|---:|---:|
+| Released | Present | 197 | 27.28 | 0.283 |
+| Released | Absent | 455 | 2.13 | 0.119 |
+| Declined | Present | 239 | 46.47 | 1.657 |
+| Declined | Absent | 50 | 14.49 | 0.548 |
+
+Among the 436 fits with a central extra component, the safeguards declined 118 of the 119 with d > 1. The association between a central extra component, a larger shortfall and greater endpoint error supports the hypothesis that a fit can split the healthy distribution across components. The same RIbench data prompted this analysis. Independent confirmation of the component finding remains open. [First-stage summaries](summary.csv) · [Individual fits](datasets.csv)
+
 ## Cohort and calculation
 
 The archived Task E Arm B run selected five components on 941 of its 1,440 datasets. The later Task H run selected five components on 934 datasets. This analysis uses Task E's fitted parameters and matches its own saved endpoints and errors by original RIbench Index. Component 1 is the component anchored by the screened patients. The other four are unscreened mixture components. For each, the center is the Gaussian location in its selected transform, mapped back to measurement units. For identity fits the Task E export already puts its locations in measurement units. For log and shifted-log fits, the inverse-transformed location is the component’s original-scale median, given by the shift plus the exponential of the fitted location. Every component-1 inverse transform reproduced its original raw requested limits. [Task E parameter exporter](https://github.com/amromeo/amromeo.github.io/blob/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/large/extract.R#L60-L71) · [Selected parameters](https://github.com/amromeo/amromeo.github.io/blob/8bcd49c3c7977c50982524b9dbc48d16bdfa5914/anchoredRI/tools/boxcox/accuracy/large/results/selected-component-parameters.csv) · [Task E share report](../../archived-shares/REPORT.md)
